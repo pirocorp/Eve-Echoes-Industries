@@ -1,5 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,6 +19,7 @@
 
         public virtual Richness Richness { get; set; }
 
+        [Range(0, double.MaxValue)]
         public double Output { get; set; }
 
         /// <summary>
