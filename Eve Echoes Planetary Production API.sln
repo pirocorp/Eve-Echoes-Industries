@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Common", "EveEchoesPlanetaryProductionApi.Common\EveEchoesPlanetaryProductionApi.Common.csproj", "{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Data", "Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj", "{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{8A26E134-E1E0-4F7E-A6D4-3FA8B9326A18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api", "Api\EveEchoesPlanetaryProductionApi.Api\EveEchoesPlanetaryProductionApi.Api.csproj", "{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api.Infrastructure", "Api\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj", "{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api.Models", "Api\EveEchoesPlanetaryProductionApi.Api.Models\EveEchoesPlanetaryProductionApi.Api.Models.csproj", "{944FEAE7-A334-4386-859D-1E75636703F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +39,22 @@ Global
 		{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{944FEAE7-A334-4386-859D-1E75636703F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{944FEAE7-A334-4386-859D-1E75636703F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{944FEAE7-A334-4386-859D-1E75636703F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{944FEAE7-A334-4386-859D-1E75636703F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +62,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C7806EFE-AE72-4266-8BF2-A24A0138E2A0} = {0D1D8211-2E06-4D8C-BF9E-85E0EC06BDA2}
 		{0D838EA7-2A6C-4B2E-8C26-BD6CB09BE207} = {0D1D8211-2E06-4D8C-BF9E-85E0EC06BDA2}
+		{8AF92FC2-F319-4BA1-9A6A-583B16023E8F} = {0D1D8211-2E06-4D8C-BF9E-85E0EC06BDA2}
+		{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6} = {8A26E134-E1E0-4F7E-A6D4-3FA8B9326A18}
+		{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60} = {8A26E134-E1E0-4F7E-A6D4-3FA8B9326A18}
+		{944FEAE7-A334-4386-859D-1E75636703F9} = {8A26E134-E1E0-4F7E-A6D4-3FA8B9326A18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCBFFE35-5B47-4D05-BBA2-401820564392}
