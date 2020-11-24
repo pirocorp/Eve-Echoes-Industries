@@ -1,5 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data
 {
+    using System.Threading.Tasks;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,26 @@
         public DbSet<SolarSystem> SolarSystems { get; set; }
 
         public DbSet<SolarSystemJump> SolarSystemJumps { get; set; }
+
+        public async Task<int> SaveChangesWithExplicitIdentityInsertAsync()
+        {
+            await this.Database.OpenConnectionAsync();
+
+            var count = 0;
+
+            try
+            {
+                await this.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Items ON");
+                count = await this.SaveChangesAsync();
+                await this.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Items OFF");
+            }
+            finally
+            {
+                await this.Database.CloseConnectionAsync();
+            }
+
+            return count;
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

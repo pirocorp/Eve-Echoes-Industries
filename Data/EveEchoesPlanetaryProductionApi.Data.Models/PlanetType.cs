@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class PlanetType : NamedModel<int>, IEntityTypeConfiguration<PlanetType>
+    public class PlanetType : NamedModel<long>, IEntityTypeConfiguration<PlanetType>
     {
         public PlanetType()
         {

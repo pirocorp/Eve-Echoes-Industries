@@ -5,27 +5,27 @@
 
     public class SolarSystemJump : IEntityTypeConfiguration<SolarSystemJump>
     {
-        public int FromRegionId { get; set; }
+        public long FromRegionId { get; set; }
 
         public virtual Region FromRegion { get; set; }
 
-        public int FromConstellationId { get; set; }
+        public long FromConstellationId { get; set; }
 
         public virtual Constellation FromConstellation { get; set; }
 
-        public int FromSolarSystemId { get; set; }
+        public long FromSolarSystemId { get; set; }
 
         public virtual SolarSystem FromSolarSystem { get; set; }
 
-        public int ToSolarSystemId { get; set; }
+        public long ToSolarSystemId { get; set; }
 
         public virtual SolarSystem ToSolarSystem { get; set; }
 
-        public int ToConstellationId { get; set; }
+        public long ToConstellationId { get; set; }
 
         public virtual Constellation ToConstellation { get; set; }
 
-        public int ToRegionId { get; set; }
+        public long ToRegionId { get; set; }
 
         public virtual Region ToRegion { get; set; }
 
@@ -49,28 +49,28 @@
 
             solarSystemJump
                 .HasOne(ssj => ssj.FromConstellation)
-                .WithMany(c => c.JumpsFromSolarSystemsInThisConstellation)
+                .WithMany(c => c.JumpsFromSolarSystemslonghisConstellation)
                 .HasForeignKey(ssj => ssj.FromConstellationId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             solarSystemJump
                 .HasOne(ssj => ssj.ToConstellation)
-                .WithMany(c => c.JumpsToSolarSystemsInThisConstellation)
+                .WithMany(c => c.JumpsToSolarSystemslonghisConstellation)
                 .HasForeignKey(ssj => ssj.ToConstellationId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             solarSystemJump
                 .HasOne(ssj => ssj.FromRegion)
-                .WithMany(r => r.JumpsFromSolarSystemsInThisRegion)
+                .WithMany(r => r.JumpsFromSolarSystemslonghisRegion)
                 .HasForeignKey(ssj => ssj.FromRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             solarSystemJump
                 .HasOne(ssj => ssj.ToRegion)
-                .WithMany(r => r.JumpsToSolarSystemsInThisRegion)
+                .WithMany(r => r.JumpsToSolarSystemslonghisRegion)
                 .HasForeignKey(ssj => ssj.ToRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

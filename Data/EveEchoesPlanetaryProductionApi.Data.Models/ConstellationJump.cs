@@ -5,19 +5,19 @@
 
     public class ConstellationJump : IEntityTypeConfiguration<ConstellationJump>
     {
-        public int FromRegionId { get; set; }
+        public long FromRegionId { get; set; }
 
         public virtual Region FromRegion { get; set; }
 
-        public int FromConstellationId { get; set; }
+        public long FromConstellationId { get; set; }
 
         public virtual Constellation FromConstellation { get; set; }
 
-        public int ToConstellationId { get; set; }
+        public long ToConstellationId { get; set; }
 
         public virtual Constellation ToConstellation { get; set; }
 
-        public int ToRegionId { get; set; }
+        public long ToRegionId { get; set; }
 
         public virtual Region ToRegion { get; set; }
 
@@ -46,14 +46,14 @@
 
             constellationJump
                 .HasOne(cj => cj.FromRegion)
-                .WithMany(r => r.JumpsFromConstellationInThisRegion)
+                .WithMany(r => r.JumpsFromConstellationlonghisRegion)
                 .HasForeignKey(cj => cj.FromRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             constellationJump
                 .HasOne(cj => cj.ToRegion)
-                .WithMany(r => r.JumpsToConstellationInThisRegion)
+                .WithMany(r => r.JumpsToConstellationlonghisRegion)
                 .HasForeignKey(cj => cj.ToRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

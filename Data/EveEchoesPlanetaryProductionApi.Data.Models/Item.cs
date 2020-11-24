@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class Item : NamedModel<int>, IEntityTypeConfiguration<Item>
+    public class Item : NamedModel<long>, IEntityTypeConfiguration<Item>
     {
         public Item()
         {

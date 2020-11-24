@@ -7,15 +7,15 @@
 
     public class PlanetResource : IEntityTypeConfiguration<PlanetResource>
     {
-        public int PlanetId { get; set; }
+        public long PlanetId { get; set; }
 
         public virtual Planet Planet { get; set; }
 
-        public int ItemId { get; set; }
+        public long ItemId { get; set; }
 
         public virtual Item Item { get; set; }
 
-        public int RichnessId { get; set; }
+        public long RichnessId { get; set; }
 
         public virtual Richness Richness { get; set; }
 

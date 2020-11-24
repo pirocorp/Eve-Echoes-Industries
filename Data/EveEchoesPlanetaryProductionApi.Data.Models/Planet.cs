@@ -6,26 +6,26 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class Planet : NamedModel<int>, IEntityTypeConfiguration<Planet>
+    public class Planet : NamedModel<long>, IEntityTypeConfiguration<Planet>
     {
         public Planet()
         {
             this.PlanetResources = new HashSet<PlanetResource>();
         }
 
-        public int RegionId { get; set; }
+        public long RegionId { get; set; }
 
         public virtual Region Region { get; set; }
 
-        public int ConstellationId { get; set; }
+        public long ConstellationId { get; set; }
 
         public virtual Constellation Constellation { get; set; }
 
-        public int SolarSystemId { get; set; }
+        public long SolarSystemId { get; set; }
 
         public virtual SolarSystem SolarSystem { get; set; }
 
-        public int PlanetTypeId { get; set; }
+        public long PlanetTypeId { get; set; }
 
         public virtual PlanetType PlanetType { get; set; }
 

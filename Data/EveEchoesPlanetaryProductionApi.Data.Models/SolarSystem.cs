@@ -9,7 +9,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class SolarSystem : NamedModel<int>, IEntityTypeConfiguration<SolarSystem>
+    public class SolarSystem : NamedModel<long>, IEntityTypeConfiguration<SolarSystem>
     {
         public SolarSystem()
         {
@@ -22,11 +22,11 @@
         [Range(DatabaseConstants.MinSecurityLevel, DatabaseConstants.MaxSecurityLevel)]
         public double Security { get; set; }
 
-        public int RegionId { get; set; }
+        public long RegionId { get; set; }
 
         public virtual Region Region { get; set; }
 
-        public int ConstellationId { get; set; }
+        public long ConstellationId { get; set; }
 
         public virtual Constellation Constellation { get; set; }
 

@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class Constellation : NamedModel<int>, IEntityTypeConfiguration<Constellation>
+    public class Constellation : NamedModel<long>, IEntityTypeConfiguration<Constellation>
     {
         public Constellation()
         {
@@ -16,11 +16,11 @@
             this.ConstellationAsOrigins = new HashSet<ConstellationJump>();
             this.ConstellationAsDestinations = new HashSet<ConstellationJump>();
 
-            this.JumpsFromSolarSystemsInThisConstellation = new HashSet<SolarSystemJump>();
-            this.JumpsToSolarSystemsInThisConstellation = new HashSet<SolarSystemJump>();
+            this.JumpsFromSolarSystemslonghisConstellation = new HashSet<SolarSystemJump>();
+            this.JumpsToSolarSystemslonghisConstellation = new HashSet<SolarSystemJump>();
         }
 
-        public int RegionId { get; set; }
+        public long RegionId { get; set; }
 
         public virtual Region Region { get; set; }
 
@@ -47,12 +47,12 @@
         /// <summary>
         /// Gets or sets jumps originating from solar systems in this constellation.
         /// </summary>
-        public virtual IEnumerable<SolarSystemJump> JumpsFromSolarSystemsInThisConstellation { get; set; }
+        public virtual IEnumerable<SolarSystemJump> JumpsFromSolarSystemslonghisConstellation { get; set; }
 
         /// <summary>
         /// Gets or sets jumps with destination solar systems in current constellation.
         /// </summary>
-        public virtual IEnumerable<SolarSystemJump> JumpsToSolarSystemsInThisConstellation { get; set; }
+        public virtual IEnumerable<SolarSystemJump> JumpsToSolarSystemslonghisConstellation { get; set; }
 
         /// <summary>
         /// This method will be used by ApplyConfigurationsFromAssembly

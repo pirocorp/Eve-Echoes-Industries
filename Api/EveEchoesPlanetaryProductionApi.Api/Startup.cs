@@ -39,6 +39,8 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             services.AddAutoMapper();
+
+            // Application Services
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

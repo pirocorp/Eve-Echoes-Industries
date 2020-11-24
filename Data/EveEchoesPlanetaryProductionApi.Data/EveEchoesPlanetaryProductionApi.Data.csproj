@@ -26,7 +26,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EveEchoesPlanetaryProductionApi.Common\EveEchoesPlanetaryProductionApi.Common.csproj" />
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Data.Models\EveEchoesPlanetaryProductionApi.Data.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Static Data\Items.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

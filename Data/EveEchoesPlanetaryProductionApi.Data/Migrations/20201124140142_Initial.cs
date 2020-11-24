@@ -1,7 +1,7 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Data.Migrations
-{
-    using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
+namespace EveEchoesPlanetaryProductionApi.Data.Migrations
+{
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -10,9 +10,9 @@
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -23,9 +23,9 @@
                 name: "PlanetTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,9 +36,9 @@
                 name: "Regions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,9 +49,9 @@
                 name: "Richnesses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,10 +62,10 @@
                 name: "Constellations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RegionId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RegionId = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,8 +82,8 @@
                 name: "RegionJumps",
                 columns: table => new
                 {
-                    FromRegionId = table.Column<int>(type: "int", nullable: false),
-                    ToRegionId = table.Column<int>(type: "int", nullable: false),
+                    FromRegionId = table.Column<long>(type: "bigint", nullable: false),
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,10 +106,10 @@
                 name: "ConstellationJumps",
                 columns: table => new
                 {
-                    FromConstellationId = table.Column<int>(type: "int", nullable: false),
-                    ToConstellationId = table.Column<int>(type: "int", nullable: false),
-                    FromRegionId = table.Column<int>(type: "int", nullable: false),
-                    ToRegionId = table.Column<int>(type: "int", nullable: false),
+                    FromConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    ToConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    FromRegionId = table.Column<long>(type: "bigint", nullable: false),
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,12 +144,12 @@
                 name: "SolarSystems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Security = table.Column<double>(type: "float", nullable: false),
-                    RegionId = table.Column<int>(type: "int", nullable: false),
-                    ConstellationId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RegionId = table.Column<long>(type: "bigint", nullable: false),
+                    ConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,13 +172,13 @@
                 name: "Planets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RegionId = table.Column<int>(type: "int", nullable: false),
-                    ConstellationId = table.Column<int>(type: "int", nullable: false),
-                    SolarSystemId = table.Column<int>(type: "int", nullable: false),
-                    PlanetTypeId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RegionId = table.Column<long>(type: "bigint", nullable: false),
+                    ConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    SolarSystemId = table.Column<long>(type: "bigint", nullable: false),
+                    PlanetTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,12 +213,12 @@
                 name: "SolarSystemJumps",
                 columns: table => new
                 {
-                    FromSolarSystemId = table.Column<int>(type: "int", nullable: false),
-                    ToSolarSystemId = table.Column<int>(type: "int", nullable: false),
-                    FromRegionId = table.Column<int>(type: "int", nullable: false),
-                    FromConstellationId = table.Column<int>(type: "int", nullable: false),
-                    ToConstellationId = table.Column<int>(type: "int", nullable: false),
-                    ToRegionId = table.Column<int>(type: "int", nullable: false),
+                    FromSolarSystemId = table.Column<long>(type: "bigint", nullable: false),
+                    ToSolarSystemId = table.Column<long>(type: "bigint", nullable: false),
+                    FromRegionId = table.Column<long>(type: "bigint", nullable: false),
+                    FromConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    ToConstellationId = table.Column<long>(type: "bigint", nullable: false),
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,10 +265,10 @@
                 name: "PlanetResources",
                 columns: table => new
                 {
-                    PlanetId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    RichnessId = table.Column<int>(type: "int", nullable: false),
-                    Output = table.Column<double>(type: "float", nullable: false),
+                    PlanetId = table.Column<long>(type: "bigint", nullable: false),
+                    ItemId = table.Column<long>(type: "bigint", nullable: false),
+                    RichnessId = table.Column<long>(type: "bigint", nullable: false),
+                    Output = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

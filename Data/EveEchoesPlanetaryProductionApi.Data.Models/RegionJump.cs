@@ -5,11 +5,11 @@
 
     public class RegionJump : IEntityTypeConfiguration<RegionJump>
     {
-        public int FromRegionId { get; set; }
+        public long FromRegionId { get; set; }
 
         public virtual Region FromRegion { get; set; }
 
-        public int ToRegionId { get; set; }
+        public long ToRegionId { get; set; }
 
         public virtual Region ToRegion { get; set; }
 

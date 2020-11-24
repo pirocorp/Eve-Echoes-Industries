@@ -7,7 +7,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class Region : NamedModel<int>, IEntityTypeConfiguration<Region>
+    public class Region : NamedModel<long>, IEntityTypeConfiguration<Region>
     {
         public Region()
         {
@@ -18,11 +18,11 @@
             this.RegionAsOrigins = new HashSet<RegionJump>();
             this.RegionAsDestinations = new HashSet<RegionJump>();
 
-            this.JumpsFromConstellationInThisRegion = new HashSet<ConstellationJump>();
-            this.JumpsToConstellationInThisRegion = new HashSet<ConstellationJump>();
+            this.JumpsFromConstellationlonghisRegion = new HashSet<ConstellationJump>();
+            this.JumpsToConstellationlonghisRegion = new HashSet<ConstellationJump>();
 
-            this.JumpsFromSolarSystemsInThisRegion = new HashSet<SolarSystemJump>();
-            this.JumpsToSolarSystemsInThisRegion = new HashSet<SolarSystemJump>();
+            this.JumpsFromSolarSystemslonghisRegion = new HashSet<SolarSystemJump>();
+            this.JumpsToSolarSystemslonghisRegion = new HashSet<SolarSystemJump>();
         }
 
         /// <summary>
@@ -53,22 +53,22 @@
         /// <summary>
         /// Gets or sets jumps originating from constellations in this region.
         /// </summary>
-        public virtual IEnumerable<ConstellationJump> JumpsFromConstellationInThisRegion { get; set; }
+        public virtual IEnumerable<ConstellationJump> JumpsFromConstellationlonghisRegion { get; set; }
 
         /// <summary>
         /// Gets or sets jumps with destination constellation in current region.
         /// </summary>
-        public virtual IEnumerable<ConstellationJump> JumpsToConstellationInThisRegion { get; set; }
+        public virtual IEnumerable<ConstellationJump> JumpsToConstellationlonghisRegion { get; set; }
 
         /// <summary>
         /// Gets or sets jumps originating from solar systems in this region.
         /// </summary>
-        public virtual IEnumerable<SolarSystemJump> JumpsFromSolarSystemsInThisRegion { get; set; }
+        public virtual IEnumerable<SolarSystemJump> JumpsFromSolarSystemslonghisRegion { get; set; }
 
         /// <summary>
         /// Gets or sets jumps with destination solar systems in current region.
         /// </summary>
-        public virtual IEnumerable<SolarSystemJump> JumpsToSolarSystemsInThisRegion { get; set; }
+        public virtual IEnumerable<SolarSystemJump> JumpsToSolarSystemslonghisRegion { get; set; }
 
         /// <summary>
         /// This method will be used by ApplyConfigurationsFromAssembly

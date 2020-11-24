@@ -6,7 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class Richness : NamedModel<int>, IEntityTypeConfiguration<Richness>
+    public class Richness : NamedModel<long>, IEntityTypeConfiguration<Richness>
     {
         public Richness()
         {
