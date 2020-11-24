@@ -29,6 +29,7 @@
             var seeders = new List<ISeeder>
             {
                 new ItemsSeeder(),
+                new RichnessSeeder(),
             };
 
             foreach (var seeder in seeders)
