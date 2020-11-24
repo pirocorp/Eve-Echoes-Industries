@@ -32,6 +32,7 @@
                 new RichnessSeeder(),
                 new PlanetTypesSeeder(),
                 new RegionSeeder(),
+                new ConstellationsSeeder(),
             };
 
             foreach (var seeder in seeders)

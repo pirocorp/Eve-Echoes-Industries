@@ -12,9 +12,11 @@
 
             public const string PlanetTypes = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planet Types.csv";
 
+            public const string RichnessCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Richness.csv";
+
             public const string RegionsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Regions.csv";
 
-            public const string RichnessCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Richness.csv";
+            public const string ConstellationsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Constellations.csv";
         }
     }
 }
