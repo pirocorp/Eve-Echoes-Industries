@@ -1,31 +1,27 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Seeding
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Common;
+    using EveEchoesPlanetaryProductionApi.Data.Models;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Models;
 
-    public class RichnessSeeder : ISeeder
+    public class PlanetTypeSeeder : ISeeder
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (await dbContext.Richnesses.AnyAsync())
+            if (await dbContext.PlanetTypes.AnyAsync())
             {
                 return;
             }
 
-            await SeedRichness(dbContext);
+            await SeedPlanetTypes(dbContext);
         }
 
-        private static async Task SeedRichness(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        private static async Task SeedPlanetTypes(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.RichnessCsvFilePath))
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypes))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
@@ -33,14 +29,14 @@
                 }
 
                 var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
-                var richnessName = lineArgs[0];
+                var planetTypeName = lineArgs[0];
 
-                var richness = new Richness()
+                var planetType = new PlanetType()
                 {
-                    Name = richnessName,
+                    Name = planetTypeName,
                 };
 
-                await dbContext.AddAsync(richness);
+                await dbContext.AddAsync(planetType);
             }
 
             await dbContext.SaveChangesAsync();

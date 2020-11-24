@@ -30,6 +30,7 @@
             {
                 new ItemsSeeder(),
                 new RichnessSeeder(),
+                new PlanetTypeSeeder(),
             };
 
             foreach (var seeder in seeders)

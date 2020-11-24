@@ -10,6 +10,8 @@
 
             public const string PlanetaryProductionCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planetary Production.csv";
 
+            public const string PlanetTypes = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planet Types.csv";
+
             public const string RichnessCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Richness.csv";
         }
     }
