@@ -1,5 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api
 {
+    using EveEchoesPlanetaryProductionApi.Api.Infrastructure.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
     using EveEchoesPlanetaryProductionApi.Data.Seeding;
@@ -36,6 +37,8 @@
 
             // Data
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+
+            services.AddAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
