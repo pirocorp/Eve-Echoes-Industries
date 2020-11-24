@@ -1,8 +1,8 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api
 {
-    using Data.Seeding;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
+    using EveEchoesPlanetaryProductionApi.Data.Seeding;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -40,12 +40,16 @@
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Seed data on application startup
+            // Seed static data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<EveEchoesPlanetaryProductionApiDbContext>();
                 dbContext.Database.Migrate();
-                new EveEchoesPlanetaryProductionApiDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+
+                new EveEchoesPlanetaryProductionApiDbContextSeeder()
+                    .SeedAsync(dbContext, serviceScope.ServiceProvider)
+                    .GetAwaiter()
+                    .GetResult();
             }
 
             if (env.IsDevelopment())
