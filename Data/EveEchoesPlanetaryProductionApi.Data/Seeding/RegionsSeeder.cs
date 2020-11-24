@@ -10,7 +10,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    public class RegionSeeder : ISeeder
+    public class RegionsSeeder : ISeeder
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {

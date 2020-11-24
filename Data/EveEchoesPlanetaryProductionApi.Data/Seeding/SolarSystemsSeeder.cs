@@ -11,11 +11,11 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    public class ConstellationsSeeder : ISeeder
+    public class SolarSystemsSeeder : ISeeder
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (await dbContext.Constellations.AnyAsync())
+            if (await dbContext.SolarSystems.AnyAsync())
             {
                 return;
             }
@@ -24,12 +24,13 @@
                 .GetService<ILoggerFactory>()
                 .CreateLogger(typeof(EveEchoesPlanetaryProductionApiDbContextSeeder));
 
-            await SeedConstellationsAsync(dbContext, logger);
+            await SeedSolarSystemsAsync(dbContext, logger);
         }
 
-        private static async Task SeedConstellationsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
+        private static async Task SeedSolarSystemsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
         {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ConstellationsCsvFilePath))
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths
+                .SolarSystemsCsvFilePath))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
@@ -40,27 +41,32 @@
 
                 var regionIdParseSuccess = long.TryParse(lineArgs[0], out var regionId);
                 var constellationParseSuccess = long.TryParse(lineArgs[1], out var constellationId);
-                var constellationName = lineArgs[2];
+                var solarSystemSuccess = long.TryParse(lineArgs[2], out var solarSystemId);
+                var solarSystemName = lineArgs[3];
 
-                if (!regionIdParseSuccess || !constellationParseSuccess)
+                if (!regionIdParseSuccess
+                    || !constellationParseSuccess
+                    || !solarSystemSuccess)
                 {
-                    logger.LogWarning(string.Format(DatabaseConstants.SeedingConstants.ConstellationErrorParseMessage, constellationName));
+                    logger.LogWarning(string.Format(DatabaseConstants.SeedingConstants.SolarSystemErrorParseMessage,
+                        solarSystemName));
                     logger.LogWarning(line);
                     continue;
                 }
 
-                var constellation = new Constellation()
+                var solarSystem = new SolarSystem()
                 {
                     RegionId = regionId,
-                    Id = constellationId,
-                    Name = constellationName,
+                    ConstellationId = constellationId,
+                    Id = solarSystemId,
+                    Name = solarSystemName,
                 };
 
-                await dbContext.AddAsync(constellation);
+                await dbContext.AddAsync(solarSystem);
             }
 
             await dbContext.SaveChangesWithExplicitIdentityInsertAsync(nameof(EveEchoesPlanetaryProductionApiDbContext
-                .Constellations));
+                .SolarSystems));
         }
     }
 }

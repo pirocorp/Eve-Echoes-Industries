@@ -15,6 +15,8 @@
             public const string RegionErrorParseMessage = "Region {0} cannot be parsed.";
 
             public const string ConstellationErrorParseMessage = "Constellation {0} cannot be parsed.";
+
+            public const string SolarSystemErrorParseMessage = "Solar system {0} cannot be parsed.";
         }
     }
 }
