@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Models
 {
     using System.Collections.Generic;
+
     using EveEchoesPlanetaryProductionApi.Data.Common.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
