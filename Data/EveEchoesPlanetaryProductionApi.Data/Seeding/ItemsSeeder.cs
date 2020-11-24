@@ -15,14 +15,19 @@
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {
+            if (await dbContext.Items.AnyAsync())
+            {
+                return;
+            }
+
             var logger = serviceProvider
                 .GetService<ILoggerFactory>()
                 .CreateLogger(typeof(EveEchoesPlanetaryProductionApiDbContextSeeder));
 
-            await SeedItems(dbContext, logger);
+            await SeedItemsAsync(dbContext, logger);
         }
 
-        private static async Task SeedItems(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
+        private static async Task SeedItemsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
         {
             await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ItemsCsvFilePath))
             {
@@ -57,7 +62,7 @@
                 await dbContext.AddAsync(item);
             }
 
-            await dbContext.SaveChangesWithExplicitIdentityInsertAsync();
+            await dbContext.SaveChangesWithExplicitIdentityInsertAsync(nameof(EveEchoesPlanetaryProductionApiDbContext.Items));
         }
     }
 }

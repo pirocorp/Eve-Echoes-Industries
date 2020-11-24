@@ -33,7 +33,7 @@
 
         public DbSet<SolarSystemJump> SolarSystemJumps { get; set; }
 
-        public async Task<int> SaveChangesWithExplicitIdentityInsertAsync()
+        public async Task<int> SaveChangesWithExplicitIdentityInsertAsync(string table)
         {
             await this.Database.OpenConnectionAsync();
 
@@ -41,9 +41,9 @@
 
             try
             {
-                await this.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Items ON");
+                await this.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT dbo.{table} ON");
                 count = await this.SaveChangesAsync();
-                await this.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Items OFF");
+                await this.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT dbo.{table} OFF");
             }
             finally
             {

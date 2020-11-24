@@ -11,6 +11,8 @@
         public class SeedingConstants
         {
             public const string ItemErrorParseMessage = "Item {0} cannot be parsed.";
+
+            public const string RegionErrorParseMessage = "Region {0} cannot be parsed.";
         }
     }
 }

@@ -7,7 +7,7 @@
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using Microsoft.EntityFrameworkCore;
 
-    public class PlanetTypeSeeder : ISeeder
+    public class PlanetTypesSeeder : ISeeder
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {
@@ -16,10 +16,10 @@
                 return;
             }
 
-            await SeedPlanetTypes(dbContext);
+            await SeedPlanetTypesAsync(dbContext);
         }
 
-        private static async Task SeedPlanetTypes(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        private static async Task SeedPlanetTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypes))
             {

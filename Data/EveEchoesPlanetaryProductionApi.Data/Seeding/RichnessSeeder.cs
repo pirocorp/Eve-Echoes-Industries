@@ -1,15 +1,12 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Seeding
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Common;
+    using EveEchoesPlanetaryProductionApi.Data.Models;
+
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Models;
 
     public class RichnessSeeder : ISeeder
     {
@@ -20,10 +17,10 @@
                 return;
             }
 
-            await SeedRichness(dbContext);
+            await SeedRichnessAsync(dbContext);
         }
 
-        private static async Task SeedRichness(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        private static async Task SeedRichnessAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.RichnessCsvFilePath))
             {
