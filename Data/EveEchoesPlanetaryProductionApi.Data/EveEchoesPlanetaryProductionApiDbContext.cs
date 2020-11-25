@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data
 {
     using System.Threading.Tasks;
+
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@
 
         public DbSet<Planet> Planets { get; set; }
 
-        public DbSet<PlanetResource> PlanetResources { get; set; }
+        public DbSet<PlanetResource> PlanetsResources { get; set; }
 
         public DbSet<PlanetType> PlanetTypes { get; set; }
 
@@ -33,6 +34,11 @@
 
         public DbSet<SolarSystemJump> SolarSystemJumps { get; set; }
 
+        /// <summary>
+        /// Used when identity column value is specified explicitly when inserting new item in table.
+        /// </summary>
+        /// <param name="table">Name of table.</param>
+        /// <returns></returns>
         public async Task<int> SaveChangesWithExplicitIdentityInsertAsync(string table)
         {
             await this.Database.OpenConnectionAsync();
