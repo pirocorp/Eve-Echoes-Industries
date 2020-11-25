@@ -23,6 +23,8 @@
             public const string PlanetsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planets.csv";
 
             public const string RegionsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/RegionsJumps.csv";
+
+            public const string ConstellationsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/ConstellationsJumps.csv";
         }
     }
 }
