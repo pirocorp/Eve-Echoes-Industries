@@ -25,6 +25,8 @@
             public const string RegionsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/RegionsJumps.csv";
 
             public const string ConstellationsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/ConstellationsJumps.csv";
+
+            public const string SolarSystemsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystemsJumps.csv";
         }
     }
 }

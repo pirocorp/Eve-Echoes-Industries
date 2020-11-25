@@ -38,6 +38,7 @@
                 new PlanetsResourcesSeeder(),
                 new RegionsJumpsSeeder(),
                 new ConstellationsJumpsSeeder(),
+                new SolarSystemsJumpsSeeder(),
             };
 
             foreach (var seeder in seeders)

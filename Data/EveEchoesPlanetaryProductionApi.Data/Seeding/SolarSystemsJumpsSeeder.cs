@@ -11,11 +11,11 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    public class ConstellationsJumpsSeeder : ISeeder
+    public class SolarSystemsJumpsSeeder : ISeeder
     {
         public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (await dbContext.ConstellationsJumps.AnyAsync())
+            if (await dbContext.SolarSystemsJumps.AnyAsync())
             {
                 return;
             }
@@ -24,14 +24,14 @@
                 .GetService<ILoggerFactory>()
                 .CreateLogger(typeof(EveEchoesPlanetaryProductionApiDbContextSeeder));
 
-            await SeedConstellationsJumpsAsync(dbContext, logger);
+            await SeedSolarSystemsJumpsAsync(dbContext, logger);
         }
 
-        private static async Task SeedConstellationsJumpsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
+        private static async Task SeedSolarSystemsJumpsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
         {
-            var constellationsJumps = new List<ConstellationJump>();
+            var solarSystemsJumps = new List<SolarSystemJump>();
 
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ConstellationsJumpsCsvFilePath))
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.SolarSystemsJumpsCsvFilePath))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
@@ -42,31 +42,39 @@
 
                 var fromRegionIdSuccess = long.TryParse(lineArgs[0], out var fromRegionId);
                 var fromConstellationIdSuccess = long.TryParse(lineArgs[1], out var fromConstellationId);
-                var toConstellationIdSuccess = long.TryParse(lineArgs[2], out var toConstellationId);
-                var toRegionIdSuccess = long.TryParse(lineArgs[3], out var toRegionId);
+
+                var fromSolarSystemSuccess = long.TryParse(lineArgs[2], out var fromSolarSystemId);
+                var toSolarSystemSuccess = long.TryParse(lineArgs[3], out var toSolarSystemId);
+
+                var toConstellationIdSuccess = long.TryParse(lineArgs[4], out var toConstellationId);
+                var toRegionIdSuccess = long.TryParse(lineArgs[5], out var toRegionId);
 
                 if (!fromRegionIdSuccess
                     || !toRegionIdSuccess
                     || !fromConstellationIdSuccess
-                    || !toConstellationIdSuccess)
+                    || !toConstellationIdSuccess
+                    || !fromSolarSystemSuccess
+                    || !toSolarSystemSuccess)
                 {
-                    logger.LogWarning($"Can't parse constellation jump");
+                    logger.LogWarning($"Can't parse solar system jump");
                     logger.LogWarning(line);
                     continue;
                 }
 
-                var constellationJump = new ConstellationJump()
+                var solarSystemJump = new SolarSystemJump()
                 {
                     FromRegionId = fromRegionId,
-                    ToRegionId = toRegionId,
                     FromConstellationId = fromConstellationId,
+                    FromSolarSystemId = fromSolarSystemId,
+                    ToSolarSystemId = toSolarSystemId,
                     ToConstellationId = toConstellationId,
+                    ToRegionId = toRegionId,
                 };
 
-                constellationsJumps.Add(constellationJump);
+                solarSystemsJumps.Add(solarSystemJump);
             }
 
-            await dbContext.AddRangeAsync(constellationsJumps);
+            await dbContext.AddRangeAsync(solarSystemsJumps);
             await dbContext.SaveChangesAsync();
         }
     }
