@@ -21,7 +21,7 @@
 
         private static async Task SeedPlanetTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypes))
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypesCsvFilePath))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {

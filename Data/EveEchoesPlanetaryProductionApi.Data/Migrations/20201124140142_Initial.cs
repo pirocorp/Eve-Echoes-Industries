@@ -20,7 +20,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlanetTypes",
+                name: "PlanetTypesCsvFilePath",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -192,7 +192,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Planets_PlanetTypes_PlanetTypeId",
                         column: x => x.PlanetTypeId,
-                        principalTable: "PlanetTypes",
+                        principalTable: "PlanetTypesCsvFilePath",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -363,7 +363,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlanetTypes_Name",
-                table: "PlanetTypes",
+                table: "PlanetTypesCsvFilePath",
                 column: "Name",
                 unique: true);
 
@@ -450,7 +450,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 name: "Richnesses");
 
             migrationBuilder.DropTable(
-                name: "PlanetTypes");
+                name: "PlanetTypesCsvFilePath");
 
             migrationBuilder.DropTable(
                 name: "SolarSystems");

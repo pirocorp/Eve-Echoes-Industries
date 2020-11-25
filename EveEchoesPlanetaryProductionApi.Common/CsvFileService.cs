@@ -8,7 +8,7 @@
     {
         public static async IAsyncEnumerable<string> ReadCsvDataLineByLineAsync(string filePath)
         {
-            var fileStream = new FileStream(filePath, FileMode.Open);
+            await using var fileStream = new FileStream(filePath, FileMode.Open);
             using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
 
             var line = await streamReader.ReadLineAsync(); // First line of CSV don't hold data

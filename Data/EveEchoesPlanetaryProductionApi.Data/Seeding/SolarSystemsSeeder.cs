@@ -29,8 +29,7 @@
 
         private static async Task SeedSolarSystemsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
         {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths
-                .SolarSystemsCsvFilePath))
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.SolarSystemsCsvFilePath))
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {

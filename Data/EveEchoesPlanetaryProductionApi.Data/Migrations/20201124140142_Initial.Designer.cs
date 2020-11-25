@@ -170,7 +170,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("PlanetTypes");
+                    b.ToTable("PlanetTypesCsvFilePath");
                 });
 
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Region", b =>
