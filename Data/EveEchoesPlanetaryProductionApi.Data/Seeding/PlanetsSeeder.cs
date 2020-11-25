@@ -54,6 +54,7 @@
                 {
                     logger.LogWarning($"Can't parse planet");
                     logger.LogWarning(line);
+                    continue;
                 }
 
                 var planet = new Planet()

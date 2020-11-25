@@ -21,25 +21,25 @@
 
         private static async Task SeedPlanetTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
-            //await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypesCsvFilePath))
-            //{
-            //    if (string.IsNullOrWhiteSpace(line))
-            //    {
-            //        continue;
-            //    }
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.PlanetTypesCsvFilePath))
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
 
-            //    var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
-            //    var planetTypeName = lineArgs[0];
+                var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
+                var planetTypeName = lineArgs[0];
 
-            //    var planetType = new PlanetType()
-            //    {
-            //        Name = planetTypeName,
-            //    };
+                var planetType = new PlanetType()
+                {
+                    Name = planetTypeName,
+                };
 
-            //    await dbContext.AddAsync(planetType);
-            //}
+                await dbContext.AddAsync(planetType);
+            }
 
-            //await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
     }
 }
