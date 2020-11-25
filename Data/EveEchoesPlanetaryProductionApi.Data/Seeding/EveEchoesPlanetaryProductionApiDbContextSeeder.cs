@@ -36,6 +36,7 @@
                 new SolarSystemsSeeder(),
                 new PlanetsSeeder(),
                 new PlanetsResourcesSeeder(),
+                new RegionsJumpsSeeder(),
             };
 
             foreach (var seeder in seeders)

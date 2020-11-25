@@ -21,6 +21,8 @@
             public const string SolarSystemsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystems.csv";
 
             public const string PlanetsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planets.csv";
+
+            public const string RegionsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/RegionsJumps.csv";
         }
     }
 }

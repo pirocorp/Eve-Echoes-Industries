@@ -14,7 +14,7 @@
 
         public DbSet<Constellation> Constellations { get; set; }
 
-        public DbSet<ConstellationJump> ConstellationJumps { get; set; }
+        public DbSet<ConstellationJump> ConstellationsJumps { get; set; }
 
         public DbSet<Item> Items { get; set; }
 
@@ -26,13 +26,13 @@
 
         public DbSet<Region> Regions { get; set; }
 
-        public DbSet<RegionJump> RegionJumps { get; set; }
+        public DbSet<RegionJump> RegionsJumps { get; set; }
 
         public DbSet<Richness> Richnesses { get; set; }
 
         public DbSet<SolarSystem> SolarSystems { get; set; }
 
-        public DbSet<SolarSystemJump> SolarSystemJumps { get; set; }
+        public DbSet<SolarSystemJump> SolarSystemsJumps { get; set; }
 
         /// <summary>
         /// Used when identity column value is specified explicitly when inserting new item in table.
