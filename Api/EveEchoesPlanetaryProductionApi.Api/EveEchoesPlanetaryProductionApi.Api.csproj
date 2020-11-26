@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="5.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,11 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj" />
+    <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj" />
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj" />

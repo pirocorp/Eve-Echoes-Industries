@@ -4,6 +4,8 @@
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
     using EveEchoesPlanetaryProductionApi.Data.Seeding;
+    using EveEchoesPlanetaryProductionApi.Services.Data;
+    using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -26,6 +28,13 @@
             services.AddDbContext<EveEchoesPlanetaryProductionApiDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "CacheItemsPrices";
+            });
+
             services.AddControllers();
 
             /* services.AddSwaggerGen(c =>
@@ -41,6 +50,9 @@
             services.AddAutoMapper();
 
             // Application Services
+            services.AddTransient<IPlanetsService, PlanetsService>();
+            services.AddTransient<ISolarSystemService, SolarSystemService>();
+            services.AddTransient<IItemsPricesService, ItemsPricesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

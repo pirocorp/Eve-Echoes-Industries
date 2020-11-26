@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,6 +16,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj" />
+    <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,4 +18,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\EveEchoesPlanetaryProductionApi.Data.Models\EveEchoesPlanetaryProductionApi.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>

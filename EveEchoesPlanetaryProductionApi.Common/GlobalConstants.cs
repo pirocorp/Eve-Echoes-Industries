@@ -6,6 +6,12 @@
 
         public const string RoutePathDelimiter = "->";
 
+        public const string MarketApiHostName = "https://api.eve-echoes-market.com";
+
+        public const string MarketApiItemEndPoint = "market-stats";
+
+        public const int MarketApiCachingIntervalInMinutes = 30;
+
         public static class FilePaths
         {
             public const string ItemsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Items.csv";
