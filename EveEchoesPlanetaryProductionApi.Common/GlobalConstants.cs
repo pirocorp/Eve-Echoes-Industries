@@ -4,6 +4,8 @@
     {
         public const char CsvDelimiter = ',';
 
+        public const string RoutePathDelimiter = "->";
+
         public static class FilePaths
         {
             public const string ItemsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Items.csv";
