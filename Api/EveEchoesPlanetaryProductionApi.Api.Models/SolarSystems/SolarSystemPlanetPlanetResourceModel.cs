@@ -17,5 +17,7 @@
         public string RichnessName { get; set; }
 
         public double Output { get; set; }
+
+        public SolarSystemPlanetPlanetResourcePriceModel Price { get; set; }
     }
 }

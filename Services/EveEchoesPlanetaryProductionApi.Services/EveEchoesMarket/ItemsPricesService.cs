@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Text;
     using System.Text.Json;
@@ -48,7 +49,7 @@
             if (cachedValue is null)
             {
                 json = await this.GetItemDataFromWebApiAsync(id);
-                await this.SetDataToCache(id.ToString(), json);
+                await this.SetDataToCacheAsync(id.ToString(), json);
             }
             else
             {
@@ -60,6 +61,64 @@
             return itemPrices;
         }
 
+        public async Task<ItemPrice> GetLatestPrice(long id)
+        {
+            var key = $"Last{id}";
+
+            var cachedValue = await this.distributedCache.GetAsync(key);
+
+            string json;
+
+            if (cachedValue is null)
+            {
+                var lastPrice = (await this.GetHistoricalPricesForItemById(id)).Last();
+
+                json = JsonSerializer.Serialize(lastPrice);
+                await this.SetDataToCacheAsync(key, json);
+
+                return lastPrice;
+            }
+
+            json = Encoding.UTF8.GetString(cachedValue);
+            var result = JsonDocument.Parse(json);
+
+            return ParseItemPrice(result.RootElement);
+        }
+
+        private static ItemPrice ParseItemPrice(JsonElement price)
+        {
+            var timeAsString = price.GetProperty(PriceItem.Time).ToString() ?? string.Empty;
+            var isUnixTime = long.TryParse(timeAsString, out var time);
+
+            DateTime dateTime;
+
+            if (isUnixTime)
+            {
+                dateTime = DateTimeExtensions.DateTimeFromUnixTimestamp(time);
+            }
+            else
+            {
+                dateTime = DateTime.Parse(timeAsString);
+            }
+
+            _ = decimal.TryParse(price.GetProperty(PriceItem.Sell).ToString(), out var sell);
+            _ = decimal.TryParse(price.GetProperty(PriceItem.Buy).ToString(), out var buy);
+            _ = decimal.TryParse(price.GetProperty(PriceItem.LowestSell).ToString(), out var lowestSell);
+            _ = decimal.TryParse(price.GetProperty(PriceItem.HighestBuy).ToString(), out var highestBuy);
+            _ = long.TryParse(price.GetProperty(PriceItem.Volume).ToString(), out var volume);
+
+            var itemPrice = new ItemPrice()
+            {
+                Time = dateTime,
+                Sell = sell,
+                Buy = buy,
+                LowestSell = lowestSell,
+                HighestBuy = highestBuy,
+                Volume = volume,
+            };
+            return itemPrice;
+        }
+
         private static List<ItemPrice> GetItemsPrices(string json)
         {
             var result = JsonDocument.Parse(json);
@@ -68,21 +127,7 @@
 
             foreach (var price in result.RootElement.EnumerateArray())
             {
-                _ = decimal.TryParse(price.GetProperty(PriceItem.Sell).ToString(), out var sell);
-                _ = decimal.TryParse(price.GetProperty(PriceItem.Buy).ToString(), out var buy);
-                _ = decimal.TryParse(price.GetProperty(PriceItem.LowestSell).ToString(), out var lowestSell);
-                _ = decimal.TryParse(price.GetProperty(PriceItem.HighestBuy).ToString(), out var highestBuy);
-                _ = long.TryParse(price.GetProperty(PriceItem.Volume).ToString(), out var volume);
-
-                var itemPrice = new ItemPrice()
-                {
-                    Time = DateTimeExtensions.DateTimeFromUnixTimestamp(price.GetProperty(PriceItem.Time).GetInt64()),
-                    Sell = sell,
-                    Buy = buy,
-                    LowestSell = lowestSell,
-                    HighestBuy = highestBuy,
-                    Volume = volume,
-                };
+                var itemPrice = ParseItemPrice(price);
 
                 itemsPrices.Add(itemPrice);
             }
@@ -100,7 +145,7 @@
             return json;
         }
 
-        private async Task SetDataToCache(string key, string json)
+        private async Task SetDataToCacheAsync(string key, string json)
         {
             if (json != null)
             {

@@ -8,5 +8,7 @@
     public interface IItemsPricesService
     {
         Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemById(long id);
+
+        Task<ItemPrice> GetLatestPrice(long id);
     }
 }
