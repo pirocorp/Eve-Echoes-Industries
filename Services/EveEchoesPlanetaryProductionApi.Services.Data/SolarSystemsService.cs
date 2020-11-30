@@ -6,26 +6,33 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using Common;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
+
     using Microsoft.EntityFrameworkCore;
 
-    public class SolarSystemService : ISolarSystemService
+    public class SolarSystemsService : ISolarSystemsService
     {
         private readonly IMapper mapper;
         private readonly IItemsPricesService itemsPricesService;
+        private readonly IItemsService itemsService;
         private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
 
-        public SolarSystemService(
+        public SolarSystemsService(
             IMapper mapper,
             IItemsPricesService itemsPricesService,
+            IItemsService itemsService,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             this.mapper = mapper;
             this.itemsPricesService = itemsPricesService;
+            this.itemsService = itemsService;
             this.dbContext = dbContext;
         }
 
@@ -53,6 +60,25 @@
                     resource.Price = this.mapper.Map<SolarSystemServicePlanetPlanetResourcePriceModel>(itemPrices[resource.ItemId]);
                 }
             }
+
+            return solarSystem;
+        }
+
+        public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesByIdAsync(long id, PriceSelector priceSelector)
+        {
+            var solarSystem = await this.GetByIdAsync<SolarSystemBestModel>(id);
+            var planetaryResources = (await this.itemsService.GetPlanetaryResources(priceSelector))
+                .ToDictionary(x => x.Name, x => x);
+
+            var updatedResources = solarSystem.PlanetResources.ToList();
+            updatedResources.ForEach(ur => ur.Price = planetaryResources[ur.ItemName].Price);
+
+            updatedResources = updatedResources
+                .OrderByDescending(pr => pr.Price * (decimal) pr.Output)
+                .DistinctBy(pr => pr.PlanetName)
+                .ToList();
+
+            solarSystem.PlanetResources = updatedResources;
 
             return solarSystem;
         }

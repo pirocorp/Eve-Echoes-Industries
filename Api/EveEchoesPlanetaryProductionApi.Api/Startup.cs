@@ -51,8 +51,9 @@
 
             // Application Services
             services.AddTransient<IPlanetsService, PlanetsService>();
-            services.AddTransient<ISolarSystemService, SolarSystemService>();
+            services.AddTransient<ISolarSystemsService, SolarSystemsService>();
             services.AddTransient<IItemsPricesService, ItemsPricesService>();
+            services.AddTransient<IItemsService, ItemsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

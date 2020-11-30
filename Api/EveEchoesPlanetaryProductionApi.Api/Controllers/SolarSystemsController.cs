@@ -1,9 +1,13 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSolarSystemPlanetaryResourcesValues;
     using EveEchoesPlanetaryProductionApi.Services.Data;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +15,10 @@
     [Route("api/[controller]")]
     public class SolarSystemsController : ControllerBase
     {
-        private readonly ISolarSystemService solarSystemService;
+        private readonly ISolarSystemsService solarSystemService;
 
         public SolarSystemsController(
-            ISolarSystemService solarSystemService)
+            ISolarSystemsService solarSystemService)
         {
             this.solarSystemService = solarSystemService;
         }
@@ -30,6 +34,28 @@
             }
 
             return solarSystem;
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<SolarSystemBestModel>> GetBestSolarSystemPlanetaryResourcesValues(long id, [FromBody]GetBestSolarSystemPlanetaryResourcesValuesInputModel model)
+        {
+            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);
+
+            if (!selectorIsParsedSuccessful)
+            {
+                return this.BadRequest();
+            }
+
+            var sol = await this.solarSystemService.GetBestPlanetaryResourcesByIdAsync(id, priceSelector);
+
+            if (sol is null)
+            {
+                return this.NotFound();
+            }
+
+            sol.MiningPlanets = model.MiningPlanets;
+
+            return sol;
         }
     }
 }

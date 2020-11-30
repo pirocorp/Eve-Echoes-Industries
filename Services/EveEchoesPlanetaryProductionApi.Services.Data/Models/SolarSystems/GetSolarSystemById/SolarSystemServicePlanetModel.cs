@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById
+﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;

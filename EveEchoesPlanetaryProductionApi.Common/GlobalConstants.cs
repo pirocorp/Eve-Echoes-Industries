@@ -1,5 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Common
 {
+    using System.Collections.Generic;
+
     public static class GlobalConstants
     {
         public const char CsvDelimiter = ',';
@@ -11,6 +13,30 @@
         public const string MarketApiItemEndPoint = "market-stats";
 
         public const int MarketApiCachingIntervalInMinutes = 30;
+
+        public static class Items
+        {
+            public const long PlanetaryResourcesStartId = 42001000000;
+
+            public const long PlanetaryResourcesEndId = 42002000017;
+
+            private const long PlanetaryResourcesPartOneEndId = 42001000033;
+
+            private const long PlanetaryResourcesPartTwoStartId = 42002000012;
+
+            public static IEnumerable<long> GetPlanetaryResourcesIds()
+            {
+                for (var i = PlanetaryResourcesStartId; i <= PlanetaryResourcesPartOneEndId; i++)
+                {
+                    yield return i;
+                }
+
+                for (var i = PlanetaryResourcesPartTwoStartId; i <= PlanetaryResourcesEndId; i++)
+                {
+                    yield return i;
+                }
+            }
+        }
 
         public static class FilePaths
         {
