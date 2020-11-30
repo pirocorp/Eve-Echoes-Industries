@@ -1,11 +1,10 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems
+﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById
 {
     using System.Text.Json.Serialization;
-
     using EveEchoesPlanetaryProductionApi.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Mapping;
+    using Mapping;
 
-    public class SolarSystemPlanetPlanetResourceModel : IMapFrom<PlanetResource>
+    public class SolarSystemServicePlanetPlanetResourceModel : IMapFrom<PlanetResource>
     {
         [JsonIgnore]
         public long ItemId { get; set; }
@@ -18,6 +17,6 @@
 
         public double Output { get; set; }
 
-        public SolarSystemPlanetPlanetResourcePriceModel Price { get; set; }
+        public SolarSystemServicePlanetPlanetResourcePriceModel Price { get; set; }
     }
 }

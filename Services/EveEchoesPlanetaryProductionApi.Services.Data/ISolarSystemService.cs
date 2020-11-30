@@ -2,10 +2,14 @@
 {
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById;
+
     public interface ISolarSystemService
     {
-        Task<TOut> GetById<TOut>(long id);
+        Task<SolarSystemServiceModel> GetByIdAsync(long id);
 
-        Task<TOut> GetByName<TOut>(string name);
+        Task<TOut> GetByIdAsync<TOut>(long id);
+
+        Task<TOut> GetByNameAsync<TOut>(string name);
     }
 }

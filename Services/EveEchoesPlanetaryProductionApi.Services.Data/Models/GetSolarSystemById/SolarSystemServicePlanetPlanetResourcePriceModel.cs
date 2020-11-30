@@ -1,11 +1,11 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems
+﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.GetSolarSystemById
 {
     using System;
 
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
-    public class SolarSystemPlanetPlanetResourcePriceModel : IMapFrom<ItemPrice>
+    public class SolarSystemServicePlanetPlanetResourcePriceModel : IMapFrom<ItemPrice>
     {
         public DateTime Time { get; set; }
 

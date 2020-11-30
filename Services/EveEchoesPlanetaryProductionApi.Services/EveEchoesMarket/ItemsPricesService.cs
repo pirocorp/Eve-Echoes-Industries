@@ -40,7 +40,7 @@
         /// </summary>
         /// <param name="id">Item's id.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemById(long id)
+        public async Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemByIdAsync(long id)
         {
             var cachedValue = await this.distributedCache.GetAsync(id.ToString());
 
@@ -61,7 +61,7 @@
             return itemPrices;
         }
 
-        public async Task<ItemPrice> GetLatestPrice(long id)
+        public async Task<ItemPrice> GetLatestPriceAsync(long id)
         {
             var key = $"Last{id}";
 
@@ -71,7 +71,7 @@
 
             if (cachedValue is null)
             {
-                var lastPrice = (await this.GetHistoricalPricesForItemById(id)).Last();
+                var lastPrice = (await this.GetHistoricalPricesForItemByIdAsync(id)).Last();
 
                 json = JsonSerializer.Serialize(lastPrice);
                 await this.SetDataToCacheAsync(key, json);
@@ -83,6 +83,26 @@
             var result = JsonDocument.Parse(json);
 
             return ParseItemPrice(result.RootElement);
+        }
+
+        public async Task<IDictionary<long, ItemPrice>> GetItemPricesAsync(IEnumerable<long> itemIds)
+        {
+            if (itemIds is null || !itemIds.Any())
+            {
+                return null;
+            }
+
+            itemIds = itemIds.Distinct();
+
+            var itemPrices = new Dictionary<long, ItemPrice>();
+
+            foreach (var itemId in itemIds)
+            {
+                var price = await this.GetLatestPriceAsync(itemId);
+                itemPrices.Add(itemId, price);
+            }
+
+            return itemPrices;
         }
 
         private static ItemPrice ParseItemPrice(JsonElement price)

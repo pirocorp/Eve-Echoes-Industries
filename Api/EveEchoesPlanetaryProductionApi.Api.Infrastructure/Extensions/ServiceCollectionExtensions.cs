@@ -3,6 +3,7 @@
     using System.Reflection;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,10 @@
         /// <returns>IServiceCollection (DI Container) with added AutoMapper.</returns>
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)
         {
-            AutoMapperConfig.RegisterMappings(typeof(IModel).GetTypeInfo().Assembly); // Configuration
+            AutoMapperConfig.RegisterMappings(
+                typeof(IApiModel).GetTypeInfo().Assembly,
+                typeof(IDataServiceModel).GetTypeInfo().Assembly); // Configuration
+
             services.AddSingleton(AutoMapperConfig.MapperInstance); // Register Service
 
             return services;

@@ -7,8 +7,10 @@
 
     public interface IItemsPricesService
     {
-        Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemById(long id);
+        Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemByIdAsync(long id);
 
-        Task<ItemPrice> GetLatestPrice(long id);
+        Task<ItemPrice> GetLatestPriceAsync(long id);
+
+        Task<IDictionary<long, ItemPrice>> GetItemPricesAsync(IEnumerable<long> itemIds);
     }
 }
