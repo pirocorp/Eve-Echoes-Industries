@@ -86,6 +86,8 @@
                 
                 DROP PROCEDURE IF EXISTS [graph].[FindShortestPath]
 			                          GO";
+
+            migrationBuilder.Sql(sql);
         }
     }
 }

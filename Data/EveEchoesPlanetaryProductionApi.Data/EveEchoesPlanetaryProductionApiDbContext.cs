@@ -65,6 +65,12 @@
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<TargetSystem>(ts =>
+            {
+                ts.HasNoKey();
+                ts.ToView(null);
+            });
+
             ConfigureRelations(builder);
         }
 
