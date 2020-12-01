@@ -43,6 +43,7 @@
             });*/
 
             services.AddSingleton(this.configuration);
+            services.AddMemoryCache();
 
             // Data
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();

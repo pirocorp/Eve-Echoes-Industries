@@ -102,6 +102,12 @@
                 .FirstOrDefault();
         }
 
+        public async Task<TOut> GetByIdAsync<TOut>(long id)
+            => await this.GetAsync<TOut>(ss => ss.Id.Equals(id));
+
+        public async Task<TOut> GetByNameAsync<TOut>(string name)
+            => await this.GetAsync<TOut>(ss => ss.Name.Equals(name));
+
         private async Task PopulateSolarSystemResourcesPrice(PriceSelector priceSelector, SolarSystemBestModel solarSystem)
         {
             var planetaryResources = (await this.itemsService.GetPlanetaryResources(priceSelector))
@@ -135,12 +141,6 @@
                 .ToList();
             return systemsInRangeIds;
         }
-
-        public async Task<TOut> GetByIdAsync<TOut>(long id)
-            => await this.GetAsync<TOut>(ss => ss.Id.Equals(id));
-
-        public async Task<TOut> GetByNameAsync<TOut>(string name)
-            => await this.GetAsync<TOut>(ss => ss.Name.Equals(name));
 
         private async Task<TOut> GetAsync<TOut>(Expression<Func<SolarSystem, bool>> predicate)
             => await this.dbContext.SolarSystems
