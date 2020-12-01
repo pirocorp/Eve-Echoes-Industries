@@ -14,7 +14,7 @@
 
         public const int MarketApiCachingIntervalInMinutes = 60;
 
-        public const int InMemoryPlanetaryResourcesCachingInSeconds = 60;
+        public const int InMemoryPlanetaryResourcesCachingInSeconds = 10;
 
         public static class Items
         {

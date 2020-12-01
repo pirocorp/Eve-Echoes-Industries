@@ -1,5 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Services.Data
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
@@ -10,6 +11,8 @@
     {
         Task<SolarSystemServiceModel> GetByIdAsync(long id);
 
+        Task<string> GetSolarSystemNameAsync(long id);
+
         Task<SolarSystemBestModel> GetBestPlanetaryResourcesByIdAsync(long id, PriceSelector priceSelector);
 
         Task<SolarSystemBestModel> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets);
@@ -17,5 +20,7 @@
         Task<TOut> GetByIdAsync<TOut>(long id);
 
         Task<TOut> GetByNameAsync<TOut>(string name);
+
+        Task<List<long>> GetSolarSystemsInRangeIds(int range, string systemName);
     }
 }
