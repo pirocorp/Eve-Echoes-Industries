@@ -83,14 +83,7 @@
 
         public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets)
         {
-            var systemName = await this.GetSolarSystemNameAsync(solarSystemId);
-
-            if (string.IsNullOrWhiteSpace(systemName))
-            {
-                return null;
-            }
-
-            var systemsInRangeIds = await this.GetSolarSystemsInRangeIds(range, systemName);
+            var systemsInRangeIds = await this.GetSolarSystemsInRangeIds(range, solarSystemId);
 
             var solarSystems = await this.dbContext.SolarSystems
                 .Where(x => systemsInRangeIds.Contains(x.Id))
@@ -114,12 +107,12 @@
         public async Task<TOut> GetByNameAsync<TOut>(string name)
             => await this.GetAsync<TOut>(ss => ss.Name.Equals(name));
 
-        public async Task<List<long>> GetSolarSystemsInRangeIds(int range, string systemName)
+        public async Task<List<long>> GetSolarSystemsInRangeIds(int range, long solarSystemId)
         {
-            var solarSystemNameParameter = new SqlParameter("@SystemName", systemName);
+            var solarSystemNameParameter = new SqlParameter("@systemId", solarSystemId);
             var distanceParameter = new SqlParameter("@distance", range.ToString());
 
-            var sql = "[graph].[AllNeighboursWithinGivenDistance] @SystemName, @distance";
+            var sql = "[graph].[AllNeighboursWithinGivenDistanceById] @systemId, @distance";
             var response = await this.dbContext.TargetSystems
                 .FromSqlRaw(sql, solarSystemNameParameter, distanceParameter)
                 .ToListAsync();

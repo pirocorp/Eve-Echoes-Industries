@@ -21,6 +21,6 @@
 
         Task<TOut> GetByNameAsync<TOut>(string name);
 
-        Task<List<long>> GetSolarSystemsInRangeIds(int range, string systemName);
+        Task<List<long>> GetSolarSystemsInRangeIds(int range, long solarSystemId);
     }
 }

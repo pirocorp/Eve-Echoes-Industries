@@ -29,8 +29,7 @@
 
         public async Task<IEnumerable<PlanetaryResourceServiceModel>> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int resourcesCount)
         {
-            var systemName = await this.solarSystemsService.GetSolarSystemNameAsync(solarSystemId);
-            var solarSystemsInRange = await this.solarSystemsService.GetSolarSystemsInRangeIds(range, systemName);
+            var solarSystemsInRange = await this.solarSystemsService.GetSolarSystemsInRangeIds(range, solarSystemId);
 
             var resources = await this.dbContext.PlanetsResources
                 .Where(pr => solarSystemsInRange.Contains(pr.Planet.SolarSystemId))
