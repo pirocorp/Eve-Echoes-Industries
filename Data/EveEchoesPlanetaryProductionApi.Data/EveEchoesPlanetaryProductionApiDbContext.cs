@@ -34,6 +34,8 @@
 
         public DbSet<SolarSystemJump> SolarSystemsJumps { get; set; }
 
+        public DbSet<TargetSystem> TargetSystems { get; set; }
+
         /// <summary>
         /// Used when identity column value is specified explicitly when inserting new item in table.
         /// </summary>

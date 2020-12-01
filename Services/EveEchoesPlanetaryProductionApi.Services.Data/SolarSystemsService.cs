@@ -1,12 +1,14 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Common;
+    using EveEchoesPlanetaryProductionApi.Common;
+    using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
@@ -14,7 +16,7 @@
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
-
+    using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
 
     public class SolarSystemsService : ISolarSystemsService
@@ -67,6 +69,41 @@
         public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesByIdAsync(long id, PriceSelector priceSelector)
         {
             var solarSystem = await this.GetByIdAsync<SolarSystemBestModel>(id);
+            await this.PopulateSolarSystemResourcesPrice(priceSelector, solarSystem);
+
+            return solarSystem;
+        }
+
+        public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets)
+        {
+            var systemName =
+                (await this.dbContext.SolarSystems.FirstOrDefaultAsync(s => s.Id.Equals(solarSystemId)))?.Name;
+
+            if (string.IsNullOrWhiteSpace(systemName))
+            {
+                return null;
+            }
+
+            var systemsInRangeIds = await this.GetSolarSystemInRangeIds(range, systemName);
+
+            var solarSystems = await this.dbContext.SolarSystems
+                .Where(x => systemsInRangeIds.Contains(x.Id))
+                .To<SolarSystemBestModel>()
+                .ToListAsync();
+
+            foreach (var sol in solarSystems)
+            {
+                await this.PopulateSolarSystemResourcesPrice(priceSelector, sol);
+                sol.MiningPlanets = miningPlanets;
+            }
+
+            return solarSystems
+                .OrderByDescending(s => s.SolarSystemValue)
+                .FirstOrDefault();
+        }
+
+        private async Task PopulateSolarSystemResourcesPrice(PriceSelector priceSelector, SolarSystemBestModel solarSystem)
+        {
             var planetaryResources = (await this.itemsService.GetPlanetaryResources(priceSelector))
                 .ToDictionary(x => x.Name, x => x);
 
@@ -79,8 +116,24 @@
                 .ToList();
 
             solarSystem.PlanetResources = updatedResources;
+        }
 
-            return solarSystem;
+        private async Task<List<long>> GetSolarSystemInRangeIds(int range, string systemName)
+        {
+            var solarSystemNameParameter = new SqlParameter("@SystemName", systemName);
+            var distanceParameter = new SqlParameter("@distance", range.ToString());
+
+            var sql = "[graph].[AllNeighboursWithinGivenDistance] @SystemName, @distance";
+            var response = await this.dbContext.TargetSystems
+                .FromSqlRaw(sql, solarSystemNameParameter, distanceParameter)
+                .ToListAsync();
+
+            var systemsInRangeIds = response
+                .Select(r => r.Jumps.GetLastJump())
+                .Select(long.Parse)
+                .Distinct()
+                .ToList();
+            return systemsInRangeIds;
         }
 
         public async Task<TOut> GetByIdAsync<TOut>(long id)

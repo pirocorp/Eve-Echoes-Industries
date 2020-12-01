@@ -12,6 +12,8 @@
 
         Task<SolarSystemBestModel> GetBestPlanetaryResourcesByIdAsync(long id, PriceSelector priceSelector);
 
+        Task<SolarSystemBestModel> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets);
+
         Task<TOut> GetByIdAsync<TOut>(long id);
 
         Task<TOut> GetByNameAsync<TOut>(string name);

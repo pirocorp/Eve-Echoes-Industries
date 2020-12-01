@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSolarSystemPlanetaryResourcesValues;
@@ -54,6 +55,27 @@
             }
 
             sol.MiningPlanets = model.MiningPlanets;
+
+            return sol;
+        }
+
+        [HttpPost]
+        [Route("~/api/SolarSystems/{range}/{id}")]
+        public async Task<ActionResult<SolarSystemBestModel>> GetBestSolarSystemPlanetaryResourcesValues(long id, int range, [FromBody]GetBestSolarSystemPlanetaryResourcesValuesInputModel model)
+        {
+            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);
+
+            if (!selectorIsParsedSuccessful)
+            {
+                return this.BadRequest();
+            }
+
+            var sol = await this.solarSystemService.GetBestPlanetaryResourcesInRangeAsync(id, priceSelector, range, model.MiningPlanets);
+
+            if (sol is null)
+            {
+                return this.NotFound();
+            }
 
             return sol;
         }
