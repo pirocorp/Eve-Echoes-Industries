@@ -135,7 +135,7 @@
             updatedResources.ForEach(ur => ur.Price = planetaryResources[ur.ItemName].Price);
 
             updatedResources = updatedResources
-                .OrderByDescending(pr => pr.Price * (decimal) pr.Output)
+                .OrderByDescending(pr => pr.Price * (decimal)pr.Output)
                 .DistinctBy(pr => pr.PlanetName)
                 .ToList();
 

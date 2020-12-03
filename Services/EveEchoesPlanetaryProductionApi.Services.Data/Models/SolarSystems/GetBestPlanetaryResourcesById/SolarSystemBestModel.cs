@@ -30,7 +30,7 @@
         public decimal SolarSystemValue =>
             this.PlanetResources
                 .Take(this.MiningPlanets)
-                .Sum(pr => (pr.Price * (decimal) pr.Output));
+                .Sum(pr => (pr.Price * (decimal)pr.Output));
 
         public IEnumerable<SolarSystemBestPlanetResourceModel> PlanetResources { get; set; }
 

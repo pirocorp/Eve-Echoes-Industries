@@ -47,7 +47,8 @@
                     || !constellationParseSuccess
                     || !solarSystemSuccess)
                 {
-                    logger.LogWarning(string.Format(DatabaseConstants.SeedingConstants.SolarSystemErrorParseMessage,
+                    logger.LogWarning(string.Format(
+                        DatabaseConstants.SeedingConstants.SolarSystemErrorParseMessage,
                         solarSystemName));
                     logger.LogWarning(line);
                     continue;

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace EveEchoesPlanetaryProductionApi.Data.Migrations
+﻿namespace EveEchoesPlanetaryProductionApi.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,7 +12,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -25,7 +25,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -65,7 +65,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RegionId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -83,7 +83,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                 columns: table => new
                 {
                     FromRegionId = table.Column<long>(type: "bigint", nullable: false),
-                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -109,7 +109,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     FromConstellationId = table.Column<long>(type: "bigint", nullable: false),
                     ToConstellationId = table.Column<long>(type: "bigint", nullable: false),
                     FromRegionId = table.Column<long>(type: "bigint", nullable: false),
-                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -149,7 +149,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     Security = table.Column<double>(type: "float", nullable: false),
                     RegionId = table.Column<long>(type: "bigint", nullable: false),
                     ConstellationId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -178,7 +178,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     ConstellationId = table.Column<long>(type: "bigint", nullable: false),
                     SolarSystemId = table.Column<long>(type: "bigint", nullable: false),
                     PlanetTypeId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                 },
                 constraints: table =>
                 {
@@ -218,7 +218,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     FromRegionId = table.Column<long>(type: "bigint", nullable: false),
                     FromConstellationId = table.Column<long>(type: "bigint", nullable: false),
                     ToConstellationId = table.Column<long>(type: "bigint", nullable: false),
-                    ToRegionId = table.Column<long>(type: "bigint", nullable: false)
+                    ToRegionId = table.Column<long>(type: "bigint", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -268,7 +268,7 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     PlanetId = table.Column<long>(type: "bigint", nullable: false),
                     ItemId = table.Column<long>(type: "bigint", nullable: false),
                     RichnessId = table.Column<long>(type: "bigint", nullable: false),
-                    Output = table.Column<double>(type: "float", nullable: false)
+                    Output = table.Column<double>(type: "float", nullable: false),
                 },
                 constraints: table =>
                 {

@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
+
     using EveEchoesPlanetaryProductionApi.Data.Models;
-    using Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     public class SolarSystemServiceModel : IMapFrom<SolarSystem>
     {

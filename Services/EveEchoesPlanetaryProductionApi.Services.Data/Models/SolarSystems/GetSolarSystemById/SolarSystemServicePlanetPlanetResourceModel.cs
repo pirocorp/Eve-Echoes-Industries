@@ -1,8 +1,9 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 {
     using System.Text.Json.Serialization;
+
     using EveEchoesPlanetaryProductionApi.Data.Models;
-    using Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     public class SolarSystemServicePlanetPlanetResourceModel : IMapFrom<PlanetResource>
     {

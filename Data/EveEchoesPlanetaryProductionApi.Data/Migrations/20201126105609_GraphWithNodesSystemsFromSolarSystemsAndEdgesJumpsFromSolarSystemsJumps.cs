@@ -65,6 +65,8 @@
 
                DROP SCHEMA IF EXISTS [graph]
                                  GO";
+
+            migrationBuilder.Sql(sql);
         }
     }
 }

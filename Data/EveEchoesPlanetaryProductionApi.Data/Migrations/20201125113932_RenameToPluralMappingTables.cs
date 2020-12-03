@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace EveEchoesPlanetaryProductionApi.Data.Migrations
+﻿namespace EveEchoesPlanetaryProductionApi.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class RenameToPluralMappingTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

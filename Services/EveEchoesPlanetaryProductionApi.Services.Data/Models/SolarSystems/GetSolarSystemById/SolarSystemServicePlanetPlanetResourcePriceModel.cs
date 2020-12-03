@@ -1,8 +1,9 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 {
     using System;
-    using Mapping;
-    using Services.Models.EveEchoesMarket;
+
+    using EveEchoesPlanetaryProductionApi.Services.Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     public class SolarSystemServicePlanetPlanetResourcePriceModel : IMapFrom<ItemPrice>
     {
