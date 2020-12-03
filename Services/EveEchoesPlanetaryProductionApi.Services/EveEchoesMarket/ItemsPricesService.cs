@@ -15,6 +15,9 @@
 
     using static EveEchoesMarketConstants;
 
+    /// <summary>
+    /// This service is consuming external API for item prices and uses Distributed SQL Cache.
+    /// </summary>
     public class ItemsPricesService : IItemsPricesService
     {
         private readonly IDistributedCache distributedCache;
@@ -61,7 +64,7 @@
             return itemPrices;
         }
 
-        public async Task<ItemPrice> GetLatestPriceAsync(long id)
+        public async Task<ItemPrice> GetLatestPricesAsync(long id)
         {
             var key = $"Last{id}";
 
@@ -83,26 +86,6 @@
             var result = JsonDocument.Parse(json);
 
             return ParseItemPrice(result.RootElement);
-        }
-
-        public async Task<IDictionary<long, ItemPrice>> GetItemPricesAsync(IEnumerable<long> itemIds)
-        {
-            if (itemIds is null || !itemIds.Any())
-            {
-                return null;
-            }
-
-            itemIds = itemIds.Distinct();
-
-            var itemPrices = new Dictionary<long, ItemPrice>();
-
-            foreach (var itemId in itemIds)
-            {
-                var price = await this.GetLatestPriceAsync(itemId);
-                itemPrices.Add(itemId, price);
-            }
-
-            return itemPrices;
         }
 
         private static ItemPrice ParseItemPrice(JsonElement price)

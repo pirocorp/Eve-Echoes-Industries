@@ -15,6 +15,11 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
 
+    /// <summary>
+    /// This service returns current price/s for item.
+    /// It uses Memory Cache because prices are actualized on (30-60)min interval.
+    /// Memory cache reduces calls to database.
+    /// </summary>
     public class ItemsService : IItemsService
     {
         private readonly IMemoryCache memoryCache;
@@ -47,7 +52,7 @@
                 cacheEntry.ForEach(selectorFunction);
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
 
                 this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
             }
@@ -55,18 +60,55 @@
             return cacheEntry;
         }
 
+        public async Task<ItemPrice> GetLatestPricesAsync(long id)
+        {
+            var key = $"Last{id}";
+
+            if (!this.memoryCache.TryGetValue(key, out ItemPrice cacheEntry))
+            {
+                cacheEntry = await this.itemsPricesService.GetLatestPricesAsync(id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
+
+                this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
+            }
+
+            return cacheEntry;
+        }
+
+        public async Task<IDictionary<long, ItemPrice>> GetLatestItemsPricesAsync(IEnumerable<long> itemIds)
+        {
+            var ids = itemIds?.Distinct().ToArray();
+
+            if (ids is null || !ids.Any())
+            {
+                return null;
+            }
+
+            var itemPrices = new Dictionary<long, ItemPrice>();
+
+            foreach (var itemId in ids)
+            {
+                var price = await this.GetLatestPricesAsync(itemId);
+                itemPrices.Add(itemId, price);
+            }
+
+            return itemPrices;
+        }
+
         private Action<ItemServiceModel> GetSelectorFunction(PriceSelector priceSelector)
         {
             switch (priceSelector)
             {
                 case PriceSelector.Sell:
-                    return i => i.Price = this.itemsPricesService.GetLatestPriceAsync(i.Id).GetAwaiter().GetResult().Sell;
+                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Sell;
                 case PriceSelector.Buy:
-                    return i => i.Price = this.itemsPricesService.GetLatestPriceAsync(i.Id).GetAwaiter().GetResult().Buy;
+                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Buy;
                 case PriceSelector.LowestSell:
-                    return i => i.Price = this.itemsPricesService.GetLatestPriceAsync(i.Id).GetAwaiter().GetResult().LowestSell;
+                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().LowestSell;
                 case PriceSelector.HighestBuy:
-                    return i => i.Price = this.itemsPricesService.GetLatestPriceAsync(i.Id).GetAwaiter().GetResult().HighestBuy;
+                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().HighestBuy;
                 case PriceSelector.UserProvided:
                     return null;
                 default:

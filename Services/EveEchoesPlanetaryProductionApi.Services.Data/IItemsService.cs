@@ -9,5 +9,9 @@
     public interface IItemsService
     {
         Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PriceSelector priceSelector);
+
+        Task<ItemPrice> GetLatestPricesAsync(long id);
+
+        Task<IDictionary<long, ItemPrice>> GetLatestItemsPricesAsync(IEnumerable<long> itemIds);
     }
 }

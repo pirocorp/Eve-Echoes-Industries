@@ -23,18 +23,15 @@
     public class SolarSystemsService : ISolarSystemsService
     {
         private readonly IMapper mapper;
-        private readonly IItemsPricesService itemsPricesService;
         private readonly IItemsService itemsService;
         private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
 
         public SolarSystemsService(
             IMapper mapper,
-            IItemsPricesService itemsPricesService,
             IItemsService itemsService,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             this.mapper = mapper;
-            this.itemsPricesService = itemsPricesService;
             this.itemsService = itemsService;
             this.dbContext = dbContext;
         }
@@ -54,7 +51,7 @@
                 .Distinct()
                 .ToList();
 
-            var itemPrices = await this.itemsPricesService.GetItemPricesAsync(itemIds);
+            var itemPrices = await this.itemsService.GetLatestItemsPricesAsync(itemIds);
 
             foreach (var planet in solarSystem.Planets)
             {

@@ -12,9 +12,9 @@
 
         public const string MarketApiItemEndPoint = "market-stats";
 
-        public const int MarketApiCachingIntervalInMinutes = 60;
+        public const int MarketApiCachingIntervalInMinutes = 30;
 
-        public const int InMemoryPlanetaryResourcesCachingInSeconds = 10;
+        public const int InMemoryPlanetaryResourcesCachingInSeconds = 15;
 
         public static class Items
         {
