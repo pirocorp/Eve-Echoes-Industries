@@ -5,6 +5,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Infrastructure;
     using EveEchoesPlanetaryProductionApi.Api.Models.Auth;
     using EveEchoesPlanetaryProductionApi.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,14 @@
     public class AuthController : ControllerBase
     {
         private readonly UserManager<User> userManager;
+        private readonly IAuthService authService;
 
-        public AuthController(UserManager<User> userManager)
+        public AuthController(
+            UserManager<User> userManager,
+            IAuthService authService)
         {
             this.userManager = userManager;
+            this.authService = authService;
         }
 
         [HttpPost("signUp")]
@@ -54,7 +59,8 @@
 
             if (userSignInResult)
             {
-                return this.Ok();
+                var roles = await this.userManager.GetRolesAsync(user);
+                return this.Ok(this.authService.GenerateJwt(user, roles));
             }
 
             return this.BadRequest(new { Error = ApiMessagesConstants.InvalidCredentials });

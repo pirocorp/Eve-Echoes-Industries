@@ -15,6 +15,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Services;
+    using Services.Settings;
 
     public class Startup
     {
@@ -45,6 +47,8 @@
                 .AddEntityFrameworkStores<EveEchoesPlanetaryProductionApiDbContext>()
                 .AddDefaultTokenProviders(); // just adds the default providers to generate tokens for a password reset, 2-factor authentication, change email, and change telephone.
 
+            services.Configure<JwtSettings>(this.configuration.GetSection("Jwt"));
+
             services.AddDistributedSqlServerCache(options =>
             {
                 options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
@@ -73,6 +77,7 @@
             services.AddTransient<IItemsPricesService, ItemsPricesService>();
             services.AddTransient<IItemsService, ItemsService>();
             services.AddTransient<IPlanetaryResourcesService, PlanetaryResourcesService>();
+            services.AddTransient<IAuthService, AuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
