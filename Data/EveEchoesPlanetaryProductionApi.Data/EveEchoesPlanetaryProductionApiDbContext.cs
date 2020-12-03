@@ -3,9 +3,10 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Data.Models;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class EveEchoesPlanetaryProductionApiDbContext : DbContext
+    public class EveEchoesPlanetaryProductionApiDbContext : IdentityDbContext<User, Role, string>
     {
         public EveEchoesPlanetaryProductionApiDbContext(DbContextOptions<EveEchoesPlanetaryProductionApiDbContext> options)
             : base(options)
