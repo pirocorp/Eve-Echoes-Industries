@@ -59,7 +59,7 @@
         }
 
         [HttpPost]
-        [Route("~/api/SolarSystems/{range}/{id}")]
+        [Route("~/api/solarSystems/{range}/{id}")]
         public async Task<ActionResult<SolarSystemBestModel>> GetBestSolarSystemPlanetaryResourcesValues(long id, int range, [FromBody]GetBestSolarSystemPlanetaryResourcesValuesInputModel model)
         {
             var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);

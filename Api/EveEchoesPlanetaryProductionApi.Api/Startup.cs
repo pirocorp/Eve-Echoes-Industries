@@ -1,9 +1,9 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api
 {
-    using Data.Models;
     using EveEchoesPlanetaryProductionApi.Api.Infrastructure.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
+    using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Data.Seeding;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
