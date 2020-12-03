@@ -1,3 +1,3 @@
 # Eve Echoes Planetary Production API
 
-This api will return best planet for producing resourses.
+This API will return the best planet for producing resources.
