@@ -13,7 +13,6 @@
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
-    using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
