@@ -1,5 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api
 {
+    using Data.Models;
     using EveEchoesPlanetaryProductionApi.Api.Infrastructure.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
@@ -9,6 +10,7 @@
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -28,12 +30,29 @@
             services.AddDbContext<EveEchoesPlanetaryProductionApiDbContext>(
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
+            services
+                .AddIdentity<User, Role>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 0;
+
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddEntityFrameworkStores<EveEchoesPlanetaryProductionApiDbContext>()
+                .AddDefaultTokenProviders(); // just adds the default providers to generate tokens for a password reset, 2-factor authentication, change email, and change telephone.
+
             services.AddDistributedSqlServerCache(options =>
             {
                 options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
                 options.SchemaName = "dbo";
                 options.TableName = "CacheItemsPrices";
             });
+
+            services.AddMemoryCache();
 
             services.AddControllers();
 
@@ -43,11 +62,9 @@
             });*/
 
             services.AddSingleton(this.configuration);
-            services.AddMemoryCache();
 
             // Data
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-
             services.AddAutoMapper();
 
             // Application Services
