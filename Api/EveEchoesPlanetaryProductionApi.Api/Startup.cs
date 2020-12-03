@@ -48,6 +48,7 @@
                 .AddDefaultTokenProviders(); // just adds the default providers to generate tokens for a password reset, 2-factor authentication, change email, and change telephone.
 
             services.Configure<JwtSettings>(this.configuration.GetSection("Jwt"));
+            services.AddAuth(this.configuration.GetSection("Jwt").Get<JwtSettings>());
 
             services.AddDistributedSqlServerCache(options =>
             {
@@ -106,7 +107,7 @@
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {

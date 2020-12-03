@@ -8,9 +8,10 @@
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PlanetaryResourcesController : ControllerBase
