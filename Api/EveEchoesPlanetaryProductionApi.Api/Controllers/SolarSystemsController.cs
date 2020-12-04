@@ -3,11 +3,15 @@
     using System;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSolarSystemPlanetaryResourcesValues;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
+    using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +40,35 @@
             }
 
             return solarSystem;
+        }
+
+        [AllowAnonymous]
+        [Route("~/api/solarSystems/count")]
+        public async Task<CountModel> GetSolarSystemsCount()
+        {
+            var model = new CountModel()
+            {
+                Count = await this.solarSystemService.GetSolarSystemsCount(),
+            };
+
+            return model;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("~/api/solarSystems/search/{searchTerm}/{page?}")]
+        public async Task<ActionResult<IEquatable<SearchResultModel>>> Search(string searchTerm, int page = 1)
+        {
+            var (results, count) = await this.solarSystemService
+                .Search<SearchResultSolarSystemModel>(searchTerm, GlobalConstants.Ui.SolarSystemsSearchPageSize, page);
+
+            var model = new SearchResultModel()
+            {
+                Results = results,
+                Count = count,
+            };
+
+            return this.Ok(model);
         }
 
         [HttpPost("{id}")]

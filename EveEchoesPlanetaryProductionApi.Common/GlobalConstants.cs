@@ -64,5 +64,10 @@
 
             public const string SolarSystemsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystemsJumps.csv";
         }
+
+        public static class Ui
+        {
+            public const int SolarSystemsSearchPageSize = 10;
+        }
     }
 }

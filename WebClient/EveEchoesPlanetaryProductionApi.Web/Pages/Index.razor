@@ -1,23 +1,75 @@
 ﻿@page "/"
-@using EveEchoesPlanetaryProductionApi.Web.Models
+@page "/index.html"
+@using EveEchoesPlanetaryProductionApi.Api.Models
 @inject HttpClient http
 
-<h1>Hello, world!</h1>
+<section id="header" class="jumbotron text-center py-5">
+    <h1 class="display-3"><b>Eve Echoes</b></h1>
+    <p class="lead text-light">Welcome to the New Eden</p>
+</section>
 
-Welcome to your new app.
-
-<button class="btn btn-primary" @onclick="Test">Test</button>
+<section id="gallery" class="mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/regions.png" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Regions</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.regionsCount regions.
+                        </p>
+                        <a href="" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/constellations.png" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Constellations</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.constellationsCount constellations.
+                        </p>
+                        <a href="" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/solarSystem.png" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Solar Systems</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.solarSystemCount solar systems.
+                        </p>
+                        <a href="" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @code
 {
-    private SolarSystemInfo solarSystem;
+    private int regionsCount;
+    private int constellationsCount;
+    private int solarSystemCount;
 
-    protected async Task Test()
+    protected override async Task OnInitializedAsync()
     {
-        var result =  await this.http.GetStringAsync("api/SolarSystems/30001978");
-
-        this.solarSystem = await this.http.GetFromJsonAsync<SolarSystemInfo>("api/SolarSystems/30001978");
-
-        Console.WriteLine(this.solarSystem);
+        this.regionsCount = (await this.http.GetFromJsonAsync<CountModel>("api/regions/count"))?.Count ?? 0;
+        this.constellationsCount = (await this.http.GetFromJsonAsync<CountModel>("api/constellations/count"))?.Count ?? 0;
+        this.solarSystemCount = (await this.http.GetFromJsonAsync<CountModel>("api/solarSystems/count"))?.Count ?? 0;
     }
 }

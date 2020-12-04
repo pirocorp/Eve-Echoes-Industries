@@ -63,6 +63,25 @@
             return solarSystem;
         }
 
+        public async Task<int> GetSolarSystemsCount()
+            => await this.dbContext.SolarSystems.CountAsync();
+
+        public async Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1)
+        {
+            var query = this.dbContext.SolarSystems
+                .Where(ss => ss.Name.ToLower().Contains(searchTerm.ToLower()));
+
+            var count = await query.CountAsync();
+
+            var results = await query
+                .To<TOut>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (results, count);
+        }
+
         public async Task<string> GetSolarSystemNameAsync(long id)
             => await this.dbContext.SolarSystems
                 .Where(ss => ss.Id.Equals(id))

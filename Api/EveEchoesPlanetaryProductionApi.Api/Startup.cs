@@ -80,6 +80,8 @@
             services.AddTransient<IItemsService, ItemsService>();
             services.AddTransient<IPlanetaryResourcesService, PlanetaryResourcesService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IRegionsService, RegionsService>();
+            services.AddTransient<IConstellationService, ConstellationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

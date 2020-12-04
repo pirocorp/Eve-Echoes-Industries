@@ -11,4 +11,8 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Api\EveEchoesPlanetaryProductionApi.Api.Models\EveEchoesPlanetaryProductionApi.Api.Models.csproj" />
+  </ItemGroup>
+
 </Project>
