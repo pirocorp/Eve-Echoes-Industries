@@ -1,0 +1,23 @@
+﻿@page "/"
+@using EveEchoesPlanetaryProductionApi.Web.Models
+@inject HttpClient http
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button class="btn btn-primary" @onclick="Test">Test</button>
+
+@code
+{
+    private SolarSystemInfo solarSystem;
+
+    protected async Task Test()
+    {
+        var result =  await this.http.GetStringAsync("api/SolarSystems/30001978");
+
+        this.solarSystem = await this.http.GetFromJsonAsync<SolarSystemInfo>("api/SolarSystems/30001978");
+
+        Console.WriteLine(this.solarSystem);
+    }
+}

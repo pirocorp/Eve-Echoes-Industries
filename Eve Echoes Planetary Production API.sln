@@ -5,29 +5,33 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{0D1D8211-2E06-4D8C-BF9E-85E0EC06BDA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Data.Models", "Data\EveEchoesPlanetaryProductionApi.Data.Models\EveEchoesPlanetaryProductionApi.Data.Models.csproj", "{C7806EFE-AE72-4266-8BF2-A24A0138E2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Data.Models", "Data\EveEchoesPlanetaryProductionApi.Data.Models\EveEchoesPlanetaryProductionApi.Data.Models.csproj", "{C7806EFE-AE72-4266-8BF2-A24A0138E2A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Data.Common", "Data\EveEchoesPlanetaryProductionApi.Data.Common\EveEchoesPlanetaryProductionApi.Data.Common.csproj", "{0D838EA7-2A6C-4B2E-8C26-BD6CB09BE207}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Data.Common", "Data\EveEchoesPlanetaryProductionApi.Data.Common\EveEchoesPlanetaryProductionApi.Data.Common.csproj", "{0D838EA7-2A6C-4B2E-8C26-BD6CB09BE207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Common", "EveEchoesPlanetaryProductionApi.Common\EveEchoesPlanetaryProductionApi.Common.csproj", "{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Common", "EveEchoesPlanetaryProductionApi.Common\EveEchoesPlanetaryProductionApi.Common.csproj", "{EB79A70D-81B8-4C63-BFBC-D84D8C057B51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Data", "Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj", "{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Data", "Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj", "{8AF92FC2-F319-4BA1-9A6A-583B16023E8F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{8A26E134-E1E0-4F7E-A6D4-3FA8B9326A18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api", "Api\EveEchoesPlanetaryProductionApi.Api\EveEchoesPlanetaryProductionApi.Api.csproj", "{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Api", "Api\EveEchoesPlanetaryProductionApi.Api\EveEchoesPlanetaryProductionApi.Api.csproj", "{E2582FFC-AD9F-4EB7-BDE0-4CB1D78229D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api.Infrastructure", "Api\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj", "{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Api.Infrastructure", "Api\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj", "{A29F8AB8-31AE-42AB-9A5B-330C93F6AF60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Api.Models", "Api\EveEchoesPlanetaryProductionApi.Api.Models\EveEchoesPlanetaryProductionApi.Api.Models.csproj", "{944FEAE7-A334-4386-859D-1E75636703F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Api.Models", "Api\EveEchoesPlanetaryProductionApi.Api.Models\EveEchoesPlanetaryProductionApi.Api.Models.csproj", "{944FEAE7-A334-4386-859D-1E75636703F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{11EBFF06-C888-471F-A5D1-FD1730076BFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Services", "Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj", "{EED4402C-60FE-4025-AD50-DBEED18DE0D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Services", "Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj", "{EED4402C-60FE-4025-AD50-DBEED18DE0D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Services.Data", "Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj", "{B969C50B-4526-435A-84AF-B9B07DAE9343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Services.Data", "Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj", "{B969C50B-4526-435A-84AF-B9B07DAE9343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Services.Mapping", "Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj", "{663199FA-F9DB-419A-9FA4-96245B90C8D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Services.Mapping", "Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj", "{663199FA-F9DB-419A-9FA4-96245B90C8D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebClient", "WebClient", "{36A755F5-125A-4E4F-8838-AC323A682EA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Web", "WebClient\EveEchoesPlanetaryProductionApi.Web\EveEchoesPlanetaryProductionApi.Web.csproj", "{14460ED2-8390-44A9-9A0D-76BC30F2EB39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,10 @@ Global
 		{663199FA-F9DB-419A-9FA4-96245B90C8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{663199FA-F9DB-419A-9FA4-96245B90C8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{663199FA-F9DB-419A-9FA4-96245B90C8D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14460ED2-8390-44A9-9A0D-76BC30F2EB39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14460ED2-8390-44A9-9A0D-76BC30F2EB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14460ED2-8390-44A9-9A0D-76BC30F2EB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14460ED2-8390-44A9-9A0D-76BC30F2EB39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +97,7 @@ Global
 		{EED4402C-60FE-4025-AD50-DBEED18DE0D3} = {11EBFF06-C888-471F-A5D1-FD1730076BFA}
 		{B969C50B-4526-435A-84AF-B9B07DAE9343} = {11EBFF06-C888-471F-A5D1-FD1730076BFA}
 		{663199FA-F9DB-419A-9FA4-96245B90C8D7} = {11EBFF06-C888-471F-A5D1-FD1730076BFA}
+		{14460ED2-8390-44A9-9A0D-76BC30F2EB39} = {36A755F5-125A-4E4F-8838-AC323A682EA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCBFFE35-5B47-4D05-BBA2-401820564392}

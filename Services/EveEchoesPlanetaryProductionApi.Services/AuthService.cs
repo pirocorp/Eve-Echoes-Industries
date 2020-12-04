@@ -44,8 +44,7 @@
                 audience: this.jwtSettings.Value.Issuer,
                 claims,
                 expires: expires,
-                signingCredentials: credentials
-            );
+                signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

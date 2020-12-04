@@ -1,5 +1,4 @@
-﻿{
-  "useWebAssemblyDebugging": true,
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -17,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "EveEchoesPlanetaryProductionApi.Api": {
+    "EveEchoesPlanetaryProductionApi.Web": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

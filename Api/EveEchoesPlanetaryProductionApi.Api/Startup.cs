@@ -5,8 +5,10 @@
     using EveEchoesPlanetaryProductionApi.Data.Common;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Data.Seeding;
+    using EveEchoesPlanetaryProductionApi.Services;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
+    using EveEchoesPlanetaryProductionApi.Services.Settings;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -15,8 +17,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Services;
-    using Services.Settings;
 
     public class Startup
     {
@@ -59,7 +59,8 @@
 
             services.AddMemoryCache();
 
-            services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
 
             /* services.AddSwaggerGen(c =>
             {
@@ -98,12 +99,15 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
 
                 // app.UseSwagger();
                 // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EveEchoesPlanetaryProductionApi.Api v1"));
             }
 
             app.UseHttpsRedirection();
+            app.UseBlazorFrameworkFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -111,7 +115,9 @@
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
