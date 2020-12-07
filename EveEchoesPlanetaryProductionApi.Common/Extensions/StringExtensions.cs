@@ -8,5 +8,10 @@
 
             return jumps[^1];
         }
+
+        public static string RemoveSpaces(this string str)
+        {
+            return str.Replace(" ", string.Empty);
+        }
     }
 }

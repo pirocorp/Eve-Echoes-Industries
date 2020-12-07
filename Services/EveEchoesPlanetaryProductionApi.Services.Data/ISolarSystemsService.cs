@@ -9,6 +9,8 @@
 
     public interface ISolarSystemsService
     {
+        Task<SolarSystemServiceModel> GetRandomAsync();
+
         Task<SolarSystemServiceModel> GetByIdAsync(long id);
 
         Task<int> GetSolarSystemsCount();

@@ -1,12 +1,29 @@
 ﻿@page "/"
 @page "/index.html"
 @using EveEchoesPlanetaryProductionApi.Api.Models
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+
 @inject HttpClient http
 
 <section id="header" class="jumbotron text-center py-5">
     <h1 class="display-3"><b>Eve Echoes</b></h1>
     <p class="lead text-light">Welcome to the New Eden</p>
 </section>
+
+<div class="container">
+    <section class="row">
+        @if (this.randomSolarSystem is null)
+        {
+            <SolarSystemLoader></SolarSystemLoader>
+        }
+        else
+        {
+            <SolarSystemDetails SolarSystem="this.randomSolarSystem"></SolarSystemDetails>
+        }
+    </section>
+</div>
 
 <section id="gallery" class="mt-4">
     <div class="container">
@@ -65,11 +82,17 @@
     private int regionsCount;
     private int constellationsCount;
     private int solarSystemCount;
+    private SolarSystemServiceModel randomSolarSystem;
 
     protected override async Task OnInitializedAsync()
     {
         this.regionsCount = (await this.http.GetFromJsonAsync<CountModel>("api/regions/count"))?.Count ?? 0;
+
         this.constellationsCount = (await this.http.GetFromJsonAsync<CountModel>("api/constellations/count"))?.Count ?? 0;
+
         this.solarSystemCount = (await this.http.GetFromJsonAsync<CountModel>("api/solarSystems/count"))?.Count ?? 0;
+
+        this.randomSolarSystem = await this.http.GetFromJsonAsync<SolarSystemServiceModel>("api/SolarSystems");
     }
+    
 }

@@ -29,6 +29,10 @@
         }
 
         [AllowAnonymous]
+        public async Task<ActionResult<SolarSystemServiceModel>> GetSolarSystem()
+            => await this.solarSystemService.GetRandomAsync();
+
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<SolarSystemServiceModel>> GetSolarSystem(long id)
         {

@@ -1,0 +1,51 @@
+﻿.animation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 30px 0 30px 0;
+}
+
+.jawn {
+    position: relative;
+    background-color: #f8e71c;
+    width: 10px;
+    height: 10px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.jawn:after, .jawn:before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.jawn:after {
+    left: -10px;
+    top: -5px;
+    background-color: #c7c2a6;
+    transform-origin: 15px 10px;
+    animation: axis 1s linear infinite;
+}
+
+.jawn:before {
+    left: -25px;
+    top: -15px;
+    background-color: #009bff;
+    transform-origin: 30px 20px;
+    animation: axis 2s linear infinite;
+}
+
+@keyframes axis {
+    0% {
+        transform: rotateZ(0deg) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: rotateZ(360deg) translate3d(0, 0, 0);
+    }
+}

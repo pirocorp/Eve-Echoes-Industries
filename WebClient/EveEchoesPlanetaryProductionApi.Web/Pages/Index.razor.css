@@ -1,4 +1,8 @@
-﻿#header {
+﻿.index {
+    background-color: #EEEEEE;
+}
+
+#header {
     background: url("/resources/imgs/baner.jpg") center center / cover no-repeat;
 }
 

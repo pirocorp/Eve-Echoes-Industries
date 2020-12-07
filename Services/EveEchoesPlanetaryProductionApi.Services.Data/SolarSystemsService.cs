@@ -35,6 +35,18 @@
             this.dbContext = dbContext;
         }
 
+        public async Task<SolarSystemServiceModel> GetRandomAsync()
+        {
+            var solarSystem = await this.dbContext.SolarSystems
+                .OrderBy(ss => Guid.NewGuid())
+                .To<SolarSystemServiceModel>()
+                .FirstOrDefaultAsync();
+
+            await this.PopulatePricesAsync(solarSystem);
+
+            return solarSystem;
+        }
+
         public async Task<SolarSystemServiceModel> GetByIdAsync(long id)
         {
             var solarSystem = await this.GetByIdAsync<SolarSystemServiceModel>(id);
@@ -44,21 +56,7 @@
                 return null;
             }
 
-            var itemIds = solarSystem.Planets
-                .SelectMany(p => p.PlanetResources)
-                .Select(pr => pr.ItemId)
-                .Distinct()
-                .ToList();
-
-            var itemPrices = await this.itemsService.GetLatestItemsPricesAsync(itemIds);
-
-            foreach (var planet in solarSystem.Planets)
-            {
-                foreach (var resource in planet.PlanetResources)
-                {
-                    resource.Price = this.mapper.Map<SolarSystemServicePlanetPlanetResourcePriceModel>(itemPrices[resource.ItemId]);
-                }
-            }
+            await this.PopulatePricesAsync(solarSystem);
 
             return solarSystem;
         }
@@ -139,6 +137,26 @@
                 .ToList();
 
             return systemsInRangeIds;
+        }
+
+        private async Task PopulatePricesAsync(SolarSystemServiceModel solarSystem)
+        {
+            var itemIds = solarSystem.Planets
+                .SelectMany(p => p.PlanetResources)
+                .Select(pr => pr.ItemId)
+                .Distinct()
+                .ToList();
+
+            var itemPrices = await this.itemsService.GetLatestItemsPricesAsync(itemIds);
+
+            foreach (var planet in solarSystem.Planets)
+            {
+                foreach (var resource in planet.PlanetResources)
+                {
+                    resource.Price =
+                        this.mapper.Map<SolarSystemServicePlanetPlanetResourcePriceModel>(itemPrices[resource.ItemId]);
+                }
+            }
         }
 
         private async Task PopulateSolarSystemResourcesPrice(PriceSelector priceSelector, SolarSystemBestModel solarSystem)
