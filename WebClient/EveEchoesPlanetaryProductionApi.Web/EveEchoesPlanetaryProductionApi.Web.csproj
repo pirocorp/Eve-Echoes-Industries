@@ -18,4 +18,8 @@
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Web.Services\EveEchoesPlanetaryProductionApi.Web.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Regions\" />
+  </ItemGroup>
+
 </Project>

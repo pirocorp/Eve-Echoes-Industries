@@ -8,7 +8,8 @@
 @using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
-@inject IEveApiService eveApiService;
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
 
 <div class="container">
     <section class="row">
@@ -35,12 +36,44 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.regionsCount = await this.eveApiService.GetRegionsCountAsync();
+        if (this.appDataService.RegionsCount is null)
+        {
+            this.regionsCount = await this.eveApiService.GetRegionsCountAsync();
+            this.appDataService.RegionsCount = this.regionsCount;
+        }
+        else
+        {
+            this.regionsCount = this.appDataService.RegionsCount.Value;
+        }
 
-        this.constellationsCount = await this.eveApiService.GetConstellationsCountAsync();
+        if (this.appDataService.ConstellationsCount is null)
+        {
+            this.constellationsCount = await this.eveApiService.GetConstellationsCountAsync();
+            this.appDataService.ConstellationsCount = this.constellationsCount;
+        }
+        else
+        {
+            this.constellationsCount = this.appDataService.ConstellationsCount.Value;
+        }
 
-        this.solarSystemCount = await this.eveApiService.GetSolarSystemsCountAsync();
+        if (this.appDataService.SolarSystemCount is null)
+        {
+            this.solarSystemCount = await this.eveApiService.GetSolarSystemsCountAsync();
+            this.appDataService.SolarSystemCount = this.solarSystemCount;
+        }
+        else
+        {
+            this.solarSystemCount = this.appDataService.SolarSystemCount.Value;
+        }
 
-        this.randomSolarSystem = await this.eveApiService.GetRandomSolarSystemAsync();
+        if (this.appDataService.CurrentSolarSystem is null)
+        {
+            this.randomSolarSystem = await this.eveApiService.GetRandomSolarSystemAsync();
+            this.appDataService.CurrentSolarSystem = this.randomSolarSystem;
+        }
+        else
+        {
+            this.randomSolarSystem = this.appDataService.CurrentSolarSystem;
+        }
     }
 }

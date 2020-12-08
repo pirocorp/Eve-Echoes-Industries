@@ -12,6 +12,12 @@
 
         public SolarSystemServiceModel CurrentSolarSystem { get; set; }
 
+        public int? RegionsCount { get; set; }
+
+        public int? ConstellationsCount { get; set; }
+
+        public int? SolarSystemCount { get; set; }
+
         public IDictionary<string, decimal> PlanetaryResourcesPrices { get; set; }
     }
 }
