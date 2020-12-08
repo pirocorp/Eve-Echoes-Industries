@@ -18,20 +18,24 @@
 
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class SolarSystemsService : ISolarSystemsService
     {
         private readonly IMapper mapper;
         private readonly IItemsService itemsService;
+        private readonly IMemoryCache memoryCache;
         private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
 
         public SolarSystemsService(
             IMapper mapper,
             IItemsService itemsService,
+            IMemoryCache memoryCache,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             this.mapper = mapper;
             this.itemsService = itemsService;
+            this.memoryCache = memoryCache;
             this.dbContext = dbContext;
         }
 
@@ -62,7 +66,21 @@
         }
 
         public async Task<int> GetSolarSystemsCount()
-            => await this.dbContext.SolarSystems.CountAsync();
+        {
+            var key = $"{nameof(SolarSystemsService)} Count";
+
+            if (!this.memoryCache.TryGetValue(key, out int cacheEntry))
+            {
+                cacheEntry = await this.dbContext.Regions.CountAsync();
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(GlobalConstants.InMemoryCachingSolarSystemCountInDays));
+
+                this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
+            }
+
+            return cacheEntry;
+        }
 
         public async Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1)
         {

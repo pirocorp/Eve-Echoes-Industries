@@ -14,7 +14,13 @@
 
         public const int MarketApiCachingIntervalInMinutes = 30;
 
-        public const int InMemoryPlanetaryResourcesCachingInSeconds = 15;
+        public const int InMemoryPlanetaryResourcesCachingInSeconds = 30;
+
+        public const int InMemoryCachingRegionsCountInDays = 1;
+
+        public const int InMemoryCachingConstellationsCountInDays = 1;
+
+        public const int InMemoryCachingSolarSystemCountInDays = 1;
 
         public static class Items
         {
