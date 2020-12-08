@@ -6,8 +6,9 @@
 @using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
 @using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+@using EveEchoesPlanetaryProductionApi.Web.Services
 
-@inject HttpClient http
+@inject IEveApiService eveApiService;
 
 <div class="container">
     <section class="row">
@@ -29,16 +30,17 @@
     private int regionsCount;
     private int constellationsCount;
     private int solarSystemCount;
+
     private SolarSystemServiceModel randomSolarSystem;
 
     protected override async Task OnInitializedAsync()
     {
-        this.regionsCount = (await this.http.GetFromJsonAsync<CountModel>("api/regions/count"))?.Count ?? 0;
+        this.regionsCount = await this.eveApiService.GetRegionsCountAsync();
 
-        this.constellationsCount = (await this.http.GetFromJsonAsync<CountModel>("api/constellations/count"))?.Count ?? 0;
+        this.constellationsCount = await this.eveApiService.GetConstellationsCountAsync();
 
-        this.solarSystemCount = (await this.http.GetFromJsonAsync<CountModel>("api/solarSystems/count"))?.Count ?? 0;
+        this.solarSystemCount = await this.eveApiService.GetSolarSystemsCountAsync();
 
-        this.randomSolarSystem = await this.http.GetFromJsonAsync<SolarSystemServiceModel>("api/SolarSystems");
+        this.randomSolarSystem = await this.eveApiService.GetRandomSolarSystemAsync();
     }
 }

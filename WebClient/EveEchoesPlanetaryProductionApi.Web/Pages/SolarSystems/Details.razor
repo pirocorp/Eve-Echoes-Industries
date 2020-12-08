@@ -7,7 +7,7 @@
 @using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
 
 @inject IAppDataService AppDataService;
-@inject HttpClient http;
+@inject IEveApiService eveApiService;
 
 <div class="container">
     <div class="row">
@@ -36,7 +36,7 @@
         }
         else
         {
-            this.SolarSystem = await this.http.GetFromJsonAsync<SolarSystemServiceModel>($"api/SolarSystems/{this.SolarSystemId}");
+            this.SolarSystem = await this.eveApiService.GetSolarSystemAsync(this.SolarSystemId);
             this.AppDataService.CurrentSolarSystem = this.SolarSystem;
         }
 

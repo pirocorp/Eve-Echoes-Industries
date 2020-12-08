@@ -19,6 +19,7 @@ namespace EveEchoesPlanetaryProductionApi.Web
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddSingleton<IAppDataService, AppDataService>();
+            builder.Services.AddTransient<IEveApiService, EveApiService>();
 
             await builder.Build().RunAsync();
         }

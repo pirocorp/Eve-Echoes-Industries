@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Api\EveEchoesPlanetaryProductionApi.Api.Models\EveEchoesPlanetaryProductionApi.Api.Models.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj" />
   </ItemGroup>
 
