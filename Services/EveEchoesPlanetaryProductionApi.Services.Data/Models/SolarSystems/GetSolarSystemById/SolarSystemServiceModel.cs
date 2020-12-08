@@ -13,6 +13,8 @@
             this.Planets = new List<SolarSystemServicePlanetModel>();
         }
 
+        public long Id { get; set; }
+
         public string Name { get; set; }
 
         [JsonPropertyName("constellation")]

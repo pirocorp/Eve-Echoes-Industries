@@ -1,0 +1,226 @@
+﻿@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using System.Globalization
+@using static EveEchoesPlanetaryProductionApi.Web.Common.PresentationConstants
+
+@inject IAppDataService AppDataService;
+
+<div class="card text-center mx-auto" style="width: 100%">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <NavLink class="nav-link" href=@($"details/") Match="NavLinkMatch.All">Details</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link active" href="@($"best/")" Match="NavLinkMatch.All">Best</NavLink>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <h3 class="card-title">System: @this.SolarSystem.Name</h3>
+
+        <div class="radios">
+            <fieldset>
+                <legend>Price selector</legend>
+                <div class="radiobtn">
+                    <input type="radio" id="Buy"
+                           name="drone" value="Buy"
+                           @onchange="this.RadioSelection" />
+                    <label for="Buy">Buy</label>
+                </div>
+
+                <div class="radiobtn">
+                    <input type="radio" id="Sell"
+                           name="drone" value="Sell"
+                           @onchange="this.RadioSelection" />
+                    <label for="Sell">Sell</label>
+                </div>
+
+                <div class="radiobtn">
+                    <input type="radio" id="HighestBuy"
+                           name="drone" value="HighestBuy"
+                           @onchange="this.RadioSelection" />
+                    <label for="HighestBuy">Highest Buy</label>
+                </div>
+
+                <div class="radiobtn">
+                    <input type="radio" id="LowestSell"
+                           name="drone" value="LowestSell"
+                           @onchange="this.RadioSelection" />
+                    <label for="LowestSell">Lowest Sell</label>
+                </div>
+
+                <div class="radiobtn">
+                    <input type="radio" id="UserProvided"
+                           name="drone" value="UserProvided"
+                           @onchange="this.RadioSelection" />
+                    <label for="UserProvided">User Provided</label>
+                </div>
+            </fieldset>
+        </div>
+
+        @if (this.PriceSelector is PriceSelector.UserProvided)
+        {
+            <section class="container">
+                <h3 class="text-center my-5">User Provided Planetary Resources Prices</h3>
+                <div class="row">
+                    @{
+                        var planetaryResources = this.GetPlanetaryResources().ToList();
+
+                        foreach (var resource in planetaryResources)
+                        {
+                            <div class="col-12 col-lg-6 col-xl-3 form-group">
+                                <label for="@resource">@resource</label>
+                                <input class="form-field"
+                                       type="number"
+                                       step="any"
+                                       name=@resource
+                                       id="@resource"
+                                       value=@(this.TryGetValue(resource))
+                                       placeholder="price"
+                                       @onchange="@((e) => this.ChangeResourceValue((string)e.Value, resource))">
+                            </div>
+                        }
+                    }
+                </div>
+            </section>
+        }
+
+        @if (this.BestPlanets is not null)
+        {
+            <section class="my-5">
+                <h2>Most valuable planetary resources</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Planet Name</th>
+                            <th>Resource</th>
+                            <th>Output</th>
+                            <th>Price</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var planet in this.BestPlanets)
+                        {
+                            <tr>
+                                <td>@planet.Name</td>
+                                <td>@planet.Resource</td>
+                                <td>@planet.Output</td>
+                                <td>@(planet.Price.ToString(PriceFormat) + IskSymbol)</td>
+                                <td>@((planet.Price * (decimal) planet.Output).ToString(PriceFormat) + IskSymbol)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        }
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public SolarSystemServiceModel SolarSystem { get; set; }
+
+    public IEnumerable<PlanetValue> BestPlanets { get; set; }
+
+    public PriceSelector PriceSelector { get; set; }
+
+    private IEnumerable<string> GetPlanetaryResources()
+    {
+        var planetaryResources = this.SolarSystem.Planets
+            .SelectMany(p => p.PlanetResources)
+            .Select(pr => pr.ItemName)
+            .Distinct()
+            .ToList();
+
+        return planetaryResources;
+    }
+
+    private string TryGetValue(string planetaryResource)
+    {
+        decimal value = 0;
+
+        var success = this.AppDataService.PlanetaryResourcesPrices?.TryGetValue(planetaryResource, out value) ?? false;
+
+        if (success)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return planetaryResource;
+    }
+
+    private Func<SolarSystemServicePlanetPlanetResourceModel, decimal> GetPriceSelector(PriceSelector priceSelector)
+        => priceSelector switch
+        {
+            PriceSelector.Sell => p => p.Price.Sell,
+            PriceSelector.Buy => p => p.Price.Buy,
+            PriceSelector.LowestSell => p => p.Price.LowestSell,
+            PriceSelector.HighestBuy => p => p.Price.HighestBuy,
+            PriceSelector.UserProvided => p => this.AppDataService.PlanetaryResourcesPrices.TryGetValue(p.ItemName, out var value) ? value : 0,
+            _ => p => 0
+        };
+
+    private void CalculateBestPlanets()
+    {
+        var func = this.GetPriceSelector(this.PriceSelector);
+
+        this.BestPlanets = this.SolarSystem.Planets
+            .Select(p =>
+            {
+                var bestPlanetResource = p
+                    .PlanetResources
+                    .OrderByDescending(p => func(p) * (decimal) p.Output)
+                    .First();
+
+                return new PlanetValue()
+                {
+                    Name = p.Name,
+                    Resource = bestPlanetResource.ItemName,
+                    Output = bestPlanetResource.Output,
+                    Price = func(bestPlanetResource)
+                };
+            })
+            .OrderByDescending(p => p.Price * (decimal) p.Output)
+            .ToList();
+    }
+
+    private void RadioSelection(ChangeEventArgs args)
+    {
+        var success = Enum.TryParse<PriceSelector>(args.Value?.ToString(), out var priceSelector);
+
+        if (success)
+        {
+            this.PriceSelector = priceSelector;
+
+            this.CalculateBestPlanets();
+        }
+    }
+
+    private void ChangeResourceValue(string value, string resource)
+    {
+        var success = decimal.TryParse(value, out var price);
+
+        if (success)
+        {
+            this.AppDataService.PlanetaryResourcesPrices[resource] = price;
+        }
+
+        this.CalculateBestPlanets();
+    }
+
+    public class PlanetValue
+    {
+        public string Name { get; set; }
+
+        public string Resource { get; set; }
+
+        public double Output { get; set; }
+
+        public decimal Price { get; set; }
+    }
+}

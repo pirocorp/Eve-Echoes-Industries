@@ -1,0 +1,45 @@
+﻿@page "/details"
+@page "/details/{SolarSystemId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+
+@inject IAppDataService AppDataService;
+@inject HttpClient http;
+
+<div class="container">
+    <div class="row">
+        @if (this.SolarSystem is null)
+        {
+            <SolarSystemLoader></SolarSystemLoader>
+        }
+        else
+        {
+            <SolarSystemDetails SolarSystem="this.SolarSystem"></SolarSystemDetails>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public long SolarSystemId { get; set; }
+
+    public SolarSystemServiceModel SolarSystem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (this.SolarSystemId is 0)
+        {
+            this.SolarSystem = this.AppDataService.CurrentSolarSystem;
+        }
+        else
+        {
+            this.SolarSystem = await this.http.GetFromJsonAsync<SolarSystemServiceModel>($"api/SolarSystems/{this.SolarSystemId}");
+            this.AppDataService.CurrentSolarSystem = this.SolarSystem;
+        }
+
+        await base.OnInitializedAsync();
+    }
+}

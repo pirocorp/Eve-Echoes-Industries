@@ -3,18 +3,18 @@
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Common.Extensions
 @using EveEchoesPlanetaryProductionApi.Web.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAppDataService AppDataService;
 
 <div class="card text-center mx-auto" style="@this.SolarSystemStyle()">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
+                <NavLink class="nav-link active" href=@($"details/") Match="NavLinkMatch.All" >Details</NavLink>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <NavLink class=@($"nav-link {this.NavLinkClass()}") href="@($"best/")" Match="NavLinkMatch.All">Best</NavLink>
             </li>
         </ul>
     </div>
@@ -91,8 +91,6 @@
     </div>
 </div>
 
-
-
 @code {
     private bool isSortedAscending;
 
@@ -101,6 +99,22 @@
     [Parameter]
     public SolarSystemServiceModel SolarSystem { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        this.AppDataService.CurrentSolarSystem = this.SolarSystem;
+
+        await base.OnInitializedAsync();
+    }
+
+    private string NavLinkClass()
+    {
+        if (this.SolarSystem is null || this.SolarSystem.Planets.Count() is 0)
+        {
+            return "disabled";
+        }
+
+        return string.Empty;
+    }
 
     private string SolarSystemStyle()
     {
