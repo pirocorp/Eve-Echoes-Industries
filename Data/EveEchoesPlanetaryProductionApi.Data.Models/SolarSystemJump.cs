@@ -63,14 +63,14 @@
 
             solarSystemJump
                 .HasOne(ssj => ssj.FromRegion)
-                .WithMany(r => r.JumpsFromSolarSystemslonghisRegion)
+                .WithMany(r => r.JumpsFromSolarSystemsInThisRegion)
                 .HasForeignKey(ssj => ssj.FromRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             solarSystemJump
                 .HasOne(ssj => ssj.ToRegion)
-                .WithMany(r => r.JumpsToSolarSystemslonghisRegion)
+                .WithMany(r => r.JumpsToSolarSystemsInThisRegion)
                 .HasForeignKey(ssj => ssj.ToRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

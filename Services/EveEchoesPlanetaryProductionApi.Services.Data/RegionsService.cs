@@ -1,11 +1,13 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Services.Data
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
-
+    using Mapping;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
 
@@ -22,7 +24,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<int> GetCount()
+        public async Task<int> GetCountAsync()
         {
             var key = $"{nameof(RegionsService)} Count";
 
@@ -38,5 +40,13 @@
 
             return cacheEntry;
         }
+
+        public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
+            => await this.dbContext.Regions
+                .OrderBy(r => r.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .To<TOut>()
+                .ToListAsync();
     }
 }

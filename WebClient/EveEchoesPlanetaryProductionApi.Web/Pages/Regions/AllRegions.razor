@@ -1,0 +1,86 @@
+﻿@page "/regions"
+@page "/regions/{PageNumber:int}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
+@inject NavigationManager NavigationManager
+
+<section class="container mb-5">
+    @if (this.Regions is not null)
+    {
+        <table class="table-fill">
+            <thead>
+                <tr>
+                    <th class="text-left">Region</th>
+                    <th class="text-left">Constellations</th>
+                    <th class="text-left">Solar Systems</th>
+                    <th class="text-left">Planets</th>
+                </tr>
+            </thead>
+            <tbody class="table-hover">
+                @foreach (var region in this.Regions)
+                {
+                    <tr>
+                        <td class="text-left">
+                            <a href=@($"/regions/details/{region.Id}")>@region.Name</a>
+                        </td>
+                        <td class="text-left">@region.ConstellationsCount</td>
+                        <td class="text-left">@region.SolarSystemsCount</td>
+                        <td class="text-left">@region.PlanetsCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+    <Pagination Page="@(this.PageNumber)"
+                TotalPages="@this.TotalPages"
+                Radius="3"
+                SelectedPage="this.ChangePage" />
+</section>
+
+@code {
+    public IEnumerable<RegionListingModel> Regions { get; set; }
+
+    [Parameter]
+    public int PageNumber { get; set; }
+
+    public int TotalPages { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(this.PageNumber);
+
+        if (this.PageNumber <= 0)
+        {
+            this.PageNumber = 1;
+
+            await this.LoadData();
+
+            this.NavigationManager.NavigateTo($"/regions/1");
+        }
+
+        await this.LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        this.Regions = await this.eveApiService.GetRegionsPageAsync(this.PageNumber);
+
+        var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.GetRegionsCountAsync();
+
+        this.TotalPages = (int)Math.Ceiling(totalRegions / (double)GlobalConstants.Ui.RegionsPageSize);
+    }
+
+    private async Task ChangePage(int page)
+    {
+        this.PageNumber = page;
+        this.Regions = await this.eveApiService.GetRegionsPageAsync(this.PageNumber);
+        this.NavigationManager.NavigateTo($"/regions/{page}");
+    }
+}

@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Regions\" />
-  </ItemGroup>
-
 </Project>

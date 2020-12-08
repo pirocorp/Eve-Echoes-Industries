@@ -1,10 +1,12 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Web.Services
 {
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
 
     using Api.Models;
+    using Api.Models.Regions;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
 
     public interface IEveApiService
@@ -18,6 +20,8 @@
         Task<SolarSystemServiceModel> GetRandomSolarSystemAsync();
 
         Task<SolarSystemServiceModel> GetSolarSystemAsync(long solarSystemId);
+
+        Task<IEnumerable<RegionListingModel>> GetRegionsPageAsync(int page);
     }
 
     public class EveApiService : IEveApiService
@@ -43,5 +47,8 @@
 
         public async Task<SolarSystemServiceModel> GetSolarSystemAsync(long solarSystemId)
             => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>($"api/SolarSystems/{solarSystemId}");
+
+        public async Task<IEnumerable<RegionListingModel>> GetRegionsPageAsync(int page = 1)
+            => (await this.httpClient.GetFromJsonAsync<RegionsPage>($"api/regions/{page}"))?.Regions;
     }
 }

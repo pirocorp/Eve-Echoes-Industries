@@ -46,14 +46,14 @@
 
             constellationJump
                 .HasOne(cj => cj.FromRegion)
-                .WithMany(r => r.JumpsFromConstellationlonghisRegion)
+                .WithMany(r => r.JumpsFromConstellationFromThisRegion)
                 .HasForeignKey(cj => cj.FromRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             constellationJump
                 .HasOne(cj => cj.ToRegion)
-                .WithMany(r => r.JumpsToConstellationlonghisRegion)
+                .WithMany(r => r.JumpsToConstellationFromThisRegion)
                 .HasForeignKey(cj => cj.ToRegionId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);

@@ -12,9 +12,9 @@
 
         public const string MarketApiItemEndPoint = "market-stats";
 
-        public const int MarketApiCachingIntervalInMinutes = 30;
+        public const int MarketApiCachingIntervalInMinutes = 60;
 
-        public const int InMemoryPlanetaryResourcesCachingInSeconds = 30;
+        public const int InMemoryPlanetaryResourcesCachingInSeconds = 15 * 60;
 
         public const int InMemoryCachingRegionsCountInDays = 1;
 
@@ -74,6 +74,8 @@
         public static class Ui
         {
             public const int SolarSystemsSearchPageSize = 10;
+
+            public const int RegionsPageSize = 10;
         }
     }
 }
