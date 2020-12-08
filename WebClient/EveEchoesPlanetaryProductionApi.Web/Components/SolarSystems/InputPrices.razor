@@ -1,0 +1,74 @@
+﻿@using System.Globalization
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAppDataService AppDataService;
+
+<section class="container">
+    <h3 class="text-center my-5">User Provided Planetary Resources Prices</h3>
+    <div class="row">
+        @{
+            var planetaryResources = this.GetPlanetaryResources().ToList();
+
+            foreach (var resource in planetaryResources)
+            {
+                <div class="col-12 col-lg-6 col-xl-3 form-group">
+                    <label for="@resource">@resource</label>
+                    <input class="form-field"
+                           type="number"
+                           step="any"
+                           name=@resource
+                           id="@resource"
+                           value=@(this.TryGetValue(resource))
+                           placeholder="price"
+                           @onchange="@((e) => this.ChangeResourceValue((string)e.Value, resource))">
+                </div>
+            }
+        }
+    </div>
+</section>
+
+@code {
+
+    [Parameter]
+    public SolarSystemServiceModel SolarSystem { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnChange { get; set; }
+
+    private IEnumerable<string> GetPlanetaryResources()
+    {
+        var planetaryResources = this.SolarSystem.Planets
+            .SelectMany(p => p.PlanetResources)
+            .Select(pr => pr.ItemName)
+            .Distinct()
+            .ToList();
+
+        return planetaryResources;
+    }
+
+    private string TryGetValue(string planetaryResource)
+    {
+        decimal value = 0;
+
+        var success = this.AppDataService.PlanetaryResourcesPrices?.TryGetValue(planetaryResource, out value) ?? false;
+
+        if (success)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return planetaryResource;
+    }
+
+    private void ChangeResourceValue(string value, string resource)
+    {
+        var success = decimal.TryParse(value, out var price);
+
+        if (success)
+        {
+            this.AppDataService.PlanetaryResourcesPrices[resource] = price;
+            this.OnChange.InvokeAsync(true);
+        }
+    }
+}

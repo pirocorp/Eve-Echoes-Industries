@@ -1,7 +1,9 @@
 ﻿@page "/"
 @page "/index.html"
+
 @using EveEchoesPlanetaryProductionApi.Api.Models
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
 @using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
 
@@ -20,57 +22,7 @@
     </section>
 </div>
 
-<section id="gallery" class="mt-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="card">
-                    <img src="/resources/imgs/regions.png" alt="" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Regions</h5>
-                        <p class="card-text">
-                            In eve echoes universe there are @this.regionsCount regions.
-                        </p>
-                        <a href="" class="btn btn-outline-success btn-sm">
-                            <i class="fab fa-wpexplorer"></i>
-                            Explore
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-                <div class="card">
-                    <img src="/resources/imgs/constellations.png" alt="" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Constellations</h5>
-                        <p class="card-text">
-                            In eve echoes universe there are @this.constellationsCount constellations.
-                        </p>
-                        <a href="" class="btn btn-outline-success btn-sm">
-                            <i class="fab fa-wpexplorer"></i>
-                            Explore
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-                <div class="card">
-                    <img src="/resources/imgs/solarSystem.png" alt="" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Solar Systems</h5>
-                        <p class="card-text">
-                            In eve echoes universe there are @this.solarSystemCount solar systems.
-                        </p>
-                        <a href="" class="btn btn-outline-success btn-sm">
-                            <i class="fab fa-wpexplorer"></i>
-                            Explore
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
 
 @code
 {
@@ -89,5 +41,4 @@
 
         this.randomSolarSystem = await this.http.GetFromJsonAsync<SolarSystemServiceModel>("api/SolarSystems");
     }
-    
 }

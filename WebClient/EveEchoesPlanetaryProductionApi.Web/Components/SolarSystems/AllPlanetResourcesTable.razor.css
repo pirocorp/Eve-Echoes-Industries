@@ -1,0 +1,65 @@
+﻿.sort {
+    cursor: pointer;
+}
+
+.sort-th {
+    margin-left: 5px;
+}
+
+.just-padding {
+    padding: 15px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+    padding-left: 45px;
+}
+
+/* relevant styles */
+.img_wrap {
+    position: relative;
+    height: 70px;
+    width: 100px;
+}
+
+.img_description {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0 1px;
+    background: #000000;
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+    /* transition effect. not necessary */
+    transition: opacity 1s, visibility 1s;
+}
+
+.img_wrap:hover .img_description {
+    visibility: visible;
+    opacity: 1;
+}

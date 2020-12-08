@@ -33,9 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebClient", "WebClient", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Web", "WebClient\EveEchoesPlanetaryProductionApi.Web\EveEchoesPlanetaryProductionApi.Web.csproj", "{14460ED2-8390-44A9-9A0D-76BC30F2EB39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Web.Common", "WebClient\EveEchoesPlanetaryProductionApi.Web.Common\EveEchoesPlanetaryProductionApi.Web.Common.csproj", "{CBAC4A2A-8551-418E-AB3C-B56D68BFA3B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Web.Common", "WebClient\EveEchoesPlanetaryProductionApi.Web.Common\EveEchoesPlanetaryProductionApi.Web.Common.csproj", "{CBAC4A2A-8551-418E-AB3C-B56D68BFA3B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveEchoesPlanetaryProductionApi.Web.Services", "WebClient\EveEchoesPlanetaryProductionApi.Web.Services\EveEchoesPlanetaryProductionApi.Web.Services.csproj", "{70217070-AF28-4CC1-9EEB-A255CDE18BA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EveEchoesPlanetaryProductionApi.Web.Services", "WebClient\EveEchoesPlanetaryProductionApi.Web.Services\EveEchoesPlanetaryProductionApi.Web.Services.csproj", "{70217070-AF28-4CC1-9EEB-A255CDE18BA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

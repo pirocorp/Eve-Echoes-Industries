@@ -1,0 +1,131 @@
+﻿@using EveEchoesPlanetaryProductionApi.Web.Common
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+
+<a href="#">@this.Planet.Name @this.Planet.PlanetTypeName</a>
+
+<div class="list-group-item">
+    <table class="table table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.ItemName)))">
+                    <span>Resource</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.ItemName))></i></span>
+                </th>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.RichnessName)))">
+                    <span>Richness</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.RichnessName))></i></span>
+                </th>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Price.Buy)))">
+                    <span>Buy</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.Price.Buy))></i></span>
+                </th>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Price.Sell)))">
+                    <span>Sell</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.Price.Sell))></i></span>
+                </th>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Price.HighestBuy)))">
+                    <span>Highest Buy</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.Price.HighestBuy))></i></span>
+                </th>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Price.LowestSell)))">
+                    <span>Lowest Sell</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.Price.LowestSell))></i></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var resource in this.Planet.PlanetResources)
+            {
+                <tr>
+                    <td>
+                        <div class="img_wrap">
+                            <img src="@($"resources/planetaryResources/eve-echoes-{resource.ItemName.RemoveSpaces()}.jpg")"
+                                 alt="@resource.ItemName"
+                                 onerror="this.src = 'resources/planetaryResources/eve-echoes-none.jpg'" />
+                            <p class="img_description">@resource.ItemName</p>
+                        </div>
+                    </td>
+                    <td>@resource.RichnessName</td>
+                    <td>@(resource.Price.Buy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                    <td>@(resource.Price.Sell.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                    <td>@(resource.Price.HighestBuy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                    <td>@(resource.Price.LowestSell.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private bool isSortedAscending;
+
+    private string activeSortColumn;
+
+    [Parameter]
+    public SolarSystemServicePlanetModel Planet { get; set; }
+
+    public SolarSystemServicePlanetPlanetResourceModel Resource { get; set; }
+
+    private static void SortResourcesAscending(string columnName, SolarSystemServicePlanetModel planet)
+    {
+        planet.PlanetResources = planet
+            .PlanetResources
+            .OrderBy(x =>
+                x.GetType().GetProperty(columnName)?.GetValue(x, null)
+                ?? x.Price.GetType().GetProperty(columnName)?.GetValue(x.Price, null))
+            .ToList();
+    }
+
+
+    private static void SortResourcesDescending(string columnName, SolarSystemServicePlanetModel planet)
+    {
+        planet.PlanetResources = planet
+            .PlanetResources
+            .OrderByDescending(x =>
+                x.GetType().GetProperty(columnName)?.GetValue(x, null)
+                ?? x.Price.GetType().GetProperty(columnName)?.GetValue(x.Price, null))
+            .ToList();
+    }
+
+    private void SortTable(string columnName)
+    {
+        if (columnName != this.activeSortColumn)
+        {
+            SortResourcesAscending(columnName, this.Planet);
+
+            this.isSortedAscending = true;
+            this.activeSortColumn = columnName;
+        }
+        else
+        {
+            if (this.isSortedAscending)
+            {
+                SortResourcesDescending(columnName, this.Planet);
+            }
+            else
+            {
+                SortResourcesAscending(columnName, this.Planet);
+            }
+
+            this.isSortedAscending = !this.isSortedAscending;
+        }
+    }
+
+    private string SetSortIcon(string columnName)
+    {
+        if (this.activeSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+
+        if (this.isSortedAscending)
+        {
+            return "fas fa-sort-up";
+        }
+        else
+        {
+            return "fas fa-sort-down";
+        }
+    }
+}
