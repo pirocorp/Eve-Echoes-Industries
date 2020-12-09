@@ -25,7 +25,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<int> GetCount()
+        public async Task<int> GetCountAsync()
         {
             var key = $"{nameof(ConstellationService)} Count";
 
@@ -49,5 +49,11 @@
                 .Take(pageSize)
                 .To<TOut>()
                 .ToListAsync();
+
+        public async Task<TOut> GetByIdAsync<TOut>(long id)
+            => await this.dbContext.Constellations
+                .Where(c => c.Id.Equals(id))
+                .To<TOut>()
+                .FirstOrDefaultAsync();
     }
 }

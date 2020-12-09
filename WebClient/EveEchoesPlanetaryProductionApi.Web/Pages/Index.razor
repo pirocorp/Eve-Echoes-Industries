@@ -1,7 +1,6 @@
 ﻿@page "/"
 @page "/index.html"
 
-@using EveEchoesPlanetaryProductionApi.Api.Models
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
@@ -38,7 +37,7 @@
     {
         if (this.appDataService.RegionsCount is null)
         {
-            this.regionsCount = await this.eveApiService.GetRegionsCountAsync();
+            this.regionsCount = await this.eveApiService.Regions.GetCountAsync();
             this.appDataService.RegionsCount = this.regionsCount;
         }
         else
@@ -48,7 +47,7 @@
 
         if (this.appDataService.ConstellationsCount is null)
         {
-            this.constellationsCount = await this.eveApiService.GetConstellationsCountAsync();
+            this.constellationsCount = await this.eveApiService.Constellations.GetCountAsync();
             this.appDataService.ConstellationsCount = this.constellationsCount;
         }
         else
@@ -58,7 +57,7 @@
 
         if (this.appDataService.SolarSystemCount is null)
         {
-            this.solarSystemCount = await this.eveApiService.GetSolarSystemsCountAsync();
+            this.solarSystemCount = await this.eveApiService.Systems.GetCountAsync();
             this.appDataService.SolarSystemCount = this.solarSystemCount;
         }
         else
@@ -68,7 +67,7 @@
 
         if (this.appDataService.CurrentSolarSystem is null)
         {
-            this.randomSolarSystem = await this.eveApiService.GetRandomSolarSystemAsync();
+            this.randomSolarSystem = await this.eveApiService.Systems.GetRandomAsync();
             this.appDataService.CurrentSolarSystem = this.randomSolarSystem;
         }
         else

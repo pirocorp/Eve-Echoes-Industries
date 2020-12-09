@@ -59,9 +59,9 @@
 
     protected override async Task LoadData()
     {
-        this.Regions = await this.eveApiService.GetRegionsPageAsync(this.PageNumber);
+        this.Regions = await this.eveApiService.Regions.GetPageAsync(this.PageNumber);
 
-        var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.GetRegionsCountAsync();
+        var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.Regions.GetCountAsync();
         this.appDataService.RegionsCount ??= totalRegions;
 
         this.TotalPages = (int)Math.Ceiling(totalRegions / (double)GlobalConstants.Ui.RegionsPageSize);

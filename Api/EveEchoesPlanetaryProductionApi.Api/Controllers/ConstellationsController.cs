@@ -3,11 +3,12 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
 
     using Microsoft.AspNetCore.Mvc;
+    using Models.Constellations.GetConstellation;
 
     public class ConstellationsController : ControllerBase
     {
@@ -23,7 +24,7 @@
         {
             var model = new CountModel()
             {
-                Count = await this.constellationService.GetCount(),
+                Count = await this.constellationService.GetCountAsync(),
             };
 
             return model;
@@ -44,5 +45,9 @@
 
             return model;
         }
+
+        [Route("~/api/constellation/{id}")]
+        public async Task<ActionResult<ConstellationDetails>> GetConstellation(long id)
+            => await this.constellationService.GetByIdAsync<ConstellationDetails>(id);
     }
 }

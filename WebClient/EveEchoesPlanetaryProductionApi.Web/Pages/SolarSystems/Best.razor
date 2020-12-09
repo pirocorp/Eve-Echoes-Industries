@@ -31,13 +31,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (this.SolarSystemId is 0)
+        if (this.SolarSystemId <= 0)
         {
-            this.SolarSystem = this.AppDataService.CurrentSolarSystem;
+            this.SolarSystem = this.AppDataService.CurrentSolarSystem ?? await this.eveApiService.Systems.GetRandomAsync();
+            this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
         }
         else
         {
-            this.SolarSystem = await this.eveApiService.GetSolarSystemAsync(this.SolarSystemId);
+            this.SolarSystem = await this.eveApiService.Systems.GetAsync(this.SolarSystemId);
             this.AppDataService.CurrentSolarSystem = this.SolarSystem;
         }
 

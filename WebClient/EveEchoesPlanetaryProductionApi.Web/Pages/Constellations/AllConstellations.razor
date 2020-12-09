@@ -4,6 +4,7 @@
 @inherits AllBase
 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Constellations
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Services
@@ -58,9 +59,9 @@
 
     protected override async Task LoadData()
     {
-        this.Constellations = await this.eveApiService.GetConstellationsPageAsync(this.PageNumber);
+        this.Constellations = await this.eveApiService.Constellations.GetPageAsync(this.PageNumber);
 
-        var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.GetConstellationsCountAsync();
+        var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.Constellations.GetCountAsync();
         this.appDataService.ConstellationsCount ??= totalConstellations;
 
         this.TotalPages = (int)Math.Ceiling(totalConstellations / (double)GlobalConstants.Ui.ConstellationsPageSize);

@@ -57,9 +57,9 @@
 
     protected override async Task LoadData()
     {
-        this.Systems = await this.eveApiService.GetSystemsPageAsync(this.PageNumber);
+        this.Systems = await this.eveApiService.Systems.GetPageAsync(this.PageNumber);
 
-        var totalSystems = this.appDataService.SolarSystemCount ?? await this.eveApiService.GetRegionsCountAsync();
+        var totalSystems = this.appDataService.SolarSystemCount ?? await this.eveApiService.Systems.GetCountAsync();
         this.appDataService.SolarSystemCount ??= totalSystems;
 
         this.TotalPages = (int)Math.Ceiling(totalSystems / (double)GlobalConstants.Ui.RegionsPageSize);

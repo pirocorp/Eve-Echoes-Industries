@@ -18,8 +18,12 @@ namespace EveEchoesPlanetaryProductionApi.Web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddSingleton<IAppDataService, AppDataService>();
             builder.Services.AddTransient<IEveApiService, EveApiService>();
+            builder.Services.AddTransient<ISolarSystemsProvider, SolarSystemsProvider>();
+            builder.Services.AddTransient<IConstellationsProvider, ConstellationsProvider>();
+            builder.Services.AddTransient<IRegionsProvider, RegionsProvider>();
 
             await builder.Build().RunAsync();
         }
