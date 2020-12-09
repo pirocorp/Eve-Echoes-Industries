@@ -2,7 +2,7 @@
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Common.Extensions
 
-<a href="#">@this.Planet.Name @this.Planet.PlanetTypeName</a>
+<a href=@($"/resources/planets/{this.Planet.PlanetTypeName}.jpg")>@this.Planet.Name @this.Planet.PlanetTypeName</a>
 
 <div class="list-group-item">
     <table class="table table-striped table-res">

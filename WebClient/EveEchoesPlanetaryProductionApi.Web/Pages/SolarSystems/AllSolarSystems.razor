@@ -16,25 +16,7 @@
 <section class="container mb-5">
     @if (this.Systems is not null)
     {
-        <table class="table-fill">
-            <thead>
-            <tr>
-                <th class="text-left">System</th>
-                <th class="text-left">Planets</th>
-            </tr>
-            </thead>
-            <tbody class="table-hover">
-            @foreach (var system in this.Systems)
-            {
-                <tr>
-                    <td class="text-left">
-                        <a href=@($"/system/{system.Id}")>@system.Name</a>
-                    </td>
-                    <td class="text-left">@system.PlanetsCount</td>
-                </tr>
-            }
-            </tbody>
-        </table>
+        <ListingTableComponent Data="(this.Systems)" Location=@("system")></ListingTableComponent>
     }
 
     <Pagination Page="@(this.PageNumber)"

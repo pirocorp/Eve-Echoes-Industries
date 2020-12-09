@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Regions
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions
 {
     using System.Collections.Generic;
 

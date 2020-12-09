@@ -3,7 +3,9 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Regions;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
+
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
 
@@ -44,5 +46,9 @@
 
             return model;
         }
+
+        [Route("~/api/region/{regionId}")]
+        public async Task<ActionResult<RegionDetails>> GetDetails(long regionId)
+            => await this.regionsService.GetByIdAsync<RegionDetails>(regionId);
     }
 }

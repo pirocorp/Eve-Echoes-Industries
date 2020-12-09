@@ -1,0 +1,67 @@
+﻿@using System.Reflection
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">@this.Location.Capitalize()</th>
+            @foreach (var propertyName in this.DataProperties)
+            {
+                if (propertyName.Contains("Id") || propertyName.Contains("Name"))
+                {
+                    continue;
+                }
+
+                <th class="text-left">@propertyName</th>
+                Console.WriteLine(propertyName);
+            }
+        </tr>
+    </thead>
+    <tbody class="table-hover">
+    @foreach (var element in this.Data)
+    {
+        <tr>
+            <td class="text-left">
+                <a href=@($"/{this.Location}/{this.GetPropertyValue(element, "Id")}")>@this.GetPropertyValue(element, "Name")</a>
+            </td>
+            @foreach (var propertyName in this.DataProperties)
+            {
+                if (propertyName.Contains("Id") || propertyName.Contains("Name"))
+                {
+                    continue;
+                }
+
+                <td class="text-left">@this.GetPropertyValue(element, propertyName)</td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<object> Data { get; set; }
+
+    [Parameter]
+    public string Location { get; set; }
+
+    private IList<string> DataProperties { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var element = this.Data?.FirstOrDefault();
+
+        if (element is null)
+        {
+            return;
+        }
+
+        this.DataProperties = element.GetType()
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Select(p => p.Name)
+            .ToList();
+    }
+
+    private string GetPropertyValue(object element, string columnName) 
+        => element.GetType().GetProperty(columnName)?.GetValue(element, null)?.ToString();
+}

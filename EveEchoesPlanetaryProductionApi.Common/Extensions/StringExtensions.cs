@@ -9,9 +9,8 @@
             return jumps[^1];
         }
 
-        public static string RemoveSpaces(this string str)
-        {
-            return str.Replace(" ", string.Empty);
-        }
+        public static string RemoveSpaces(this string str) => str.Replace(" ", string.Empty);
+
+        public static string Capitalize(this string str) => $"{char.ToUpper(str[0])}{str.Substring(1)}";
     }
 }

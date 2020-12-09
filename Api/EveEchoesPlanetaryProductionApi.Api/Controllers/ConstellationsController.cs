@@ -4,11 +4,11 @@
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
 
     using Microsoft.AspNetCore.Mvc;
-    using Models.Constellations.GetConstellation;
 
     public class ConstellationsController : ControllerBase
     {
@@ -47,7 +47,7 @@
         }
 
         [Route("~/api/constellation/{id}")]
-        public async Task<ActionResult<ConstellationDetails>> GetConstellation(long id)
+        public async Task<ActionResult<ConstellationDetails>> GetDetails(long id)
             => await this.constellationService.GetByIdAsync<ConstellationDetails>(id);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellation
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails
 {
     using System.Collections.Generic;
 

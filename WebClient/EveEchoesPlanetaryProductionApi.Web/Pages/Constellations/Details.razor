@@ -1,0 +1,32 @@
+﻿@page "/constellation/{ConstellationId:long}"
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails
+
+@inject IEveApiService eveApiService
+
+@if (this.Constellation is null)
+{
+    <SolarSystemLoader></SolarSystemLoader>
+}
+else
+{
+    <section class="container mb-5">
+        <ListingTableComponent Data="@(this.Constellation.SolarSystems)" Location="@location"></ListingTableComponent>
+    </section>
+}
+
+@code {
+    private const string location = "system";
+
+    [Parameter]
+    public long ConstellationId { get; set; }
+
+    private ConstellationDetails Constellation { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Constellation = await this.eveApiService.Constellations.GetDetailsAsync(this.ConstellationId);
+    }
+}

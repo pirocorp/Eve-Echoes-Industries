@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.Constellations.GetConstellation;
     using Api.Models.Constellations.GetConstellations;
+    using Api.Models.Constellations.GetDetails;
 
     public interface IConstellationsProvider
     {

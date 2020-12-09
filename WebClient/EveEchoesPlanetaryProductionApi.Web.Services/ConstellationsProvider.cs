@@ -5,8 +5,8 @@
     using System.Net.Http.Json;
     using System.Threading.Tasks;
     using Api.Models;
-    using Api.Models.Constellations.GetConstellation;
     using Api.Models.Constellations.GetConstellations;
+    using Api.Models.Constellations.GetDetails;
 
     public class ConstellationsProvider : IConstellationsProvider
     {

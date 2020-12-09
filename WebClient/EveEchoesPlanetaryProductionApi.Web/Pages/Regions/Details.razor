@@ -1,0 +1,32 @@
+﻿@page "/region/{RegionId:long}"
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+
+@if (this.Region is null)
+{
+    <SolarSystemLoader></SolarSystemLoader>
+}
+else
+{
+    <section class="container mb-5">
+        <ListingTableComponent Data="@(this.Region.Constellations)" Location="@location"></ListingTableComponent>
+    </section>
+}
+
+@code {
+    private const string location = "constellation";
+
+    [Parameter]
+    public long RegionId { get; set; }
+
+    private RegionDetails Region { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Region = await this.eveApiService.Regions.GetDetailsAsync(this.RegionId);
+    }
+}

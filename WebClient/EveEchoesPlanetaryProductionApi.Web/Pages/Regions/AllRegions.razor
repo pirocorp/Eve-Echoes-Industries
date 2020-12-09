@@ -4,6 +4,7 @@
 @inherits AllBase
 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Regions
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Services
@@ -15,29 +16,7 @@
 <section class="container mb-5">
     @if (this.Regions is not null)
     {
-        <table class="table-fill">
-            <thead>
-                <tr>
-                    <th class="text-left">Region</th>
-                    <th class="text-left">Constellations</th>
-                    <th class="text-left">Solar Systems</th>
-                    <th class="text-left">Planets</th>
-                </tr>
-            </thead>
-            <tbody class="table-hover">
-                @foreach (var region in this.Regions)
-                {
-                    <tr>
-                        <td class="text-left">
-                            <a href=@($"/region/{region.Id}")>@region.Name</a>
-                        </td>
-                        <td class="text-left">@region.ConstellationsCount</td>
-                        <td class="text-left">@region.SolarSystemsCount</td>
-                        <td class="text-left">@region.PlanetsCount</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <ListingTableComponent Data="(this.Regions)" Location="@("region")"></ListingTableComponent>
     }
 
     <Pagination Page="@(this.PageNumber)"

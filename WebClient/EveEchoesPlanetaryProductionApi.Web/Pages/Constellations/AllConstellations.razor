@@ -16,27 +16,7 @@
 <section class="container mb-5">
     @if (this.Constellations is not null)
     {
-        <table class="table-fill">
-            <thead>
-                <tr>
-                    <th class="text-left">Constellation</th>
-                    <th class="text-left">Solar Systems</th>
-                    <th class="text-left">Planets</th>
-                </tr>
-            </thead>
-            <tbody class="table-hover">
-                @foreach (var constellation in this.Constellations)
-                {
-                    <tr>
-                        <td class="text-left">
-                            <a href=@($"/constellation/{constellation.Id}")>@constellation.Name</a>
-                        </td>
-                        <td class="text-left">@constellation.SolarSystemsCount</td>
-                        <td class="text-left">@constellation.PlanetsCount</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <ListingTableComponent Data="(this.Constellations)" Location=@("constellation")></ListingTableComponent>
     }
 
     <Pagination Page="@(this.PageNumber)"

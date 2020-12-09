@@ -49,5 +49,11 @@
                 .Take(pageSize)
                 .To<TOut>()
                 .ToListAsync();
+
+        public async Task<TOut> GetByIdAsync<TOut>(long id)
+            => await this.dbContext.Regions
+                .Where(r => r.Id.Equals(id))
+                .To<TOut>()
+                .FirstOrDefaultAsync();
     }
 }
