@@ -49,7 +49,10 @@
     bottom: 0;
     left: 0;
     right: 0;
+    display: flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     padding: 0 1px;
     background: #000000;
     color: #fff;
@@ -62,4 +65,12 @@
 .img_wrap:hover .img_description {
     visibility: visible;
     opacity: 1;
+}
+
+@media only screen and (max-width: 770px) {
+    .table-res {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
 }

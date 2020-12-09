@@ -76,6 +76,8 @@
             public const int SolarSystemsSearchPageSize = 10;
 
             public const int RegionsPageSize = 10;
+
+            public const int ConstellationsPageSize = 10;
         }
     }
 }

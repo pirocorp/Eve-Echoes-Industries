@@ -7,7 +7,8 @@
 
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
-    using Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Mapping;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
 

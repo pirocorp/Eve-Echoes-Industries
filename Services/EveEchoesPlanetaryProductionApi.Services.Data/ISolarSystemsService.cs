@@ -15,6 +15,8 @@
 
         Task<int> GetSolarSystemsCount();
 
+        Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1);
+
         Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1);
 
         Task<string> GetSolarSystemNameAsync(long id);

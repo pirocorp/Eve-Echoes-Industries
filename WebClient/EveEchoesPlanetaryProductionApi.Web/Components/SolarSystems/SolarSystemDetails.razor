@@ -5,7 +5,7 @@
 
 @inject IAppDataService AppDataService;
 
-<div class="card text-center mx-auto" style="@this.SolarSystemStyle()">
+<div class="card text-center mx-auto" style="width: 100%">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
@@ -55,16 +55,6 @@
         if (this.SolarSystem is null || this.SolarSystem.Planets.Count() is 0)
         {
             return "disabled";
-        }
-
-        return string.Empty;
-    }
-
-    private string SolarSystemStyle()
-    {
-        if (!this.SolarSystem?.Planets.Any() ?? false)
-        {
-            return "width: 100%";
         }
 
         return string.Empty;

@@ -5,6 +5,7 @@
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSolarSystemPlanetaryResourcesValues;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
@@ -53,6 +54,23 @@
             var model = new CountModel()
             {
                 Count = await this.solarSystemService.GetSolarSystemsCount(),
+            };
+
+            return model;
+        }
+
+        [AllowAnonymous]
+        [Route("~/api/solarSystems/page/{page}")]
+        public async Task<ActionResult<SystemsPageModel>> GetSystems(int page = 1)
+        {
+            if (page <= 0)
+            {
+                return this.BadRequest();
+            }
+
+            var model = new SystemsPageModel()
+            {
+                Systems = await this.solarSystemService.GetAllAsync<SolarSystemListingModel>(GlobalConstants.Ui.SolarSystemsSearchPageSize, page),
             };
 
             return model;

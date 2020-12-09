@@ -1,9 +1,10 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System.Threading.Tasks;
-    using Common;
+
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions;
+    using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
 
     using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@
 
             var model = new RegionsPage()
             {
-                Regions = await this.regionsService.GetAllAsync<RegionListingModel>(GlobalConstants.Ui.RegionsPageSize, page),
+                Regions = await this.regionsService.GetAllAsync<RegionListingModel>(GlobalConstants.Ui.ConstellationsPageSize, page),
             };
 
             return model;

@@ -1,9 +1,9 @@
-﻿@page "/regions"
-@page "/regions/{PageNumber:int}"
+﻿@page "/constellations"
+@page "/constellations/{PageNumber:int}"
 
 @inherits AllBase
 
-@using EveEchoesPlanetaryProductionApi.Api.Models.Regions
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Components
 @using EveEchoesPlanetaryProductionApi.Web.Services
@@ -13,27 +13,25 @@
 @inject NavigationManager navigation
 
 <section class="container mb-5">
-    @if (this.Regions is not null)
+    @if (this.Constellations is not null)
     {
         <table class="table-fill">
             <thead>
                 <tr>
-                    <th class="text-left">Region</th>
-                    <th class="text-left">Constellations</th>
+                    <th class="text-left">Constellation</th>
                     <th class="text-left">Solar Systems</th>
                     <th class="text-left">Planets</th>
                 </tr>
             </thead>
             <tbody class="table-hover">
-                @foreach (var region in this.Regions)
+                @foreach (var constellation in this.Constellations)
                 {
                     <tr>
                         <td class="text-left">
-                            <a href=@($"/region/{region.Id}")>@region.Name</a>
+                            <a href=@($"/constellation/{constellation.Id}")>@constellation.Name</a>
                         </td>
-                        <td class="text-left">@region.ConstellationsCount</td>
-                        <td class="text-left">@region.SolarSystemsCount</td>
-                        <td class="text-left">@region.PlanetsCount</td>
+                        <td class="text-left">@constellation.SolarSystemsCount</td>
+                        <td class="text-left">@constellation.PlanetsCount</td>
                     </tr>
                 }
             </tbody>
@@ -46,24 +44,25 @@
                 SelectedPage="this.ChangePage" />
 </section>
 
+
 @code {
-    private IEnumerable<RegionListingModel> Regions { get; set; }
+    private IEnumerable<ConstellationListingModel> Constellations { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         this.NavigationManager = this.navigation;
-        this.Location = "regions";
+        this.Location = "constellations";
 
         await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()
     {
-        this.Regions = await this.eveApiService.GetRegionsPageAsync(this.PageNumber);
+        this.Constellations = await this.eveApiService.GetConstellationsPageAsync(this.PageNumber);
 
-        var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.GetRegionsCountAsync();
-        this.appDataService.RegionsCount ??= totalRegions;
+        var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.GetConstellationsCountAsync();
+        this.appDataService.ConstellationsCount ??= totalConstellations;
 
-        this.TotalPages = (int)Math.Ceiling(totalRegions / (double)GlobalConstants.Ui.RegionsPageSize);
+        this.TotalPages = (int)Math.Ceiling(totalConstellations / (double)GlobalConstants.Ui.ConstellationsPageSize);
     }
 }

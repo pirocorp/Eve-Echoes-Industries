@@ -1,0 +1,67 @@
+﻿@page "/systems"
+@page "/systems/{PageNumber:int}"
+
+@inherits AllBase
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations
+@using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
+@inject NavigationManager navigation
+
+<section class="container mb-5">
+    @if (this.Systems is not null)
+    {
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">System</th>
+                <th class="text-left">Planets</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            @foreach (var system in this.Systems)
+            {
+                <tr>
+                    <td class="text-left">
+                        <a href=@($"/system/{system.Id}")>@system.Name</a>
+                    </td>
+                    <td class="text-left">@system.PlanetsCount</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+    <Pagination Page="@(this.PageNumber)"
+                TotalPages="@this.TotalPages"
+                Radius="3"
+                SelectedPage="this.ChangePage" />
+</section>
+
+@code {
+
+    private IEnumerable<SolarSystemListingModel> Systems { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.NavigationManager = this.navigation;
+        this.Location = "systems";
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        this.Systems = await this.eveApiService.GetSystemsPageAsync(this.PageNumber);
+
+        var totalSystems = this.appDataService.SolarSystemCount ?? await this.eveApiService.GetRegionsCountAsync();
+        this.appDataService.SolarSystemCount ??= totalSystems;
+
+        this.TotalPages = (int)Math.Ceiling(totalSystems / (double)GlobalConstants.Ui.RegionsPageSize);
+    }
+}

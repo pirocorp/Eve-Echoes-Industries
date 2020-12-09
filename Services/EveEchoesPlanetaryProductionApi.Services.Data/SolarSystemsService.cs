@@ -71,7 +71,7 @@
 
             if (!this.memoryCache.TryGetValue(key, out int cacheEntry))
             {
-                cacheEntry = await this.dbContext.Regions.CountAsync();
+                cacheEntry = await this.dbContext.SolarSystems.CountAsync();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(GlobalConstants.InMemoryCachingSolarSystemCountInDays));
@@ -81,6 +81,14 @@
 
             return cacheEntry;
         }
+
+        public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
+            => await this.dbContext.SolarSystems
+                .OrderBy(r => r.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .To<TOut>()
+                .ToListAsync();
 
         public async Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1)
         {
