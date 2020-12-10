@@ -37,12 +37,13 @@ else
     protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrWhiteSpace(this.SearchTerm)
-            /*|| this.SearchTerm.Length < 3*/)
+            || this.SearchTerm.Length < 3)
         {
             this.navigationManager.NavigateTo("/");
             return;
         }
 
+        this.Location = $"search/{this.SearchTerm}";
         this.NavigationManager = this.navigationManager;
 
         await base.OnInitializedAsync();

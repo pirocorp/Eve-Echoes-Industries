@@ -80,11 +80,11 @@
             return;
         }
 
-        //if (this.searchTerm.Length < 3)
-        //{
-        //    this.searchError = true;
-        //    return;
-        //}
+        if (this.searchTerm.Length < 3)
+        {
+            this.searchError = true;
+            return;
+        }
 
         this.navigationManager.NavigateTo($"/search/{this.searchTerm}");
         this.searchTerm = string.Empty;
