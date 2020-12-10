@@ -60,23 +60,6 @@
             return cacheEntry;
         }
 
-        public async Task<ItemPrice> GetLatestPricesAsync(long id)
-        {
-            var key = $"Last{id}";
-
-            if (!this.memoryCache.TryGetValue(key, out ItemPrice cacheEntry))
-            {
-                cacheEntry = await this.itemsPricesService.GetLatestPricesAsync(id);
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
-
-                this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
-            }
-
-            return cacheEntry;
-        }
-
         public async Task<IDictionary<long, ItemPrice>> GetLatestItemsPricesAsync(IEnumerable<long> itemIds)
         {
             var ids = itemIds?.Distinct().ToArray();
@@ -97,23 +80,32 @@
             return itemPrices;
         }
 
-        private Action<ItemServiceModel> GetSelectorFunction(PriceSelector priceSelector)
+        public async Task<ItemPrice> GetLatestPricesAsync(long id)
         {
-            switch (priceSelector)
+            var key = $"Last{id}";
+
+            if (!this.memoryCache.TryGetValue(key, out ItemPrice cacheEntry))
             {
-                case PriceSelector.Sell:
-                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Sell;
-                case PriceSelector.Buy:
-                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Buy;
-                case PriceSelector.LowestSell:
-                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().LowestSell;
-                case PriceSelector.HighestBuy:
-                    return i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().HighestBuy;
-                case PriceSelector.UserProvided:
-                    return null;
-                default:
-                    return null;
+                cacheEntry = await this.itemsPricesService.GetLatestPricesAsync(id);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
+
+                this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
             }
+
+            return cacheEntry;
         }
+
+        private Action<ItemServiceModel> GetSelectorFunction(PriceSelector priceSelector)
+            => priceSelector switch
+                {
+                    PriceSelector.Sell => i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Sell,
+                    PriceSelector.Buy => i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().Buy,
+                    PriceSelector.LowestSell => i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().LowestSell,
+                    PriceSelector.HighestBuy => i => i.Price = this.GetLatestPricesAsync(i.Id).GetAwaiter().GetResult().HighestBuy,
+                    PriceSelector.UserProvided => null,
+                    _ => null
+                };
     }
 }

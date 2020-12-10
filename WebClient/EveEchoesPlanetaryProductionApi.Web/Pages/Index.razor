@@ -10,8 +10,6 @@
 @inject IEveApiService eveApiService
 @inject IAppDataService appDataService
 
-<EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
-
 <div class="container">
     <section class="row">
         @if (this.randomSolarSystem is null)
@@ -20,6 +18,7 @@
         }
         else
         {
+            <EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
             <SolarSystemDetails SolarSystem="this.randomSolarSystem"></SolarSystemDetails>
         }
     </section>

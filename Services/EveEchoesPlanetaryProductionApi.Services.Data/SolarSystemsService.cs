@@ -113,7 +113,7 @@
                 .Select(ss => ss.Name)
                 .FirstOrDefaultAsync();
 
-        public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesByIdAsync(long id, PriceSelector priceSelector)
+        public async Task<SolarSystemBestModel> GetResourcesInSystemByIdAsync(long id, PriceSelector priceSelector)
         {
             var solarSystem = await this.GetByIdAsync<SolarSystemBestModel>(id);
             await this.PopulateSolarSystemResourcesPrice(priceSelector, solarSystem);
@@ -121,7 +121,7 @@
             return solarSystem;
         }
 
-        public async Task<SolarSystemBestModel> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets)
+        public async Task<SolarSystemBestModel> GetBestSolarSystemInRange(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets)
         {
             var systemsInRangeIds = await this.GetSolarSystemsInRangeIds(range, solarSystemId);
 

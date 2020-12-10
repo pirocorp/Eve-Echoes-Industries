@@ -7,20 +7,28 @@
 
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.ConstellationService.BestSolarSystemInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
+    using Models.IItemsService;
+    using Models.SystemsBestModel;
 
     public class ConstellationService : IConstellationService
     {
+        private readonly IItemsService itemsService;
         private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
         private readonly IMemoryCache memoryCache;
 
         public ConstellationService(
+            IItemsService itemsService,
             IMemoryCache memoryCache,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
+            this.itemsService = itemsService;
             this.dbContext = dbContext;
             this.memoryCache = memoryCache;
         }
@@ -55,5 +63,63 @@
                 .Where(c => c.Id.Equals(id))
                 .To<TOut>()
                 .FirstOrDefaultAsync();
+
+        public async Task<BestSolarSystemInConstellationModel> GetBestSolarSystem(long constellationId, BestInputModel input)
+        {
+            if (input.PriceSelector is PriceSelector.UserProvided)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                return await this.GetBestByExternalPrices(constellationId, input);
+            }
+        }
+
+        private static void PopulatePrices(IEnumerable<SystemBestModel> systems, IEnumerable<ItemServiceModel> prices)
+        {
+            systems
+                .SelectMany(s => s.Planets)
+                .SelectMany(s => s.Resources)
+                .ToList()
+                .ForEach(r => r.Price = prices.FirstOrDefault(p => p.Id.Equals(r.Id))?.Price ?? 0);
+        }
+
+        private static IEnumerable<SystemBestModel> OrderByValue(IList<SystemBestModel> systems, int miningPlanets)
+        {
+            foreach (var system in systems)
+            {
+                var planets = system.Planets.ToList();
+                foreach (var planet in planets)
+                {
+                    planet.Resources = planet.Resources.OrderByDescending(r => r.Price * (decimal) r.Output).ToList();
+                }
+
+                system.Planets = planets
+                    .OrderByDescending(p => p.Resources.Select(r => r.Price * (decimal) r.Output).FirstOrDefault());
+            }
+
+            return systems
+                .OrderByDescending(s => s.Planets
+                    .Select(p => p.Resources.Select(r => r.Price * (decimal) r.Output).FirstOrDefault())
+                    .Take(miningPlanets)
+                    .Sum());
+        }
+
+        private async Task<BestSolarSystemInConstellationModel> GetBestByExternalPrices(long constellationId, BestInputModel input)
+        {
+            var prices = await this.itemsService.GetPlanetaryResources(input.PriceSelector);
+
+            var model = await this.dbContext.Constellations
+                .Where(c => c.Id.Equals(constellationId))
+                .To<BestSolarSystemInConstellationModel>()
+                .FirstOrDefaultAsync();
+
+            PopulatePrices(model.Systems, prices);
+
+            model.Systems = OrderByValue(model.Systems.ToList(), input.MiningPlanets);
+
+            return model;
+        }
     }
 }

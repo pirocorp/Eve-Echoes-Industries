@@ -5,7 +5,7 @@
 
     using Microsoft.AspNetCore.Components;
 
-    public abstract class AllBase : ComponentBase
+    public abstract class PaginationBase : ComponentBase
     {
         [Parameter]
         public int PageNumber { get; set; }

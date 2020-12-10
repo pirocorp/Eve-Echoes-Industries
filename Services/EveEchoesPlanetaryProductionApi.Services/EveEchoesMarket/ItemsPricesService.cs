@@ -22,6 +22,7 @@
     {
         private readonly IDistributedCache distributedCache;
         private readonly string url;
+        private readonly string keyTemplate = "Last{0}";
 
         public ItemsPricesService(IDistributedCache distributedCache)
         {
@@ -64,9 +65,9 @@
             return itemPrices;
         }
 
-        public async Task<ItemPrice> GetLatestPricesAsync(long id)
+        public async Task<ItemPrice> GetLatestPricesAsync(long itemId)
         {
-            var key = $"Last{id}";
+            var key = string.Format(this.keyTemplate, itemId);
 
             var cachedValue = await this.distributedCache.GetAsync(key);
 
@@ -74,7 +75,7 @@
 
             if (cachedValue is null)
             {
-                var lastPrice = (await this.GetHistoricalPricesForItemByIdAsync(id)).Last();
+                var lastPrice = (await this.GetHistoricalPricesForItemByIdAsync(itemId)).Last();
 
                 json = JsonSerializer.Serialize(lastPrice);
                 await this.SetDataToCacheAsync(key, json);

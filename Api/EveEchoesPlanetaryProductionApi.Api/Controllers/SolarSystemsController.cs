@@ -1,23 +1,20 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
-    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSolarSystemPlanetaryResourcesValues;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SolarSystemsController : ControllerBase
@@ -30,11 +27,9 @@
             this.solarSystemService = solarSystemService;
         }
 
-        [AllowAnonymous]
         public async Task<ActionResult<SolarSystemServiceModel>> GetSolarSystem()
             => await this.solarSystemService.GetRandomAsync();
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<SolarSystemServiceModel>> GetSolarSystem(long id)
         {
@@ -48,7 +43,6 @@
             return solarSystem;
         }
 
-        [AllowAnonymous]
         [Route("~/api/solarSystems/count")]
         public async Task<CountModel> GetSolarSystemsCount()
         {
@@ -60,7 +54,6 @@
             return model;
         }
 
-        [AllowAnonymous]
         [Route("~/api/solarSystems/page/{page}")]
         public async Task<ActionResult<SystemsPageModel>> GetSystems(int page = 1)
         {
@@ -77,8 +70,6 @@
             return model;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
         [Route("~/api/solarSystems/search/{searchTerm}/{page?}")]
         public async Task<ActionResult<SearchResultModel>> Search(string searchTerm, int page = 1)
         {
@@ -95,16 +86,16 @@
         }
 
         [HttpPost("{id}")]
-        public async Task<ActionResult<SolarSystemBestModel>> GetBestSolarSystemPlanetaryResourcesValues(long id, [FromBody]GetBestSolarSystemPlanetaryResourcesValuesInputModel model)
+        public async Task<ActionResult<SolarSystemBestModel>> GetSystemBestResources(long id, [FromBody]BestInputModel model)
         {
-            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);
+            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.Price, out var priceSelector);
 
             if (!selectorIsParsedSuccessful)
             {
                 return this.BadRequest();
             }
 
-            var sol = await this.solarSystemService.GetBestPlanetaryResourcesByIdAsync(id, priceSelector);
+            var sol = await this.solarSystemService.GetResourcesInSystemByIdAsync(id, priceSelector);
 
             if (sol is null)
             {
@@ -118,16 +109,16 @@
 
         [HttpPost]
         [Route("~/api/solarSystems/{range}/{id}")]
-        public async Task<ActionResult<SolarSystemBestModel>> GetBestSolarSystemPlanetaryResourcesValues(long id, int range, [FromBody]GetBestSolarSystemPlanetaryResourcesValuesInputModel model)
+        public async Task<ActionResult<SolarSystemBestModel>> GetBestSystemInRange(long id, int range, [FromBody]BestInputModel model)
         {
-            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);
+            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.Price, out var priceSelector);
 
             if (!selectorIsParsedSuccessful)
             {
                 return this.BadRequest();
             }
 
-            var sol = await this.solarSystemService.GetBestPlanetaryResourcesInRangeAsync(id, priceSelector, range, model.MiningPlanets);
+            var sol = await this.solarSystemService.GetBestSolarSystemInRange(id, priceSelector, range, model.MiningPlanets);
 
             if (sol is null)
             {

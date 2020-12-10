@@ -9,8 +9,6 @@
     {
         Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemByIdAsync(long id);
 
-        Task<ItemPrice> GetLatestPricesAsync(long id);
-
-        //Task<IDictionary<long, ItemPrice>> GetItemPricesAsync(IEnumerable<long> itemIds);
+        Task<ItemPrice> GetLatestPricesAsync(long itemId);
     }
 }
