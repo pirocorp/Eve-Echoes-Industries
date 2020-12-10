@@ -1,47 +1,97 @@
-﻿<nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">Eve Echoes</a>
+﻿@using EveEchoesPlanetaryProductionApi.Web.Components
+
+@inject NavigationManager navigationManager;
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/">Eve Echoes</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" @onclick="this.ToggleNavMenu"></span>
     </button>
 
     <div class="@(this.NavMenuCssClass) navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            @*<li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>*@
-            @*<li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>*@
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/">
+                    <span class="nav-link">Home</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/regions">
+                    <span class="nav-link">Regions</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/constellations">
+                    <span class="nav-link">Constellations</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/systems">
+                    <span class="nav-link">Solar Systems</span>
+                </NavLink>
+            </li>
+            
             @*<li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
             </li>*@
             @*<li class="nav-item">
                 <a class="nav-link disabled" href="#">Disabled</a>
             </li>*@
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" @bind-value="@this.searchTerm" placeholder="Search Solar System">
+            <button class="btn btn-outline-success my-2 my-sm-0" @onclick="this.Search">Search</button>
+        </div>
     </div>
 </nav>
+
+@if (this.searchError)
+{
+    <InformationModalComponent Content=@($"Search must be at least 3 chars long") Title="@("Invalid search term")" ModalIsClosed="this.CloseModal"></InformationModalComponent>
+}
 
 @code {
 
     private bool collapseNavMenu = true;
 
+    private string searchTerm;
+
     private string NavMenuCssClass => this.collapseNavMenu ? "collapse" : null;
+
+    private bool searchError = false;
 
     private void ToggleNavMenu()
     {
         this.collapseNavMenu = !this.collapseNavMenu;
+    }
+
+    private void Search()
+    {
+        if (string.IsNullOrWhiteSpace(this.searchTerm))
+        {
+            return;
+        }
+
+        //if (this.searchTerm.Length < 3)
+        //{
+        //    this.searchError = true;
+        //    return;
+        //}
+
+        this.navigationManager.NavigateTo($"/search/{this.searchTerm}");
+        this.searchTerm = string.Empty;
+    }
+
+    private void CloseModal()
+    {
+        this.searchError = false;
     }
 }

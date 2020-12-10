@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.SolarSystems.GetSystems;
+
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
 
     public interface ISolarSystemsProvider
@@ -14,5 +16,7 @@
         Task<SolarSystemServiceModel> GetRandomAsync();
 
         Task<SolarSystemServiceModel> GetAsync(long solarSystemId);
+
+        Task<SearchResultModel> GetSearchResultsAsync(string searchTerm, int page = 1);
     }
 }

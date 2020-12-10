@@ -17,12 +17,12 @@
     @if (this.Constellations is not null)
     {
         <ListingTableComponent Data="(this.Constellations)" Location=@("constellation")></ListingTableComponent>
-    }
 
-    <Pagination Page="@(this.PageNumber)"
-                TotalPages="@this.TotalPages"
-                Radius="3"
-                SelectedPage="this.ChangePage" />
+        <Pagination Page="@(this.PageNumber)"
+                    TotalPages="@this.TotalPages"
+                    Radius="3"
+                    SelectedPage="this.ChangePage" />
+    }
 </section>
 
 

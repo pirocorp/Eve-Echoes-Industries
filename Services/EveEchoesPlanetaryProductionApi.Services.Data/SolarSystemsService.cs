@@ -98,6 +98,7 @@
             var count = await query.CountAsync();
 
             var results = await query
+                .OrderBy(ss => ss.Name)
                 .To<TOut>()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)

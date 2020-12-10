@@ -1,0 +1,67 @@
+﻿@page "/search/{searchTerm}"
+@page "/search/{searchTerm}/{PageNumber:int}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits AllBase
+
+@inject NavigationManager navigationManager;
+@inject IEveApiService eveApiService;
+
+@if (this.SearchResult is null)
+{
+    <SearchLoader></SearchLoader>
+}
+else
+{
+    <section class="container mb-5">
+        <ListingTableComponent Data="(this.SearchResult.Results)" Location=@("system")></ListingTableComponent>
+
+        <Pagination Page="@(this.PageNumber)"
+                    TotalPages="@this.TotalPages"
+                    Radius="3"
+                    SelectedPage="this.ChangePage" />
+    </section>
+}
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    private SearchResultModel SearchResult { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(this.SearchTerm)
+            /*|| this.SearchTerm.Length < 3*/)
+        {
+            this.navigationManager.NavigateTo("/");
+            return;
+        }
+
+        this.NavigationManager = this.navigationManager;
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        this.PageNumber = this.PageNumber == 0 ? 1 : this.PageNumber;
+        this.Location = $"search/{this.SearchTerm}";
+
+        await this.LoadData();
+    }
+
+    protected override async Task LoadData()
+    {
+        this.SearchResult = await this.eveApiService.Systems.GetSearchResultsAsync(this.SearchTerm, this.PageNumber);
+
+        this.TotalPages = (int)Math.Ceiling(this.SearchResult.Count / (double)GlobalConstants.Ui.SolarSystemsSearchPageSize);
+    }
+}

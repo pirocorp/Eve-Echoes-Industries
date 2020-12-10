@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
@@ -79,7 +80,7 @@
         [HttpGet]
         [AllowAnonymous]
         [Route("~/api/solarSystems/search/{searchTerm}/{page?}")]
-        public async Task<ActionResult<IEquatable<SearchResultModel>>> Search(string searchTerm, int page = 1)
+        public async Task<ActionResult<SearchResultModel>> Search(string searchTerm, int page = 1)
         {
             var (results, count) = await this.solarSystemService
                 .Search<SearchResultSolarSystemModel>(searchTerm, GlobalConstants.Ui.SolarSystemsSearchPageSize, page);
@@ -90,7 +91,7 @@
                 Count = count,
             };
 
-            return this.Ok(model);
+            return model;
         }
 
         [HttpPost("{id}")]

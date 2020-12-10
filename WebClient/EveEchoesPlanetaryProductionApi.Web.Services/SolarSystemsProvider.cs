@@ -4,8 +4,10 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-    using Api.Models;
-    using Api.Models.SolarSystems.GetSystems;
+
+    using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
 
     public class SolarSystemsProvider : ISolarSystemsProvider
@@ -28,5 +30,8 @@
 
             public async Task<SolarSystemServiceModel> GetAsync(long solarSystemId)
                 => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>($"api/SolarSystems/{solarSystemId}");
+
+            public async Task<SearchResultModel> GetSearchResultsAsync(string searchTerm, int page = 1)
+                => await this.httpClient.GetFromJsonAsync<SearchResultModel>($"api/solarSystems/search/{searchTerm}/{page}");
         }
 }
