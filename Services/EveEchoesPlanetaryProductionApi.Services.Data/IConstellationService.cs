@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.ConstellationService.BestSolarSystemInConstellation;
 
     public interface IConstellationService
     {

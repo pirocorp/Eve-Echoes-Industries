@@ -7,6 +7,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
@@ -14,7 +15,6 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using Models.Constellations.GetSimpleDetails;
 
     [ApiController]
     public class ConstellationsController : ControllerBase
@@ -74,6 +74,12 @@
             if (!priceSelectorSuccess)
             {
                 this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 

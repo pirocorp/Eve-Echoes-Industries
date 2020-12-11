@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Text.Json.Serialization;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
@@ -24,6 +25,7 @@
         public PricesModel Prices { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public PriceSelector PriceSelector { get; set; }
     }
 }

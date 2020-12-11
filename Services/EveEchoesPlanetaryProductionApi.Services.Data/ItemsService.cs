@@ -38,26 +38,17 @@
 
         public async Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PriceSelector priceSelector)
         {
-            var planetaryResources = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
-            var key = nameof(planetaryResources);
+            var planetaryResourcesIds = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
 
-            if (!this.memoryCache.TryGetValue(key, out List<ItemServiceModel> cacheEntry))
-            {
-                cacheEntry = await this.dbContext.Items
-                    .Where(i => planetaryResources.Any(x => x.Equals(i.Id)))
-                    .To<ItemServiceModel>()
-                    .ToListAsync();
+            var items = await this.dbContext.Items
+                .Where(i => planetaryResourcesIds.Any(x => x.Equals(i.Id)))
+                .To<ItemServiceModel>()
+                .ToListAsync();
 
-                var selectorFunction = this.GetSelectorFunction(priceSelector);
-                cacheEntry.ForEach(selectorFunction);
+            var selectorFunction = this.GetSelectorFunction(priceSelector);
+            items.ForEach(selectorFunction);
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(GlobalConstants.InMemoryPlanetaryResourcesCachingInSeconds));
-
-                this.memoryCache.Set(key, cacheEntry, cacheEntryOptions);
-            }
-
-            return cacheEntry;
+            return items;
         }
 
         public async Task<IDictionary<long, ItemPrice>> GetLatestItemsPricesAsync(IEnumerable<long> itemIds)

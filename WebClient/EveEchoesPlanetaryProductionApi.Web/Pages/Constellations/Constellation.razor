@@ -1,0 +1,183 @@
+﻿@page "/best/constellation"
+@page "/best/constellation/{ConstellationId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Components.Loaders
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Api.Models
+
+@inject IEveApiService eveApiService;
+@inject IAppDataService appDataService;
+@inject NavigationManager navigationManager;
+
+<h3>Constellation</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="card text-center mx-auto" style="width: 100%">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href=@($"details/") ActiveClass="active" Match="NavLinkMatch.All">Details</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link " href="@($"best/")" ActiveClass="active" Match="NavLinkMatch.All">Best In System</NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link " href="@($"best/constellation")" ActiveClass="active" Match="NavLinkMatch.All">Best In Constellation</NavLink>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body">
+                <h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
+                <h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
+                
+                <div class="row">
+                    <div class="col-5 offset-1">
+                        <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
+                    </div>
+                    <div class="col-5 align-self-center">
+                        <div class="form-group">
+                            <label for="mining-planets">Colonies</label>
+                            <select class="form-field" id="mining-planets" @onchange="OnPlanetsChangeHandler">
+                                <option disabled selected>Planets</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                @if (this.PriceSelector is PriceSelector.UserProvided)
+                {
+                    <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
+                }
+                
+                @if (this.BestSystems is not null)
+                {
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>System</th>
+                                <th>Planets</th>
+                                <th>Estimated Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach (var system in this.BestSystems.Systems)
+                                {
+                                    <tr>
+                                        <td>@system.Name</td>
+                                        <td>@system.Planets</td>
+                                        <td>@system.EstimatedValue</td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                }
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public long ConstellationId { get; set; }
+
+    private ConstellationSimpleDetailsModel ConstellationDetails { get; set; }
+
+    private BestConstellationModel BestSystems { get; set; }
+
+    private PriceSelector PriceSelector { get; set; }
+
+    private int MiningPlanets { get; set; }
+
+    public PricesModel Prices { get; set; }
+
+    private bool IsSelected { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ConstellationId = this.ConstellationId == 0 ? this.appDataService.CurrentSolarSystem?.ConstellationId ?? 0 : this.ConstellationId;
+
+        if (this.ConstellationId is 0)
+        {
+            this.navigationManager.NavigateTo("/404");
+            return;
+        }
+
+        this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ValidateUserInput()
+    {
+        if (!this.IsSelected)
+        {
+            return;
+        }
+
+        if (this.MiningPlanets < 1 || this.MiningPlanets > 6)
+        {
+            return;
+        }
+
+        if (this.PriceSelector is PriceSelector.UserProvided)
+        {
+            // TODO:
+        }
+
+        await this.LoadData();
+    }
+
+    private async void PriceSelectorChangeHandler(PriceSelector selector)
+    {
+        this.PriceSelector = selector;
+        this.IsSelected = true;
+
+        await this.ValidateUserInput();
+    }
+
+    private async void OnPlanetsChangeHandler(ChangeEventArgs e)
+    {
+        var planetsCountParseSuccess = int.TryParse(e.Value?.ToString(), out var planetsCount);
+
+        if (planetsCountParseSuccess && planetsCount <= 6)
+        {
+            this.MiningPlanets = planetsCount;
+        }
+
+        await this.ValidateUserInput();
+    }
+
+    private void OnInputPriceChangeHandler(bool change)
+    {
+        // TODO:
+    }
+
+    private async Task LoadData()
+    {
+        var model = new BestInputModel()
+        {
+            MiningPlanets = this.MiningPlanets,
+            Price = this.PriceSelector.ToString(),
+            Prices = this.Prices
+        };
+
+        this.BestSystems = await this.eveApiService.Constellations.GetBestSystemsInConstellation(this.ConstellationId, model);
+
+        Console.WriteLine("Load Data");
+        this.StateHasChanged();
+    }
+}
