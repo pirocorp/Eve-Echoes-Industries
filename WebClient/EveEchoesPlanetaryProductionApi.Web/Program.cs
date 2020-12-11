@@ -24,6 +24,7 @@ namespace EveEchoesPlanetaryProductionApi.Web
             builder.Services.AddTransient<ISolarSystemsProvider, SolarSystemsProvider>();
             builder.Services.AddTransient<IConstellationsProvider, ConstellationsProvider>();
             builder.Services.AddTransient<IRegionsProvider, RegionsProvider>();
+            builder.Services.AddTransient<IPlanetaryResourcesProvider, PlanetaryResourcesProvider>();
 
             await builder.Build().RunAsync();
         }

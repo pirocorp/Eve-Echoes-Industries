@@ -3,14 +3,14 @@
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
 @inject IAppDataService AppDataService;
+@inject IEveApiService eveApiService;
 
 <section class="container">
     <h3 class="text-center my-5">User Provided Planetary Resources Prices</h3>
     <div class="row">
-        @{
-            var planetaryResources = this.GetPlanetaryResources().ToList();
-
-            foreach (var resource in planetaryResources)
+        @if (this.PlanetaryResources is not null)
+        {
+            foreach (var resource in this.PlanetaryResources)
             {
                 <div class="col-12 col-lg-6 col-xl-3 form-group">
                     <label for="@resource">@resource</label>
@@ -36,15 +36,23 @@
     [Parameter]
     public EventCallback<bool> OnChange { get; set; }
 
-    private IEnumerable<string> GetPlanetaryResources()
+    private IEnumerable<string> PlanetaryResources { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
+        if (this.SolarSystem is null)
+        {
+            this.PlanetaryResources = await this.eveApiService.PlanetaryResources.GetPlanetaryResources();
+            return;
+        }
+
         var planetaryResources = this.SolarSystem.Planets
             .SelectMany(p => p.PlanetResources)
             .Select(pr => pr.ItemName)
             .Distinct()
             .ToList();
 
-        return planetaryResources;
+        this.PlanetaryResources = planetaryResources;
     }
 
     private string TryGetValue(string planetaryResource)

@@ -2,8 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.Constellations.GetConstellations;
-    using Api.Models.Constellations.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public interface IConstellationsProvider
     {
@@ -12,5 +15,9 @@
         Task<IEnumerable<ConstellationListingModel>> GetPageAsync(int page = 1);
 
         Task<ConstellationDetails> GetDetailsAsync(long id);
+
+        Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model);
+
+        Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id);
     }
 }

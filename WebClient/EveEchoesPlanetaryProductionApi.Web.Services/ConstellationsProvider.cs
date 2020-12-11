@@ -5,8 +5,11 @@
     using System.Net.Http.Json;
     using System.Threading.Tasks;
     using Api.Models;
+    using Api.Models.Constellations.BestSolarSystemsInConstellation;
     using Api.Models.Constellations.GetConstellations;
     using Api.Models.Constellations.GetDetails;
+    using Api.Models.Constellations.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class ConstellationsProvider : IConstellationsProvider
     {
@@ -25,5 +28,20 @@
 
         public async Task<ConstellationDetails> GetDetailsAsync(long id)
             => await this.httpClient.GetFromJsonAsync<ConstellationDetails>($"api/constellation/{id}");
+
+        public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model)
+        {
+            var result =  await this.httpClient.PostAsJsonAsync($"api/solarSystems/best/constellation/{constellationId}", model);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            
+            return await result.Content.ReadFromJsonAsync<BestConstellationModel>();
+        }
+
+        public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id)
+            => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellation/simple/{id}");
     }
 }

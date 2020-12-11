@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\EveEchoesPlanetaryProductionApi.Data.Models\EveEchoesPlanetaryProductionApi.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj" />
   </ItemGroup>

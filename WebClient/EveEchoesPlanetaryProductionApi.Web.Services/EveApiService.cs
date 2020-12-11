@@ -5,17 +5,21 @@
         public EveApiService(
             ISolarSystemsProvider solarSystemsProvider,
             IConstellationsProvider constellationsProvider,
-            IRegionsProvider regionsProvider)
+            IRegionsProvider regionsProvider, 
+            IPlanetaryResourcesProvider planetaryResourcesProvider)
         {
             this.Systems = solarSystemsProvider;
             this.Constellations = constellationsProvider;
             this.Regions = regionsProvider;
+            this.PlanetaryResources = planetaryResourcesProvider;
         }
 
-        public ISolarSystemsProvider Systems { get; set; }
+        public ISolarSystemsProvider Systems { get; }
 
-        public IConstellationsProvider Constellations { get; set; }
+        public IConstellationsProvider Constellations { get; }
 
-        public IRegionsProvider Regions { get; set; }
+        public IRegionsProvider Regions { get; }
+
+        public IPlanetaryResourcesProvider PlanetaryResources { get; }
     }
 }

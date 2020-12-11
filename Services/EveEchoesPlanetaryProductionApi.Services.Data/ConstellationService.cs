@@ -9,13 +9,13 @@
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.ConstellationService.BestSolarSystemInConstellation;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SystemsBestModel;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
-    using Models.IItemsService;
-    using Models.SystemsBestModel;
 
     public class ConstellationService : IConstellationService
     {
@@ -64,7 +64,7 @@
                 .To<TOut>()
                 .FirstOrDefaultAsync();
 
-        public async Task<BestSolarSystemInConstellationModel> GetBestSolarSystem(long constellationId, BestInputModel input)
+        public async Task<IEnumerable<TOut>> GetBestSolarSystem<TOut>(long constellationId, BestInputModel input)
         {
             if (input.PriceSelector is PriceSelector.UserProvided)
             {
@@ -72,7 +72,7 @@
             }
             else
             {
-                return await this.GetBestByExternalPrices(constellationId, input);
+                return await this.GetBestByExternalPrices<TOut>(constellationId, input);
             }
         }
 
@@ -106,7 +106,7 @@
                     .Sum());
         }
 
-        private async Task<BestSolarSystemInConstellationModel> GetBestByExternalPrices(long constellationId, BestInputModel input)
+        private async Task<IEnumerable<TOut>> GetBestByExternalPrices<TOut>(long constellationId, BestInputModel input)
         {
             var prices = await this.itemsService.GetPlanetaryResources(input.PriceSelector);
 
@@ -119,7 +119,8 @@
 
             model.Systems = OrderByValue(model.Systems.ToList(), input.MiningPlanets);
 
-            return model;
+            var miningPlanets = input.MiningPlanets;
+            return model.Systems.AsQueryable().To<TOut>(new { miningPlanets }).ToList();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿@namespace EveEchoesPlanetaryProductionApi.Web.Components.SolarSystems
-
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
 @inject IAppDataService AppDataService;
@@ -9,10 +7,13 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <NavLink class="nav-link active" href=@($"details/") Match="NavLinkMatch.All" >Details</NavLink>
+                <NavLink class="nav-link active" href=@($"details/") ActiveClass="active" Match="NavLinkMatch.All">Details</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class=@($"nav-link {this.NavLinkClass()}") href="@($"best/")" Match="NavLinkMatch.All">Best In System</NavLink>
+                <NavLink class=@($"nav-link {this.NavLinkClass()}") href="@($"best/")" ActiveClass="active" Match="NavLinkMatch.All">Best In System</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link " href="@($"best/constellation")" ActiveClass="active" Match="NavLinkMatch.All">Best In Constellation</NavLink>
             </li>
         </ul>
     </div>

@@ -13,7 +13,7 @@
     <div class="row">
         @if (this.SolarSystem is null)
         {
-            <SolarSystemLoader></SolarSystemLoader>
+            <Loader></Loader>
         }
         else
         {
@@ -27,7 +27,6 @@
     public long SolarSystemId { get; set; }
 
     public SolarSystemServiceModel SolarSystem { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {

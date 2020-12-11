@@ -1,6 +1,6 @@
-﻿@using EveEchoesPlanetaryProductionApi.Web.Services
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Services
 
 @inject IAppDataService AppDataService;
 
@@ -8,19 +8,22 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <NavLink class="nav-link" href=@($"details/") Match="NavLinkMatch.All">Details</NavLink>
+                <NavLink class="nav-link" href=@($"details/") ActiveClass="active" Match="NavLinkMatch.All">Details</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link active" href="@($"best/")" Match="NavLinkMatch.All">Best In System</NavLink>
+                <NavLink class="nav-link " href="@($"best/")" ActiveClass="active" Match="NavLinkMatch.All">Best In System</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link " href="@($"best/constellation")" ActiveClass="active" Match="NavLinkMatch.All">Best In Constellation</NavLink>
             </li>
         </ul>
     </div>
 
     <div class="card-body">
         <h3 class="card-title">System: @this.SolarSystem.Name</h3>
-        
+
         <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
-        
+
         @if (this.PriceSelector is PriceSelector.UserProvided)
         {
             <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
@@ -62,7 +65,7 @@
             {
                 var bestPlanetResource = p
                     .PlanetResources
-                    .OrderByDescending(p => func(p) * (decimal) p.Output)
+                    .OrderByDescending(p => func(p) * (decimal)p.Output)
                     .First();
 
                 return new PlanetValue()
@@ -73,7 +76,7 @@
                     Price = func(bestPlanetResource)
                 };
             })
-            .OrderByDescending(p => p.Price * (decimal) p.Output)
+            .OrderByDescending(p => p.Price * (decimal)p.Output)
             .ToList();
     }
 

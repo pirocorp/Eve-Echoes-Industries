@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
@@ -47,6 +48,26 @@
             return resources
                 .OrderByDescending(x => x.ResourceValue)
                 .Take(resourcesCount);
+        }
+
+        public async Task<IEnumerable<string>> GetAllPlanetaryResources()
+        {
+            var planetaryResourcesIds = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
+
+            return await this.dbContext.Items
+                .Where(i => planetaryResourcesIds.Contains(i.Id))
+                .Select(i => i.Name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TOut>> GetAllPlanetaryResources<TOut>()
+        {
+            var planetaryResourcesIds = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
+
+            return await this.dbContext.Items
+                .Where(i => planetaryResourcesIds.Contains(i.Id))
+                .To<TOut>()
+                .ToListAsync();
         }
     }
 }

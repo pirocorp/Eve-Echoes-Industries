@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
     using EveEchoesPlanetaryProductionApi.Common;
@@ -13,6 +14,7 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using Models.Constellations.GetSimpleDetails;
 
     [ApiController]
     public class ConstellationsController : ControllerBase
@@ -59,11 +61,15 @@
         public async Task<ActionResult<ConstellationDetails>> GetDetails(long id)
             => await this.constellationService.GetByIdAsync<ConstellationDetails>(id);
 
+        [Route("~/api/constellation/simple/{id}")]
+        public async Task<ActionResult<ConstellationSimpleDetailsModel>> GetSimpleDetails(long id)
+            => await this.constellationService.GetByIdAsync<ConstellationSimpleDetailsModel>(id);
+
         [HttpPost]
         [Route("~/api/solarSystems/best/constellation/{constellationId}")]
-        public async Task<IActionResult> GetBestSolarSystemInConstellation(long constellationId, [FromBody]BestInputModel model)
+        public async Task<IActionResult> GetBestSolarSystemsInConstellation(long constellationId, [FromBody]BestInputModel input)
         {
-            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(model.Price, out var priceSelector);
+            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 
             if (!priceSelectorSuccess)
             {
@@ -71,11 +77,15 @@
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
-            model.PriceSelector = priceSelector;
+            input.PriceSelector = priceSelector;
 
-            var result = await this.constellationService.GetBestSolarSystem(constellationId, model);
+            var model = new BestConstellationModel
+            {
+                Systems = await this.constellationService
+                    .GetBestSolarSystem<BestSystemsInConstellationModel>(constellationId, input),
+            };
 
-            return this.Ok(result);
+            return this.Ok(model);
         }
     }
 }

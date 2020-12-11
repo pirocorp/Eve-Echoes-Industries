@@ -17,6 +17,8 @@
 
         public string Name { get; set; }
 
+        public long ConstellationId { get; set; }
+
         [JsonPropertyName("constellation")]
         public string ConstellationName { get; set; }
 

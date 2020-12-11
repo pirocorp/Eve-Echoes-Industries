@@ -8,10 +8,8 @@
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PlanetaryResourcesController : ControllerBase
@@ -38,5 +36,9 @@
 
             return this.Ok(resources);
         }
+
+        [Route("~/api/resources/all")]
+        public async Task<IEnumerable<string>> GetAllPlanetResources()
+            => await this.planetaryResourcesService.GetAllPlanetaryResources();
     }
 }

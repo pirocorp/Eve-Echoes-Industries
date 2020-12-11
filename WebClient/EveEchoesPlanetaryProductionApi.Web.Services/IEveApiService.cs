@@ -2,10 +2,12 @@
 {
     public interface IEveApiService
     {
-        ISolarSystemsProvider Systems { get; set; }
+        ISolarSystemsProvider Systems { get; }
 
-        IConstellationsProvider Constellations { get; set; }
+        IConstellationsProvider Constellations { get; }
 
-        IRegionsProvider Regions { get; set; }
+        IRegionsProvider Regions { get; }
+
+        IPlanetaryResourcesProvider PlanetaryResources { get; }
     }
 }

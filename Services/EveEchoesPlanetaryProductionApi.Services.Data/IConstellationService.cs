@@ -14,6 +14,6 @@
 
         Task<TOut> GetByIdAsync<TOut>(long id);
 
-        Task<BestSolarSystemInConstellationModel> GetBestSolarSystem(long constellationId, BestInputModel input);
+        Task<IEnumerable<TOut>> GetBestSolarSystem<TOut>(long constellationId, BestInputModel input);
     }
 }

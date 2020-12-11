@@ -9,5 +9,9 @@
     public interface IPlanetaryResourcesService
     {
         Task<IEnumerable<PlanetaryResourceServiceModel>> GetBestPlanetaryResourcesInRangeAsync(long solarSystemId, PriceSelector priceSelector, int range, int resourcesCount);
+
+        Task<IEnumerable<string>> GetAllPlanetaryResources();
+
+        Task<IEnumerable<TOut>> GetAllPlanetaryResources<TOut>();
     }
 }
