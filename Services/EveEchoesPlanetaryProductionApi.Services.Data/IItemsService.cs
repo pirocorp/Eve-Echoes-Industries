@@ -3,12 +3,15 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     public interface IItemsService
     {
         Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PriceSelector priceSelector);
+
+        Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PricesModel prices);
 
         Task<ItemPrice> GetLatestPricesAsync(long id);
 

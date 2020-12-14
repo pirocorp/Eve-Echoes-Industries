@@ -24,6 +24,13 @@
                            @onchange="@((e) => this.ChangeResourceValue((string)e.Value, resource))">
                 </div>
             }
+
+            <div class="col-12 col-lg-6 col-xl-3">
+                <button class="btn-form btn-form-submit ">Submit</button>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3">
+                <button class="btn-form btn-danger" @onclick="this.ClearPrices">Clear</button>
+            </div>
         }
     </div>
 </section>
@@ -78,5 +85,10 @@
             this.AppDataService.PlanetaryResourcesPrices[resource] = price;
             this.OnChange.InvokeAsync(true);
         }
+    }
+
+    private void ClearPrices()
+    {
+        this.AppDataService.PlanetaryResourcesPrices = new Dictionary<string, decimal>();
     }
 }

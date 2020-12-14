@@ -110,9 +110,9 @@ td {
     border-right: 1px solid #C1C3D1;
 }
 
-td:last-child {
-    border-right: 0px;
-}
+    td:last-child {
+        border-right: 0px;
+    }
 
 th.text-left {
     text-align: left;

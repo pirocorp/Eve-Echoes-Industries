@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Api.Models;
+    using Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
@@ -36,14 +37,24 @@
             this.itemsPricesService = itemsPricesService;
         }
 
+        public async Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PricesModel prices)
+        {
+            var items = await this.GetItemServiceModels();
+            var currentPrices = prices.GetType().GetProperties()
+                .ToDictionary(p => p.Name, p => p);
+
+            foreach (var item in items)
+            {
+                var price = currentPrices[item.Name.RemoveSpaces()].GetValue(prices) as decimal? ?? 0;
+                item.Price = price;
+            }
+
+            return items;
+        }
+
         public async Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PriceSelector priceSelector)
         {
-            var planetaryResourcesIds = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
-
-            var items = await this.dbContext.Items
-                .Where(i => planetaryResourcesIds.Any(x => x.Equals(i.Id)))
-                .To<ItemServiceModel>()
-                .ToListAsync();
+            var items = await this.GetItemServiceModels();
 
             var selectorFunction = this.GetSelectorFunction(priceSelector);
             items.ForEach(selectorFunction);
@@ -86,6 +97,18 @@
             }
 
             return cacheEntry;
+        }
+
+        private async Task<List<ItemServiceModel>> GetItemServiceModels()
+        {
+            var planetaryResourcesIds = GlobalConstants.Items.GetPlanetaryResourcesIds().ToList();
+
+            var items = await this.dbContext.Items
+                .Where(i => planetaryResourcesIds.Any(x => x.Equals(i.Id)))
+                .To<ItemServiceModel>()
+                .ToListAsync();
+
+            return items;
         }
 
         private Action<ItemServiceModel> GetSelectorFunction(PriceSelector priceSelector)

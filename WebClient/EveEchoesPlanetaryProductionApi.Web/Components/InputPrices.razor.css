@@ -77,3 +77,21 @@
     background: #56606A;
     border-color: #343A40;
 }
+
+.btn-form {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.btn-form-submit {
+    color: #fff;
+    background: #7A8793;
+    border-color: #626D78;
+}
+
+.btn-form-submit:hover {
+    color: #fff;
+    background: #56606A;
+    border-color: #343A40;
+}

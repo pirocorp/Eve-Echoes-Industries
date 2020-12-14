@@ -68,7 +68,7 @@
         {
             if (input.PriceSelector is PriceSelector.UserProvided)
             {
-                throw new NotImplementedException();
+                return await this.GetBestByUserProvidedPrices<TOut>(constellationId, input);
             }
             else
             {
@@ -106,10 +106,8 @@
                     .Sum());
         }
 
-        private async Task<IEnumerable<TOut>> GetBestByExternalPrices<TOut>(long constellationId, BestInputModel input)
+        private async Task<IEnumerable<TOut>> CalculateBest<TOut>(long constellationId, BestInputModel input, IEnumerable<ItemServiceModel> prices)
         {
-            var prices = await this.itemsService.GetPlanetaryResources(input.PriceSelector);
-
             var model = await this.dbContext.Constellations
                 .Where(c => c.Id.Equals(constellationId))
                 .To<BestSolarSystemInConstellationModel>()
@@ -120,7 +118,21 @@
             model.Systems = OrderByValue(model.Systems.ToList(), input.MiningPlanets);
 
             var miningPlanets = input.MiningPlanets;
-            return model.Systems.AsQueryable().To<TOut>(new { miningPlanets }).ToList();
+            return model.Systems.AsQueryable().To<TOut>(new {miningPlanets}).ToList();
+        }
+
+        private async Task<IEnumerable<TOut>> GetBestByUserProvidedPrices<TOut>(long constellationId, BestInputModel input)
+        {
+            var prices = await this.itemsService.GetPlanetaryResources(input.Prices);
+
+            return await this.CalculateBest<TOut>(constellationId, input, prices);
+        }
+
+        private async Task<IEnumerable<TOut>> GetBestByExternalPrices<TOut>(long constellationId, BestInputModel input)
+        {
+            var prices = await this.itemsService.GetPlanetaryResources(input.PriceSelector);
+
+            return await this.CalculateBest<TOut>(constellationId, input, prices);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Web.Components
 
 @inject IAppDataService AppDataService;
 
@@ -24,6 +25,11 @@
 
         <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
 
+        @if (this.PriceUpdateDate != default)
+        {
+            <p>Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
+        }
+
         @if (this.PriceSelector is PriceSelector.UserProvided)
         {
             <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
@@ -41,9 +47,16 @@
     [Parameter]
     public SolarSystemServiceModel SolarSystem { get; set; }
 
-    public IEnumerable<PlanetValue> BestPlanets { get; set; }
+    private IEnumerable<PlanetValue> BestPlanets { get; set; }
 
-    public PriceSelector PriceSelector { get; set; }
+    private PriceSelector PriceSelector { get; set; }
+
+    private DateTime PriceUpdateDate => this.SolarSystem.Planets
+        .SelectMany(p => p.PlanetResources)
+        .Select(pr => pr.Price)
+        .Select(p => p.Time)
+        .OrderByDescending(p => p.Date)
+        .FirstOrDefault();
 
     private Func<SolarSystemServicePlanetPlanetResourceModel, decimal> GetPriceSelector(PriceSelector priceSelector)
         => priceSelector switch
