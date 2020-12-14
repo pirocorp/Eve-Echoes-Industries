@@ -23,12 +23,15 @@
     <div class="card-body">
         <h3 class="card-title">System: @this.SolarSystem.Name</h3>
 
-        <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
-
-        @if (this.PriceUpdateDate != default)
-        {
-            <p>Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
-        }
+        <div class="row">
+            <div class="col-md-5 offset-md-1">
+                <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
+            </div>
+            @if (this.PriceUpdateDate != default)
+            {
+                <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
+            }
+        </div>
 
         @if (this.PriceSelector is PriceSelector.UserProvided)
         {

@@ -7,6 +7,7 @@
 
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     using Microsoft.EntityFrameworkCore;
@@ -55,5 +56,10 @@
                 .Where(r => r.Id.Equals(id))
                 .To<TOut>()
                 .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long constellationId, BestInputModel input)
+        {
+            throw new NotFiniteNumberException();
+        }
     }
 }

@@ -9,6 +9,8 @@
     {
         Task<int> GetCountAsync();
 
+        Task<int> GetSolarSystemsInConstellationCount(long constellationId);
+
         Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1);
 
         Task<TOut> GetByIdAsync<TOut>(long id);

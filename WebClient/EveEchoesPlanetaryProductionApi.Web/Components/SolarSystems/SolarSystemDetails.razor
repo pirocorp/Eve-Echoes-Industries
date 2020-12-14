@@ -21,7 +21,12 @@
         <h3 class="card-title">System: @this.SolarSystem.Name</h3>
         <h4 class="card-text">Constellation: @this.SolarSystem.ConstellationName</h4>
         <h5 class="card-text">Region: @this.SolarSystem.RegionName</h5>
-        
+
+        @if (this.PriceUpdateDate != default)
+        {
+            <h6>Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</h6>
+        }
+
         <div class="just-padding text-left">
             <div class="list-group list-group-root">
                 <div class="list-group-item">
@@ -39,6 +44,13 @@
 @code {
     [Parameter]
     public SolarSystemServiceModel SolarSystem { get; set; }
+
+    private DateTime PriceUpdateDate => this.SolarSystem.Planets
+        .SelectMany(p => p.PlanetResources)
+        .Select(pr => pr.Price)
+        .Select(p => p.Time)
+        .OrderByDescending(p => p.Date)
+        .FirstOrDefault();
 
     protected override async Task OnInitializedAsync()
     {

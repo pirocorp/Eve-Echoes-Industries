@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
@@ -15,6 +16,7 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using Models.BestSystemModel;
 
     [ApiController]
     public class ConstellationsController : ControllerBase
@@ -88,7 +90,7 @@
             var model = new BestConstellationModel
             {
                 Systems = await this.constellationService
-                    .GetBestSolarSystem<BestSystemsInConstellationModel>(constellationId, input),
+                    .GetBestSolarSystem<BestSystemModel>(constellationId, input),
             };
 
             return this.Ok(model);

@@ -27,7 +27,7 @@
     [Parameter]
     public long SolarSystemId { get; set; }
 
-    public SolarSystemServiceModel SolarSystem { get; set; }
+    private SolarSystemServiceModel SolarSystem { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

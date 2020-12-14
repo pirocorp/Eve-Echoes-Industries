@@ -1,23 +1,32 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
 
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
 
     public class RegionsController : ControllerBase
     {
         private readonly IRegionsService regionsService;
+        private readonly IOptions<ApiBehaviorOptions> apiBehaviorOptions;
 
-        public RegionsController(IRegionsService regionsService)
+        public RegionsController(
+            IRegionsService regionsService,
+            IOptions<ApiBehaviorOptions> apiBehaviorOptions)
         {
             this.regionsService = regionsService;
+            this.apiBehaviorOptions = apiBehaviorOptions;
         }
 
         [Route("~/api/regions/count")]
@@ -50,5 +59,33 @@
         [Route("~/api/region/{regionId}")]
         public async Task<ActionResult<RegionDetails>> GetDetails(long regionId)
             => await this.regionsService.GetByIdAsync<RegionDetails>(regionId);
+
+        [HttpPost]
+        [Route("~/api/solarSystems/best/region/{regionId}")]
+        public async Task<IActionResult> GetBestSolarSystemsInRegionAsync(long regionId, [FromBody] BestInputModel input)
+        {
+            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
+
+            if (!priceSelectorSuccess)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            input.PriceSelector = priceSelector;
+
+            var model = new BestRegionModel()
+            {
+
+            };
+
+            return this.Ok(model);
+        }
     }
 }

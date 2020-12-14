@@ -1,18 +1,18 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using AutoMapper;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SystemsBestModel;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
-    public class BestSystemsInConstellationModel : IMapFrom<SystemBestModel>, IHaveCustomMappings
+    public class BestSystemModel : IMapFrom<SystemBestModel>, IHaveCustomMappings
     {
-        public BestSystemsInConstellationModel()
+        public BestSystemModel()
         {
-            this.Resources = new List<BestSystemsResourceInConstellationModel>();
+            this.Resources = new List<BestSystemsResourceModel>();
         }
 
         public long Id { get; set; }
@@ -23,14 +23,14 @@
 
         public decimal EstimatedValue { get; set; }
 
-        public IEnumerable<BestSystemsResourceInConstellationModel> Resources { get; set; }
+        public IEnumerable<BestSystemsResourceModel> Resources { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
             var miningPlanets = default(int);
 
             configuration
-                .CreateMap<SystemBestModel, BestSystemsInConstellationModel>()
+                .CreateMap<SystemBestModel, BestSystemModel>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.System))
                 .ForMember(d => d.Planets, opt => opt.MapFrom(s => s.Planets.Count()))
                 .ForMember(d => d.Resources, opt => opt.MapFrom(s => s.Planets.Take(miningPlanets)))
