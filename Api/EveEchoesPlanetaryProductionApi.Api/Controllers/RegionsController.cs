@@ -8,6 +8,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
@@ -55,6 +56,10 @@
 
             return model;
         }
+
+        [Route("~/api/region/simple/{regionId}")]
+        public async Task<ActionResult<RegionSimpleDetailsModel>> GetSimpleDetails(long regionId)
+            => await this.regionsService.GetByIdAsync<RegionSimpleDetailsModel>(regionId);
 
         [Route("~/api/region/{regionId}")]
         public async Task<ActionResult<RegionDetails>> GetDetails(long regionId)

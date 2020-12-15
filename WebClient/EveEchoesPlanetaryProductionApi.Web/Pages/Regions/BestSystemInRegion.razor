@@ -1,16 +1,11 @@
-﻿@page "/constellation/best"
-@page "/constellation/best/{ConstellationId:long}"
+﻿@page "/region/best"
+@page "/region/best/{RegionId:long}"
 
-@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation
-@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
-@using EveEchoesPlanetaryProductionApi.Api.Models
-@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
-@using EveEchoesPlanetaryProductionApi.Common.Extensions
 
-@inherits BestSystemBase;
+@inherits BestSystemBase
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
@@ -19,8 +14,7 @@
 <div class="container">
     <section class="row">
         <CardComponent>
-            <h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
-            <h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
+            <h3 class="card-title">Region: @this.RegionDetails?.Name</h3>
 
             <div class="row">
                 <div class="col-md-5 offset-md-1">
@@ -35,11 +29,11 @@
             {
                 <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
             }
-
+            
             @if (this.BestSystems is not null)
             {
                 <h2 class="card-title my-4">Best Systems In Constellation</h2>
-                    <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
+                <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
             }
             else
             {
@@ -53,24 +47,25 @@
 </div>
 
 @code {
-    [Parameter]
-    public long ConstellationId { get; set; }
 
-    private ConstellationSimpleDetailsModel ConstellationDetails { get; set; }
+    [Parameter]
+    public long RegionId { get; set; }
+
+    private RegionSimpleDetailsModel RegionDetails { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        this.ConstellationId = this.ConstellationId == 0 ? this.AppDataService.CurrentSolarSystem?.ConstellationId ?? 0 : this.ConstellationId;
+        this.RegionId = this.RegionId == 0 ? this.AppDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
 
-        if (this.ConstellationId <= 0)
+        if (this.RegionId <= 0)
         {
             this.navigationManager.NavigateTo("/404");
             return;
         }
 
-        this.navigationManager.NavigateTo($"/constellation/best/{this.ConstellationId}");
+        this.navigationManager.NavigateTo($"/region/best/{this.RegionId}");
 
-        this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
+        this.RegionDetails = await this.eveApiService.Regions.GetSimpleDetailsAsync(this.RegionId);
 
         await base.OnInitializedAsync();
     }
@@ -79,7 +74,7 @@
     {
         this.CreateInputModelFromUserInput();
 
-        this.BestSystems = (await this.eveApiService.Constellations.GetBestSystemsInConstellation(this.ConstellationId, this.UserInput)).Systems;
+        this.BestSystems = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput)).Systems.ToList();
 
         this.StateHasChanged();
         await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");

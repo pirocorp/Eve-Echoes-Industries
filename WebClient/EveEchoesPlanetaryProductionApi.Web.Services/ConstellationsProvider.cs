@@ -29,6 +29,9 @@
         public async Task<ConstellationDetails> GetDetailsAsync(long id)
             => await this.httpClient.GetFromJsonAsync<ConstellationDetails>($"api/constellation/{id}");
 
+        public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id)
+            => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellation/simple/{id}");
+
         public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/solarSystems/best/constellation/{constellationId}", model);
@@ -40,8 +43,5 @@
             
             return await result.Content.ReadFromJsonAsync<BestConstellationModel>();
         }
-
-        public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id)
-            => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellation/simple/{id}");
     }
 }

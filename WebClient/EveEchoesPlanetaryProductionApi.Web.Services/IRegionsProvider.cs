@@ -3,8 +3,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Api.Models.Regions.GetDetails;
-    using Api.Models.Regions.GetRegions;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public interface IRegionsProvider
     {
@@ -13,5 +16,9 @@
         Task<IEnumerable<RegionListingModel>> GetPageAsync(int page = 1);
 
         Task<RegionDetails> GetDetailsAsync(long regionId);
+
+        Task<RegionSimpleDetailsModel> GetSimpleDetailsAsync(long regionId);
+
+        Task<BestRegionModel> GetBestSystemsInRegion(long regionId, BestInputModel model);
     }
 }

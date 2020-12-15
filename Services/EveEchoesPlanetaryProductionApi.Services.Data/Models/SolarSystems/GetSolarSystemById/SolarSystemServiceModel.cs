@@ -22,6 +22,8 @@
         [JsonPropertyName("constellation")]
         public string ConstellationName { get; set; }
 
+        public long RegionId { get; set; }
+
         [JsonPropertyName("region")]
         public string RegionName { get; set; }
 

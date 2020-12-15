@@ -6,8 +6,11 @@
     using System.Threading.Tasks;
 
     using Api.Models;
+    using Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using Api.Models.Regions.GetDetails;
     using Api.Models.Regions.GetRegions;
+    using Api.Models.Regions.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class RegionsProvider : IRegionsProvider
     {
@@ -26,5 +29,20 @@
 
         public async Task<RegionDetails> GetDetailsAsync(long regionId)
             => await this.httpClient.GetFromJsonAsync<RegionDetails>($"api/region/{regionId}");
+
+        public async Task<RegionSimpleDetailsModel> GetSimpleDetailsAsync(long regionId)
+            => await this.httpClient.GetFromJsonAsync<RegionSimpleDetailsModel>($"/api/region/simple/{regionId}");
+
+        public async Task<BestRegionModel> GetBestSystemsInRegion(long regionId, BestInputModel model)
+        {
+            var result =  await this.httpClient.PostAsJsonAsync($"api/solarSystems/best/region/{regionId}", model);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await result.Content.ReadFromJsonAsync<BestRegionModel>();
+        }
     }
 }
