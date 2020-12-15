@@ -13,16 +13,16 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
 
-    public class RegionsService : IRegionsService
+    public class RegionsService : BestSystemService, IRegionsService
     {
-        private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
         private readonly IMemoryCache memoryCache;
 
         public RegionsService(
             IMemoryCache memoryCache,
+            IItemsService itemsService,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
+            : base(itemsService, dbContext)
         {
-            this.dbContext = dbContext;
             this.memoryCache = memoryCache;
         }
 
@@ -32,7 +32,7 @@
 
             if (!this.memoryCache.TryGetValue(key, out int cacheEntry))
             {
-                cacheEntry = await this.dbContext.Regions.CountAsync();
+                cacheEntry = await this.DbContext.Regions.CountAsync();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(GlobalConstants.InMemoryCachingRegionsCountInDays));
@@ -44,7 +44,7 @@
         }
 
         public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
-            => await this.dbContext.Regions
+            => await this.DbContext.Regions
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -52,14 +52,17 @@
                 .ToListAsync();
 
         public async Task<TOut> GetByIdAsync<TOut>(long id)
-            => await this.dbContext.Regions
+            => await this.DbContext.Regions
                 .Where(r => r.Id.Equals(id))
                 .To<TOut>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long constellationId, BestInputModel input)
-        {
-            throw new NotFiniteNumberException();
-        }
+        public async Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long regionId, BestInputModel input)
+            => (await this.GetBestSolarSystem(input, s => s.RegionId.Equals(regionId)))
+                .AsQueryable()
+                .Skip((input.Page - 1) * GlobalConstants.Ui.BestSystemResultsSize)
+                .Take(GlobalConstants.Ui.BestSystemResultsSize)
+                .To<TOut>(new { miningPlanets = input.MiningPlanets })
+                .ToList();
     }
 }

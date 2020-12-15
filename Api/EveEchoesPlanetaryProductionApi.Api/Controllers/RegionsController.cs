@@ -4,10 +4,10 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
-
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
@@ -82,7 +82,7 @@
 
             var model = new BestRegionModel()
             {
-
+                Systems = await this.regionsService.GetBestSolarSystemAsync<BestSystemModel>(regionId, input),
             };
 
             return this.Ok(model);

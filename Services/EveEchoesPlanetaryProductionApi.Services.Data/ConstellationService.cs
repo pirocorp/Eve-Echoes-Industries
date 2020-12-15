@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
@@ -65,7 +64,7 @@
                 .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<TOut>> GetBestSolarSystem<TOut>(long constellationId, BestInputModel input)
-            => (await this.GetBestSolarSystem(input, c => c.Constellation.Id.Equals(constellationId)))
+            => (await this.GetBestSolarSystem(input, s => s.ConstellationId.Equals(constellationId)))
                 .AsQueryable()
                 .To<TOut>(new { miningPlanets = input.MiningPlanets })
                 .ToList();
