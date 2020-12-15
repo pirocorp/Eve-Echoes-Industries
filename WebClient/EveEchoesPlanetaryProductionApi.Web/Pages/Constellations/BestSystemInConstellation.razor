@@ -1,5 +1,5 @@
-﻿@page "/best/constellation"
-@page "/best/constellation/{ConstellationId:long}"
+﻿@page "/constellation/best"
+@page "/constellation/best/{ConstellationId:long}"
 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation
 @using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
@@ -37,36 +37,7 @@
             @if (this.BestSystems is not null)
             {
                 <h2 class="card-title my-4">Best Systems In Constellation</h2>
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>System</th>
-                                <th>Planets</th>
-                                <th>Estimated Value</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                    @foreach (var system in this.BestSystems.Systems)
-                    {
-                        <tr class="accordion">
-                            <td class="text-center">
-                                <a href="/system/@system.Id">@system.Name</a>
-                            </td>
-                            <td class="text-center">
-                                @system.Planets
-                            </td>
-                            <td class="text-center">
-                                @system.EstimatedValue
-                            </td>
-                        </tr>
-                        <tr style="display: none;">
-                            <td colspan="3">
-                                <SimpleTableComponent Data="(system?.Resources)"></SimpleTableComponent>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+                    <AccordionSystemsComponent Systems="this.BestSystems.Systems"></AccordionSystemsComponent>
             }
             else
             {
@@ -106,6 +77,8 @@
             this.navigationManager.NavigateTo("/404");
             return;
         }
+
+        this.navigationManager.NavigateTo($"/constellation/best/{this.ConstellationId}");
 
         this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
 

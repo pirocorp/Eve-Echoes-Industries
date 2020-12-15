@@ -1,6 +1,5 @@
-﻿@page "/details"
-@page "/details/{SolarSystemId:long}"
-@page "/system/{SolarSystemId:long}"
+﻿@page "/best"
+@page "/best/{SolarSystemId:long}"
 
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
 @using EveEchoesPlanetaryProductionApi.Web.Services
@@ -9,6 +8,7 @@
 
 @inject IAppDataService AppDataService;
 @inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
 
 <div class="container">
     <div class="row">
@@ -18,7 +18,7 @@
         }
         else
         {
-            <SolarSystemDetails SolarSystem="this.SolarSystem"></SolarSystemDetails>
+            <SolarSystemBest SolarSystem="this.SolarSystem"></SolarSystemBest>
         }
     </div>
 </div>
@@ -42,6 +42,7 @@
             this.AppDataService.CurrentSolarSystem = this.SolarSystem;
         }
 
+        this.navigationManager.NavigateTo($"/best/{this.SolarSystem.Id}");
         await base.OnInitializedAsync();
     }
 }

@@ -6,9 +6,9 @@
     transition: 0.4s;
 }
 
-.active, .accordion:hover {
-    background-color: #ccc;
-}
+    .active, .accordion:hover {
+        background-color: #ccc;
+    }
 
 /*Table Styles*/
 a {
@@ -62,14 +62,14 @@ th {
     vertical-align: middle;
 }
 
-th:first-child {
-    border-top-left-radius: 3px;
-}
+    th:first-child {
+        border-top-left-radius: 3px;
+    }
 
-th:last-child {
-    border-top-right-radius: 3px;
-    border-right: none;
-}
+    th:last-child {
+        border-top-right-radius: 3px;
+        border-right: none;
+    }
 
 tr {
     border-top: 1px solid #C1C3D1;
@@ -81,35 +81,35 @@ tr {
     text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
 
-tr:hover > td {
-    background: #4E5066;
-    color: #FFFFFF;
-    border-top: 1px solid #22262e;
-}
+    tr:hover > td {
+        background: #4E5066;
+        color: #FFFFFF;
+        border-top: 1px solid #22262e;
+    }
 
-tr:first-child {
-    border-top: none;
-}
+    tr:first-child {
+        border-top: none;
+    }
 
-tr:last-child {
-    border-bottom: none;
-}
+    tr:last-child {
+        border-bottom: none;
+    }
 
-tr:nth-child(4n + 1) > td {
-    background: #EBEBEB;
-}
+    tr:nth-child(4n + 1) > td {
+        background: #EBEBEB;
+    }
 
-tr:nth-child(4n + 1):hover > td {
-    background: #4E5066;
-}
+    tr:nth-child(4n + 1):hover > td {
+        background: #4E5066;
+    }
 
-tr:last-child td:first-child {
-    border-bottom-left-radius: 3px;
-}
+    tr:last-child td:first-child {
+        border-bottom-left-radius: 3px;
+    }
 
-tr:last-child td:last-child {
-    border-bottom-right-radius: 3px;
-}
+    tr:last-child td:last-child {
+        border-bottom-right-radius: 3px;
+    }
 
 td {
     background: #FFFFFF;
@@ -123,9 +123,9 @@ td {
     border-right: 1px solid #C1C3D1;
 }
 
-td:last-child {
-    border-right: 0px;
-}
+    td:last-child {
+        border-right: 0px;
+    }
 
 th.text-left {
     text-align: left;
