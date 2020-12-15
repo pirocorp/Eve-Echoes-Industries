@@ -4,6 +4,8 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemInRange;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Common;
@@ -14,17 +16,21 @@
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
 
     [ApiController]
     [Route("api/[controller]")]
     public class SolarSystemsController : ControllerBase
     {
         private readonly ISolarSystemsService solarSystemService;
+        private readonly IOptions<ApiBehaviorOptions> apiBehaviorOptions;
 
         public SolarSystemsController(
-            ISolarSystemsService solarSystemService)
+            ISolarSystemsService solarSystemService,
+            IOptions<ApiBehaviorOptions> apiBehaviorOptions)
         {
             this.solarSystemService = solarSystemService;
+            this.apiBehaviorOptions = apiBehaviorOptions;
         }
 
         public async Task<ActionResult<SolarSystemServiceModel>> GetSolarSystem()
@@ -109,23 +115,33 @@
 
         [HttpPost]
         [Route("~/api/solarSystems/{range}/{id}")]
-        public async Task<ActionResult<SolarSystemBestModel>> GetBestSystemInRange(long id, int range, [FromBody]BestInputModel model)
+        public async Task<IActionResult> GetBestSystemInRange(long id, int range, [FromBody]BestInputModel input)
         {
-            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.Price, out var priceSelector);
+            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 
-            if (!selectorIsParsedSuccessful)
+            if (!priceSelectorSuccess)
             {
-                return this.BadRequest();
+                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
-            var sol = await this.solarSystemService.GetBestSolarSystemInRange(id, priceSelector, range, model.MiningPlanets);
-
-            if (sol is null)
+            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
             {
-                return this.NotFound();
+                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
-            return sol;
+            input.PriceSelector = priceSelector;
+
+            var result = await this.solarSystemService.GetBestSolarSystemInRange<BestSystemModel>(id, range, input);
+
+            var model = new BestRangeModel
+            {
+                Count = result.Count,
+                Systems = result.Systems,
+            };
+
+            return this.Ok(model);
         }
     }
 }

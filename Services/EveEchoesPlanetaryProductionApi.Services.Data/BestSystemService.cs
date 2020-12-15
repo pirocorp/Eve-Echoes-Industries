@@ -17,17 +17,17 @@
 
     public abstract class BestSystemService
     {
-        private readonly IItemsService itemsService;
-
         protected BestSystemService(
             IItemsService itemsService,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
-            this.itemsService = itemsService;
+            this.ItemsService = itemsService;
             this.DbContext = dbContext;
         }
 
         protected EveEchoesPlanetaryProductionApiDbContext DbContext { get; set; }
+
+        protected IItemsService ItemsService { get; set; }
 
         protected async Task<IEnumerable<SystemBestModel>> GetBestSolarSystem(
             BestInputModel input,
@@ -77,7 +77,7 @@
             BestInputModel input,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
-            var prices = await this.itemsService.GetPlanetaryResources(input.Prices);
+            var prices = await this.ItemsService.GetPlanetaryResources(input.Prices);
 
             return await this.CalculateBest(input, prices, solarSystems);
         }
@@ -86,7 +86,7 @@
             BestInputModel input,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
-            var prices = await this.itemsService.GetPlanetaryResources(input.PriceSelector);
+            var prices = await this.ItemsService.GetPlanetaryResources(input.PriceSelector);
 
             return await this.CalculateBest(input, prices, solarSystems);
         }

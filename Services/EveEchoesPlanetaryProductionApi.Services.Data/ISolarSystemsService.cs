@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
@@ -27,7 +28,7 @@
 
         Task<SolarSystemBestModel> GetResourcesInSystemByIdAsync(long id, PriceSelector priceSelector);
 
-        Task<SolarSystemBestModel> GetBestSolarSystemInRange(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets);
+        Task<(int Count, IEnumerable<TOut> Systems)> GetBestSolarSystemInRange<TOut>(long solarSystemId, int range, BestInputModel input);
 
         Task<List<long>> GetSolarSystemsInRangeIds(int range, long solarSystemId);
     }

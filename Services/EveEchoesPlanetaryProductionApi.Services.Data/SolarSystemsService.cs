@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -11,6 +12,7 @@
     using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
@@ -20,28 +22,25 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
 
-    public class SolarSystemsService : ISolarSystemsService
+    public class SolarSystemsService : BestSystemService, ISolarSystemsService
     {
         private readonly IMapper mapper;
-        private readonly IItemsService itemsService;
         private readonly IMemoryCache memoryCache;
-        private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
 
         public SolarSystemsService(
             IMapper mapper,
             IItemsService itemsService,
             IMemoryCache memoryCache,
             EveEchoesPlanetaryProductionApiDbContext dbContext)
+            : base(itemsService, dbContext)
         {
             this.mapper = mapper;
-            this.itemsService = itemsService;
             this.memoryCache = memoryCache;
-            this.dbContext = dbContext;
         }
 
         public async Task<SolarSystemServiceModel> GetRandomAsync()
         {
-            var solarSystem = await this.dbContext.SolarSystems
+            var solarSystem = await this.DbContext.SolarSystems
                 .OrderBy(ss => Guid.NewGuid())
                 .To<SolarSystemServiceModel>()
                 .FirstOrDefaultAsync();
@@ -71,7 +70,7 @@
 
             if (!this.memoryCache.TryGetValue(key, out int cacheEntry))
             {
-                cacheEntry = await this.dbContext.SolarSystems.CountAsync();
+                cacheEntry = await this.DbContext.SolarSystems.CountAsync();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromDays(GlobalConstants.InMemoryCachingSolarSystemCountInDays));
@@ -83,7 +82,7 @@
         }
 
         public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
-            => await this.dbContext.SolarSystems
+            => await this.DbContext.SolarSystems
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -92,7 +91,7 @@
 
         public async Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1)
         {
-            var query = this.dbContext.SolarSystems
+            var query = this.DbContext.SolarSystems
                 .Where(ss => ss.Name.ToLower().Contains(searchTerm.ToLower()));
 
             var count = await query.CountAsync();
@@ -108,7 +107,7 @@
         }
 
         public async Task<string> GetSolarSystemNameAsync(long id)
-            => await this.dbContext.SolarSystems
+            => await this.DbContext.SolarSystems
                 .Where(ss => ss.Id.Equals(id))
                 .Select(ss => ss.Name)
                 .FirstOrDefaultAsync();
@@ -121,24 +120,18 @@
             return solarSystem;
         }
 
-        public async Task<SolarSystemBestModel> GetBestSolarSystemInRange(long solarSystemId, PriceSelector priceSelector, int range, int miningPlanets)
+        public async Task<(int Count, IEnumerable<TOut> Systems)> GetBestSolarSystemInRange<TOut>(long solarSystemId, int range, BestInputModel input)
         {
             var systemsInRangeIds = await this.GetSolarSystemsInRangeIds(range, solarSystemId);
 
-            var solarSystems = await this.dbContext.SolarSystems
-                .Where(x => systemsInRangeIds.Contains(x.Id))
-                .To<SolarSystemBestModel>()
-                .ToListAsync();
+            var systems = (await this.GetBestSolarSystem(input, x => systemsInRangeIds.Contains(x.Id)))
+                .AsQueryable()
+                .Skip((input.Page - 1) * GlobalConstants.Ui.BestSystemResultsSize)
+                .Take(GlobalConstants.Ui.BestSystemResultsSize)
+                .To<TOut>(new { miningPlanets = input.MiningPlanets })
+                .ToList();
 
-            foreach (var sol in solarSystems)
-            {
-                await this.PopulateSolarSystemResourcesPrice(priceSelector, sol);
-                sol.MiningPlanets = miningPlanets;
-            }
-
-            return solarSystems
-                .OrderByDescending(s => s.SolarSystemValue)
-                .FirstOrDefault();
+            return (systemsInRangeIds.Count, systems);
         }
 
         public async Task<TOut> GetByIdAsync<TOut>(long id)
@@ -153,7 +146,7 @@
             var distanceParameter = new SqlParameter("@distance", range.ToString());
 
             var sql = "[graph].[AllNeighboursWithinGivenDistanceById] @systemId, @distance";
-            var response = await this.dbContext.TargetSystems
+            var response = await this.DbContext.TargetSystems
                 .FromSqlRaw(sql, solarSystemNameParameter, distanceParameter)
                 .ToListAsync();
 
@@ -174,7 +167,7 @@
                 .Distinct()
                 .ToList();
 
-            var itemPrices = await this.itemsService.GetLatestItemsPricesAsync(itemIds);
+            var itemPrices = await this.ItemsService.GetLatestItemsPricesAsync(itemIds);
 
             foreach (var planet in solarSystem.Planets)
             {
@@ -188,7 +181,7 @@
 
         private async Task PopulateSolarSystemResourcesPrice(PriceSelector priceSelector, SolarSystemBestModel solarSystem)
         {
-            var planetaryResources = (await this.itemsService.GetPlanetaryResources(priceSelector))
+            var planetaryResources = (await this.ItemsService.GetPlanetaryResources(priceSelector))
                 .ToDictionary(x => x.Name, x => x);
 
             var updatedResources = solarSystem.PlanetResources.ToList();
@@ -203,7 +196,7 @@
         }
 
         private async Task<TOut> GetAsync<TOut>(Expression<Func<SolarSystem, bool>> predicate)
-            => await this.dbContext.SolarSystems
+            => await this.DbContext.SolarSystems
                 .Where(predicate)
                 .To<TOut>()
                 .FirstOrDefaultAsync();
