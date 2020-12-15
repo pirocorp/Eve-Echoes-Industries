@@ -2,6 +2,7 @@
 @page "/region/best/{RegionId:long}"
 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
@@ -32,8 +33,13 @@
             
             @if (this.BestSystems is not null)
             {
-                <h2 class="card-title my-4">Best Systems In Constellation</h2>
+                <h2 class="card-title my-4">Best Systems In Region</h2>
                 <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
+
+                <Paginator Page="@(this.PageNumber)"
+                           TotalPages="@this.TotalPages"
+                           Radius="3"
+                           SelectedPage="this.ChangePage" />
             }
             else
             {
@@ -74,9 +80,14 @@
     {
         this.CreateInputModelFromUserInput();
 
-        this.BestSystems = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput)).Systems.ToList();
+        var model = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput));
+
+        this.BestSystems = model.Systems;
+        var count = model.Count;
 
         this.StateHasChanged();
         await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
+
+        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
     }
 }

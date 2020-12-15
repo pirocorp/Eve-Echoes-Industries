@@ -64,5 +64,10 @@
                 .Take(GlobalConstants.Ui.BestSystemResultsSize)
                 .To<TOut>(new { miningPlanets = input.MiningPlanets })
                 .ToList();
+
+        public async Task<int> GetSolarSystemsCountInRegionAsync(long regionId)
+            => await this.DbContext.Regions.Where(r => r.Id.Equals(regionId))
+                .Select(r => r.SolarSystems.Count())
+                .FirstOrDefaultAsync();
     }
 }

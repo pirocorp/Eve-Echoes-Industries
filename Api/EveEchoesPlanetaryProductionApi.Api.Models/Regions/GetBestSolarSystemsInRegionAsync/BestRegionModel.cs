@@ -6,6 +6,8 @@
 
     public class BestRegionModel
     {
+        public int Count { get; set; }
+
         public IEnumerable<BestSystemModel> Systems { get; set; }
     }
 }

@@ -14,5 +14,7 @@
         Task<TOut> GetByIdAsync<TOut>(long id);
 
         Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long regionId, BestInputModel input);
+
+        Task<int> GetSolarSystemsCountInRegionAsync(long regionId);
     }
 }

@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Components;
+    using Data.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Common.Extensions;
@@ -13,7 +14,7 @@
 
     using Microsoft.AspNetCore.Components;
 
-    public abstract class BestSystemBase : ComponentBase
+    public abstract class BestSystemBase : PaginationBase
     {
         [Inject] 
         protected IAppDataService AppDataService { get; set; }
@@ -32,8 +33,6 @@
 
         protected BestInputModel UserInput { get; set; }
 
-        protected abstract Task LoadData();
-
         protected void CreateInputModelFromUserInput()
         {
             var model = new BestInputModel()
@@ -46,6 +45,11 @@
             if (this.PriceSelector is PriceSelector.UserProvided)
             {
                 model.Prices = this.Prices;
+            }
+
+            if (this.PageNumber > 1)
+            {
+                model.Page = this.PageNumber;
             }
 
             this.UserInput = model;

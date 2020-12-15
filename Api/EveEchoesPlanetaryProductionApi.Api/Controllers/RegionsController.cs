@@ -87,6 +87,7 @@
 
             var model = new BestRegionModel()
             {
+                Count = await this.regionsService.GetSolarSystemsCountInRegionAsync(regionId),
                 Systems = await this.regionsService.GetBestSolarSystemAsync<BestSystemModel>(regionId, input),
             };
 
