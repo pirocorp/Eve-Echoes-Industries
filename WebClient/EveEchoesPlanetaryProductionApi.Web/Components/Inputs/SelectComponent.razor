@@ -1,0 +1,31 @@
+﻿<div class="form-group">
+    <label for="mining-planets">@this.Label</label>
+    <select class="form-field" id="mining-planets" @onchange="this.OnPlanetsChangeHandler">
+        <option disabled selected>@this.Label</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+</div>
+
+@code {
+
+    [Parameter] 
+    public EventCallback<int> OnChange { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    private void OnPlanetsChangeHandler(ChangeEventArgs e)
+    {
+        var planetsCountParseSuccess = int.TryParse(e.Value?.ToString(), out var planetsCount);
+
+        if (planetsCountParseSuccess && planetsCount <= 6)
+        {
+            this.OnChange.InvokeAsync(planetsCount);
+        }
+    }
+}

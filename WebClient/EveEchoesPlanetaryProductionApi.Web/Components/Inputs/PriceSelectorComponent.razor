@@ -47,8 +47,11 @@
 
     private async void RadioSelection(ChangeEventArgs args)
     {
-        Enum.TryParse<PriceSelector>(args.Value?.ToString(), out var priceSelector);
+        var success = Enum.TryParse<PriceSelector>(args.Value?.ToString(), out var priceSelector);
 
-        await this.OnChange.InvokeAsync(priceSelector);
+        if (success)
+        {
+            await this.OnChange.InvokeAsync(priceSelector);
+        }
     }
 }

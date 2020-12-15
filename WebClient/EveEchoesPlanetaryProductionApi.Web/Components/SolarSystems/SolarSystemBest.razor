@@ -5,45 +5,29 @@
 
 @inject IAppDataService AppDataService;
 
-<div class="card text-center mx-auto" style="width: 100%">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <NavLink class="nav-link" href=@($"details/") ActiveClass="active" Match="NavLinkMatch.All">Details</NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link " href="@($"best/")" ActiveClass="active" Match="NavLinkMatch.All">Best In System</NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link " href="@($"best/constellation")" ActiveClass="active" Match="NavLinkMatch.All">Best In Constellation</NavLink>
-            </li>
-        </ul>
-    </div>
+<CardComponent>
+    <h3 class="card-title">System: @this.SolarSystem.Name</h3>
 
-    <div class="card-body">
-        <h3 class="card-title">System: @this.SolarSystem.Name</h3>
-
-        <div class="row">
-            <div class="col-md-5 offset-md-1">
-                <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
-            </div>
-            @if (this.PriceUpdateDate != default)
-            {
-                <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
-            }
+    <div class="row">
+        <div class="col-md-5 offset-md-1">
+            <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
         </div>
-
-        @if (this.PriceSelector is PriceSelector.UserProvided)
+        @if (this.PriceUpdateDate != default)
         {
-            <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
-        }
-
-        @if (this.BestPlanets is not null)
-        {
-            <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
+            <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
         }
     </div>
-</div>
+
+    @if (this.PriceSelector is PriceSelector.UserProvided)
+    {
+        <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
+    }
+
+    @if (this.BestPlanets is not null)
+    {
+        <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
+    }
+</CardComponent>
 
 
 @code {
