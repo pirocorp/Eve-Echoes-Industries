@@ -8,6 +8,7 @@
 @using EveEchoesPlanetaryProductionApi.Web.Services
 @using EveEchoesPlanetaryProductionApi.Api.Models
 @using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
+@using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Common.Extensions
 
 @inherits BestSystemBase;
@@ -18,7 +19,7 @@
 
 <div class="container">
     <section class="row">
-        <CardComponent>
+        <SystemCardComponent>
             <h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
             <h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
 
@@ -27,7 +28,7 @@
                     <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
                 </div>
                 <div class="col-md-5 align-self-center">
-                    <SelectComponent Label="Colonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
+                    <SelectComponent Label="Colonies" Range="@GlobalConstants.Ui.MaxColonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
                 </div>
             </div>
 
@@ -48,7 +49,7 @@
                     <Loader></Loader>
                 }
             }
-        </CardComponent>
+        </SystemCardComponent>
     </section>
 </div>
 
@@ -71,8 +72,6 @@
         this.navigationManager.NavigateTo($"/constellation/best/{this.ConstellationId}");
 
         this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
-
-        await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()

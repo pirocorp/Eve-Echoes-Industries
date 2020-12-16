@@ -5,7 +5,7 @@
 
 @inject IAppDataService AppDataService;
 
-<CardComponent>
+<SystemCardComponent>
     <h3 class="card-title">System: @this.SolarSystem.Name</h3>
 
     <div class="row">
@@ -27,7 +27,7 @@
     {
         <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
     }
-</CardComponent>
+</SystemCardComponent>
 
 
 @code {

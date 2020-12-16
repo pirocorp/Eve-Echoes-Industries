@@ -17,12 +17,18 @@
     @if (this.Systems is not null)
     {
         <ListingTableComponent Data="(this.Systems)" Location=@("system")></ListingTableComponent>
+
+        <Paginator Page="@(this.PageNumber)"
+                   TotalPages="@this.TotalPages"
+                   Radius="3"
+                   SelectedPage="this.ChangePage" />
+    }
+    else
+    {
+        <Loader></Loader>
     }
 
-    <Paginator Page="@(this.PageNumber)"
-                TotalPages="@this.TotalPages"
-                Radius="3"
-                SelectedPage="this.ChangePage" />
+    
 </section>
 
 @code {

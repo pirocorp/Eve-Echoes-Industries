@@ -6,6 +6,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemInRange;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSolarSystemSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Common;
@@ -48,6 +49,10 @@
 
             return solarSystem;
         }
+
+        [Route("~/api/solarSystem/simple/{solarSystemId}")]
+        public async Task<SolarSystemSimpleDetailsModel> GetSolarSystemSimpleDetails(long solarSystemId)
+            => await this.solarSystemService.GetByIdAsync<SolarSystemSimpleDetailsModel>(solarSystemId);
 
         [Route("~/api/solarSystems/count")]
         public async Task<CountModel> GetSolarSystemsCount()
@@ -129,6 +134,11 @@
             {
                 this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            if (range > GlobalConstants.MaxSearchRange)
+            {
+                range = GlobalConstants.MaxSearchRange;
             }
 
             input.PriceSelector = priceSelector;

@@ -7,8 +7,8 @@
 
     public abstract class PaginationBase : ComponentBase
     {
-        [Parameter]
-        public int PageNumber { get; set; }
+        [Parameter] 
+        public int PageNumber { get; set; } = 1;
 
         protected int TotalPages { get; set; }
 
@@ -38,7 +38,11 @@
         {
             this.PageNumber = page;
             await this.LoadData();
-            this.NavigationManager.NavigateTo($"/{this.Location}/{page}");
+
+            if (this.Location is not null)
+            {
+                this.NavigationManager.NavigateTo($"/{this.Location}/{page}");
+            }
         }
     }
 }

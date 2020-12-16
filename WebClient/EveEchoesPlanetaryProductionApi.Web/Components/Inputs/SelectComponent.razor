@@ -1,13 +1,11 @@
 ﻿<div class="form-group">
     <label for="mining-planets">@this.Label</label>
-    <select class="form-field" id="mining-planets" @onchange="this.OnPlanetsChangeHandler">
+    <select class="form-field" id="mining-planets" @onchange="this.OnValueChangeHandler">
         <option disabled selected>@this.Label</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
+        @for (var i = this.Start; i <= this.Range; i++)
+        {
+            <option value=@i>@i</option>
+        }
     </select>
 </div>
 
@@ -19,13 +17,19 @@
     [Parameter]
     public string Label { get; set; }
 
-    private void OnPlanetsChangeHandler(ChangeEventArgs e)
-    {
-        var planetsCountParseSuccess = int.TryParse(e.Value?.ToString(), out var planetsCount);
+    [Parameter]
+    public int Range { get; set; }
 
-        if (planetsCountParseSuccess && planetsCount <= 6)
+    [Parameter]
+    public int Start { get; set; } = 1;
+
+    private void OnValueChangeHandler(ChangeEventArgs e)
+    {
+        var valueParseSuccess = int.TryParse(e.Value?.ToString(), out var value);
+
+        if (valueParseSuccess && value <= this.Range && value > 0)
         {
-            this.OnChange.InvokeAsync(planetsCount);
+            this.OnChange.InvokeAsync(value);
         }
     }
 }

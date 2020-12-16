@@ -1,10 +1,9 @@
-﻿@page "/region/best"
-@page "/region/best/{RegionId:long}"
+﻿@page "/range/best"
+@page "/range/best/{SystemId:long}"
 
-@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
 @using EveEchoesPlanetaryProductionApi.Common
-@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 
 @inherits BestSystemBase
 
@@ -15,7 +14,11 @@
 <div class="container">
     <section class="row">
         <SystemCardComponent>
-            <h3 class="card-title">Region: @this.RegionDetails?.Name</h3>
+            <h2>Best Systems In Range Of System: @this.SystemName</h2>
+            @if (this.Range > 0)
+            {
+                <h3 class="card-title">Range: @this.Range</h3>
+            }
 
             <div class="row">
                 <div class="col-md-5 offset-md-1">
@@ -23,6 +26,7 @@
                 </div>
                 <div class="col-md-5 align-self-center">
                     <SelectComponent Label="Colonies" Range="GlobalConstants.Ui.MaxColonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
+                    <SelectComponent Label="Range" Start="2" Range="GlobalConstants.MaxSearchRange" OnChange="this.OnRangeChangeHandler"></SelectComponent>
                 </div>
             </div>
 
@@ -30,10 +34,10 @@
             {
                 <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
             }
-            
+
             @if (this.BestSystems is not null)
             {
-                <h2 class="card-title my-4">Best Systems In Region</h2>
+                <h2 class="card-title my-4">Best Systems In Range</h2>
                 <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
 
                 <Paginator Page="@(this.PageNumber)"
@@ -53,32 +57,38 @@
 </div>
 
 @code {
-
     [Parameter]
-    public long RegionId { get; set; }
+    public long SystemId { get; set; }
 
-    private RegionSimpleDetailsModel RegionDetails { get; set; }
+    private int Range { get; set; }
+
+    public string SystemName { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        this.RegionId = this.RegionId == 0 ? this.AppDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
+        this.SystemId = this.SystemId == 0 ? this.AppDataService.CurrentSolarSystem?.Id ?? 0 : this.SystemId;
 
-        if (this.RegionId <= 0)
+        if (this.SystemId <= 0)
         {
             this.navigationManager.NavigateTo("/404");
             return;
         }
 
-        this.navigationManager.NavigateTo($"/region/best/{this.RegionId}");
+        this.navigationManager.NavigateTo($"/range/best/{this.SystemId}");
 
-        this.RegionDetails = await this.eveApiService.Regions.GetSimpleDetailsAsync(this.RegionId);
+        this.SystemName = (await this.eveApiService.Systems.GetSolarSystemSimpleDetails(this.SystemId)).Name;
     }
 
     protected override async Task LoadData()
     {
         this.CreateInputModelFromUserInput();
 
-        var model = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput));
+        if (this.Range <= 0)
+        {
+            return;
+        }
+
+        var model = (await this.eveApiService.Systems.GetBestSystemsInRange(this.Range, this.SystemId, this.UserInput));
 
         this.BestSystems = model.Systems;
         var count = model.Count;
@@ -87,5 +97,12 @@
         await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
 
         this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
+    }
+
+    private async Task OnRangeChangeHandler(int range)
+    {
+        this.Range = range;
+
+        await this.ValidateUserInput();
     }
 }

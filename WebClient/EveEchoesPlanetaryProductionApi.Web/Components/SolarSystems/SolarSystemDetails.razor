@@ -3,7 +3,7 @@
 @using EveEchoesPlanetaryProductionApi.Web.Components
 
 @inject IAppDataService AppDataService;
-<CardComponent>
+<SystemCardComponent>
     <h3 class="card-title">System: @this.SolarSystem.Name</h3>
     <h4 class="card-text">Constellation: @this.SolarSystem.ConstellationName</h4>
     <h5 class="card-text">Region: @this.SolarSystem.RegionName</h5>
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-</CardComponent>
+</SystemCardComponent>
 
     @code {
         [Parameter]

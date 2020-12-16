@@ -22,6 +22,8 @@
 
         public const int InMemoryCachingSolarSystemCountInDays = 1;
 
+        public const int MaxSearchRange = 15;
+
         public static class Items
         {
             public const long PlanetaryResourcesStartId = 42001000000;
@@ -80,6 +82,8 @@
             public const int ConstellationsPageSize = 10;
 
             public const int BestSystemResultsSize = 10;
+
+            public const int MaxColonies = 6;
         }
     }
 }

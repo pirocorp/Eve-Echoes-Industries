@@ -3,13 +3,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Components;
-    using Data.Models;
+
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
+    using EveEchoesPlanetaryProductionApi.Web.Components;
     using EveEchoesPlanetaryProductionApi.Web.Services;
 
     using Microsoft.AspNetCore.Components;
@@ -103,7 +103,7 @@
                 .Select(property => property.GetValue(this.Prices) as decimal? ?? 0)
                 .Any(value => value <= 0);
 
-        private async Task ValidateUserInput()
+        protected async Task ValidateUserInput()
         {
             this.ShowLoader = false;
             this.BestSystems = null;
