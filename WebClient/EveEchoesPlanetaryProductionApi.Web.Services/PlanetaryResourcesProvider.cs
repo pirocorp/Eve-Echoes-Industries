@@ -5,8 +5,9 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-
+    using Api.Models.PlanetaryResources.BestPlanetaryResourcesInConstellation;
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class PlanetaryResourcesProvider : IPlanetaryResourcesProvider
     {
@@ -25,5 +26,17 @@
 
         public async Task<IEnumerable<PlanetaryResource>> GetPlanetaryResourcesCurrentPrices()
             => (await this.httpClient.GetFromJsonAsync<GetAllPlanetResourcesWithPricesModel>("api/resources/all"))?.Resources;
+
+        public async Task<BestPlanetaryResourcesInConstellationModel> GetBestResourcesInConstellation(long constellationId, BestInputModel model)
+        {
+            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/constellation/{constellationId}", model);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesInConstellationModel>();
+        }
     }
 }

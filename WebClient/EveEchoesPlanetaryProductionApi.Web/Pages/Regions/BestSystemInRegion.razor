@@ -1,12 +1,13 @@
 ﻿@page "/region/best"
 @page "/region/best/{RegionId:long}"
 
+@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
-@inherits BestSystemBase
+@inherits BestBase<BestSystemModel>
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
@@ -31,10 +32,10 @@
                 <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
             }
             
-            @if (this.BestSystems is not null)
+            @if (this.BestItems is not null)
             {
                 <h2 class="card-title my-4">Best Systems In Region</h2>
-                <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
+                <AccordionSystemsComponent Systems="this.BestItems"></AccordionSystemsComponent>
 
                 <Paginator Page="@(this.PageNumber)"
                            TotalPages="@this.TotalPages"
@@ -80,7 +81,7 @@
 
         var model = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput));
 
-        this.BestSystems = model.Systems;
+        this.BestItems = model.Systems;
         var count = model.Count;
 
         this.StateHasChanged();

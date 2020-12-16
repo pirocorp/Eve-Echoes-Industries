@@ -11,7 +11,7 @@
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Common.Extensions
 
-@inherits BestSystemBase;
+@inherits BestBase<BestSystemModel>;
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
@@ -37,10 +37,10 @@
                 <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
             }
 
-            @if (this.BestSystems is not null)
+            @if (this.BestItems is not null)
             {
                 <h2 class="card-title my-4">Best Systems In Constellation</h2>
-                    <AccordionSystemsComponent Systems="this.BestSystems"></AccordionSystemsComponent>
+                    <AccordionSystemsComponent Systems="this.BestItems"></AccordionSystemsComponent>
             }
             else
             {
@@ -78,7 +78,7 @@
     {
         this.CreateInputModelFromUserInput();
 
-        this.BestSystems = (await this.eveApiService.Constellations.GetBestSystemsInConstellation(this.ConstellationId, this.UserInput)).Systems;
+        this.BestItems = (await this.eveApiService.Constellations.GetBestSystemsInConstellation(this.ConstellationId, this.UserInput)).Systems;
 
         this.StateHasChanged();
         await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");

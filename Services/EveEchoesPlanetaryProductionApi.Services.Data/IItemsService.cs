@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
-    using Models;
 
     public interface IItemsService
     {

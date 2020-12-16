@@ -83,6 +83,8 @@
 
             public const int BestSystemResultsSize = 10;
 
+            public const int BestResourcesPageSize = 10;
+
             public const int MaxColonies = 6;
         }
     }

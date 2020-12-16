@@ -4,8 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using EveEchoesPlanetaryProductionApi.Api.Models;
-    using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
@@ -14,7 +12,7 @@
 
     using Microsoft.AspNetCore.Components;
 
-    public abstract class BestSystemBase : PaginationBase
+    public abstract class BestBase<T> : PaginationBase
     {
         [Inject] 
         protected IAppDataService AppDataService { get; set; }
@@ -23,11 +21,11 @@
 
         protected bool ShowLoader { get; set; }
 
-        private int MiningPlanets { get; set; }
+        protected int MiningPlanets { get; set; }
 
         protected PriceSelector PriceSelector { get; set; }
 
-        protected IEnumerable<BestSystemModel> BestSystems { get; set; }
+        protected IEnumerable<T> BestItems { get; set; }
 
         private PricesModel Prices { get; set; }
 
@@ -60,11 +58,11 @@
             this.PriceSelector = selector;
             this.IsSelected = true;
 
-            this.BestSystems = null;
+            this.BestItems = null;
 
             if (selector is PriceSelector.UserProvided)
             {
-                this.BestSystems = null;
+                this.BestItems = null;
                 this.Prices = new PricesModel();
             }
 
@@ -74,13 +72,15 @@
         protected async Task OnPlanetsChangeHandler(int planetsCount)
         {
             this.MiningPlanets = planetsCount;
+            this.PageNumber = 1;
 
             await this.ValidateUserInput();
         }
 
         protected async Task OnInputPriceChangeHandler(bool success)
         {
-            this.BestSystems = null;
+            this.BestItems = null;
+            this.PageNumber = 1;
 
             if (success)
             {
@@ -106,7 +106,7 @@
         protected async Task ValidateUserInput()
         {
             this.ShowLoader = false;
-            this.BestSystems = null;
+            this.BestItems = null;
 
             if (!this.IsSelected)
             {
