@@ -18,6 +18,8 @@
 
         public int? SolarSystemCount { get; set; }
 
+        public int? PlanetaryResourcesCount { get; set; }
+
         public IDictionary<string, decimal> PlanetaryResourcesPrices { get; set; }
     }
 }

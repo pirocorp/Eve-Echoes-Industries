@@ -16,11 +16,18 @@
         else
         {
             <EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
-            <SystemCardComponent>
-                <h3 class="card-title">System: @this.randomSolarSystem.Name</h3>
-                <h4 class="card-text">Constellation: @this.randomSolarSystem.ConstellationName</h4>
-                <h5 class="card-text">Region: @this.randomSolarSystem.RegionName</h5>
-            </SystemCardComponent>
+            <div class="w-100 my-4">
+                <SystemCardComponent>
+                    <h3 class="card-title">System: @this.randomSolarSystem.Name</h3>
+                    <h4 class="card-text">Constellation: @this.randomSolarSystem.ConstellationName</h4>
+                    <h5 class="card-text">Region: @this.randomSolarSystem.RegionName</h5>
+                </SystemCardComponent>
+            </div>
+            <div class="w-100 my-4">
+                <ResourceCardComponent>
+                    <p>In eve echoes universe there are @(this.planetaryResourcesCount) planetary produced resources.</p>
+                </ResourceCardComponent>
+            </div>
         }
 </section>
 </div>
@@ -30,6 +37,7 @@
     private int regionsCount;
     private int constellationsCount;
     private int solarSystemCount;
+    private int planetaryResourcesCount;
 
     private SolarSystemServiceModel randomSolarSystem;
 
@@ -63,6 +71,16 @@
         else
         {
             this.solarSystemCount = this.appDataService.SolarSystemCount.Value;
+        }
+
+        if (this.appDataService.PlanetaryResourcesCount is null)
+        {
+            this.planetaryResourcesCount = await this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCount();
+            this.appDataService.PlanetaryResourcesCount = this.planetaryResourcesCount;
+        }
+        else
+        {
+            this.planetaryResourcesCount = this.appDataService.PlanetaryResourcesCount.Value;
         }
 
         if (this.appDataService.CurrentSolarSystem is null)

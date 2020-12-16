@@ -23,6 +23,7 @@
         private readonly IDistributedCache distributedCache;
         private readonly string url;
         private readonly string keyTemplate = "Last{0}";
+        private readonly string jsonError = "No item found with id";
 
         public ItemsPricesService(IDistributedCache distributedCache)
         {
@@ -43,6 +44,7 @@
         /// ].
         /// </summary>
         /// <param name="id">Item's id.</param>
+        /// <remarks>Not found item response: No item found with id.</remarks>
         /// <returns></returns>
         public async Task<IEnumerable<ItemPrice>> GetHistoricalPricesForItemByIdAsync(long id)
         {
@@ -60,6 +62,11 @@
                 json = Encoding.UTF8.GetString(cachedValue);
             }
 
+            if (json.Contains(this.jsonError))
+            {
+                return null;
+            }
+
             var itemPrices = GetItemsPrices(json);
 
             return itemPrices;
@@ -75,7 +82,12 @@
 
             if (cachedValue is null)
             {
-                var lastPrice = (await this.GetHistoricalPricesForItemByIdAsync(itemId)).Last();
+                var lastPrice = (await this.GetHistoricalPricesForItemByIdAsync(itemId))?.Last();
+
+                if (lastPrice is null)
+                {
+                    return null;
+                }
 
                 json = JsonSerializer.Serialize(lastPrice);
                 await this.SetDataToCacheAsync(key, json);
@@ -84,6 +96,7 @@
             }
 
             json = Encoding.UTF8.GetString(cachedValue);
+
             var result = JsonDocument.Parse(json);
 
             return ParseItemPrice(result.RootElement);

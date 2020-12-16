@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetBestPlanetaryResourcesInRange;
+    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
+    using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
@@ -15,10 +18,14 @@
     public class PlanetaryResourcesController : ControllerBase
     {
         private readonly IPlanetaryResourcesService planetaryResourcesService;
+        private readonly IItemsService itemsService;
 
-        public PlanetaryResourcesController(IPlanetaryResourcesService planetaryResourcesService)
+        public PlanetaryResourcesController(
+            IPlanetaryResourcesService planetaryResourcesService,
+            IItemsService itemsService)
         {
             this.planetaryResourcesService = planetaryResourcesService;
+            this.itemsService = itemsService;
         }
 
         [HttpPost("{id}")]
@@ -37,8 +44,31 @@
             return this.Ok(resources);
         }
 
-        [Route("~/api/resources/all")]
+        [Route("~/api/resources/simple/all")]
         public async Task<IEnumerable<string>> GetAllPlanetResources()
             => await this.planetaryResourcesService.GetAllPlanetaryResources();
+
+        [Route("~/api/resources/all")]
+        public async Task<ActionResult<GetAllPlanetResourcesWithPricesModel>> GetAllPlanetResourcesWithPrices()
+        {
+            var resources = (await this.planetaryResourcesService
+                .GetAllPlanetaryResources<PlanetaryResource>())
+                .ToList();
+
+            var prices = await this.itemsService
+                .GetLatestItemsPricesAsync(GlobalConstants.Items.GetPlanetaryResourcesIds());
+
+            foreach (var resource in resources)
+            {
+                resource.Price = prices[resource.Id];
+            }
+
+            var model = new GetAllPlanetResourcesWithPricesModel()
+            {
+                Resources = resources,
+            };
+
+            return model;
+        }
     }
 }

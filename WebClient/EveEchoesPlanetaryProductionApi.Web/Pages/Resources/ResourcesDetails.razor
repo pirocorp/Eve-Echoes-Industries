@@ -1,0 +1,36 @@
+﻿@page "/resources/details"
+
+@using System.Linq
+
+@using EveEchoesPlanetaryProductionApi.Web.Common
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
+@using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService;
+
+<div class="container">
+    <section class="row">
+        <ResourceCardComponent>
+            @if (this.Resources is not null)
+            {
+                <ResourcesTable Resources=@this.Resources></ResourcesTable>
+            }
+            else
+            {
+                <Loader></Loader>
+            }
+        </ResourceCardComponent>
+    </section>
+</div>
+
+@code
+{
+    private IEnumerable<PlanetaryResource> Resources { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Resources = await this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCurrentPrices();
+    }
+}

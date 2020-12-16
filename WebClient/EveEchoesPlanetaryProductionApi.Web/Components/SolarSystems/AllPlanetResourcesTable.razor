@@ -12,9 +12,9 @@
                     <span>Resource</span>
                     <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.ItemName))></i></span>
                 </th>
-                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.RichnessName)))">
-                    <span>Richness</span>
-                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.RichnessName))></i></span>
+                <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Output)))">
+                    <span>Output</span>
+                    <span class="sort-th"><i class=@this.SetSortIcon(nameof(this.Resource.Output))></i></span>
                 </th>
                 <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(this.Resource.Price.Buy)))">
                     <span>Buy</span>
@@ -46,7 +46,7 @@
                             <p class="img_description">@resource.ItemName</p>
                         </div>
                     </td>
-                    <td>@resource.RichnessName</td>
+                    <td>@resource.Output</td>
                     <td>@(resource.Price.Buy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
                     <td>@(resource.Price.Sell.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
                     <td>@(resource.Price.HighestBuy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>

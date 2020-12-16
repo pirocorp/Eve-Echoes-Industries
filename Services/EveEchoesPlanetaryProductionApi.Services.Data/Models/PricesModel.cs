@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models
+﻿namespace EveEchoesPlanetaryProductionApi.Services.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 
