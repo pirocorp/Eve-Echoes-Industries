@@ -60,11 +60,11 @@
 
         if (this.ConstellationId <= 0)
         {
-            this.navigationManager.NavigateTo("/404");
+            this.navigationManager.NavigateTo("/");
             return;
         }
 
-        this.navigationManager.NavigateTo($"/constellation/best/{this.ConstellationId}");
+        this.navigationManager.NavigateTo($"/constellation/best");
 
         this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
     }

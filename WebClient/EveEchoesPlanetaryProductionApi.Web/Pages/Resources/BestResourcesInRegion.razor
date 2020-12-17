@@ -62,12 +62,12 @@
 
         if (this.RegionId <= 0)
         {
-            this.navigationManager.NavigateTo("/404");
+            this.navigationManager.NavigateTo("/");
             return;
         }
 
         this.MiningPlanets = 1;
-        this.navigationManager.NavigateTo($"/resources/region/{this.RegionId}");
+        this.navigationManager.NavigateTo($"/resources/region");
 
         this.RegionDetails = await this.eveApiService.Regions.GetSimpleDetailsAsync(this.RegionId);
     }

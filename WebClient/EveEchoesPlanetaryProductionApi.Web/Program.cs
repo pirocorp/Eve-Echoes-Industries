@@ -4,14 +4,13 @@ namespace EveEchoesPlanetaryProductionApi.Web
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    using EveEchoesPlanetaryProductionApi.Web.Services;
+
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
-    using Services;
 
     public class Program
     {
-        // TODO: Add Stylecop to Web Client projects
-
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);

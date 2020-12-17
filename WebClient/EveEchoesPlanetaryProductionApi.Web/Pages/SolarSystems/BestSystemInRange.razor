@@ -71,11 +71,11 @@
 
         if (this.SystemId <= 0)
         {
-            this.navigationManager.NavigateTo("/404");
+            this.navigationManager.NavigateTo("/");
             return;
         }
 
-        this.navigationManager.NavigateTo($"/range/best/{this.SystemId}");
+        this.navigationManager.NavigateTo($"/range/best");
 
         this.SystemName = (await this.eveApiService.Systems.GetSolarSystemSimpleDetails(this.SystemId)).Name;
     }

@@ -41,7 +41,7 @@
             this.AppDataService.CurrentSolarSystem = this.SolarSystem;
         }
 
-        this.navigationManager.NavigateTo($"/details/{this.SolarSystem.Id}");
+        this.navigationManager.NavigateTo($"/details");
         await base.OnInitializedAsync();
     }
 }
