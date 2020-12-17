@@ -5,13 +5,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetBestPlanetaryResourcesInRange;
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
@@ -35,11 +33,11 @@
             this.apiBehaviorOptions = apiBehaviorOptions;
         }
 
-        [Route("~/api/resources/simple/all")]
-        public async Task<IEnumerable<string>> GetAllPlanetResources()
+        [Route("~/api/resources/list")]
+        public async Task<IEnumerable<string>> GetPlanetResourcesList()
             => await this.planetaryResourcesService.GetAllPlanetaryResources();
 
-        [Route("~/api/resources/all")]
+        [Route("~/api/resources")]
         public async Task<ActionResult<GetAllPlanetResourcesWithPricesModel>> GetAllPlanetResourcesWithPrices()
         {
             var resources = (await this.planetaryResourcesService
@@ -63,7 +61,7 @@
         }
 
         [HttpPost]
-        [Route("~/api/resources/constellation/{constellationId:long}")]
+        [Route("~/api/resources/constellations/{constellationId:long}")]
         public async Task<IActionResult> BestPlanetaryResourcesInConstellation(long constellationId, BestInputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
@@ -95,7 +93,7 @@
         }
 
         [HttpPost]
-        [Route("~/api/resources/region/{regionId:long}")]
+        [Route("~/api/resources/regions/{regionId:long}")]
         public async Task<IActionResult> BestPlanetaryResourcesInRegion(long regionId, BestInputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
@@ -127,8 +125,8 @@
         }
 
         [HttpPost]
-        [Route("~/api/resources/{range}/{solarSystemId}")]
-        public async Task<IActionResult> BestPlanetaryResourcesInRegion(int range, long solarSystemId, BestInputModel input)
+        [Route("~/api/resources/systems/{systemId}/range/{range}")]
+        public async Task<IActionResult> BestPlanetaryResourcesInRegion(int range, long systemId, BestInputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 

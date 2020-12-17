@@ -18,18 +18,18 @@
             this.httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<string>> GetPlanetaryResources()
-            => await this.httpClient.GetFromJsonAsync<IEnumerable<string>>("api/resources/simple/all");
-
         public async Task<int> GetPlanetaryResourcesCount()
             => (await this.GetPlanetaryResources()).Count();
 
+        public async Task<IEnumerable<string>> GetPlanetaryResources()
+            => await this.httpClient.GetFromJsonAsync<IEnumerable<string>>("api/resources/list");
+
         public async Task<IEnumerable<PlanetaryResource>> GetPlanetaryResourcesCurrentPrices()
-            => (await this.httpClient.GetFromJsonAsync<GetAllPlanetResourcesWithPricesModel>("api/resources/all"))?.Resources;
+            => (await this.httpClient.GetFromJsonAsync<GetAllPlanetResourcesWithPricesModel>("api/resources"))?.Resources;
 
         public async Task<BestPlanetaryResourcesModel> GetBestResourcesInConstellation(long constellationId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/constellation/{constellationId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/constellations/{constellationId}", model);
 
             if (!result.IsSuccessStatusCode)
             {
@@ -41,7 +41,7 @@
 
         public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRegion(long regionId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/region/{regionId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/regions/{regionId}", model);
 
             if (!result.IsSuccessStatusCode)
             {
@@ -53,7 +53,7 @@
 
         public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRange(int range, long solarSystemId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/{range}/{solarSystemId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"/api/resources/systems/{solarSystemId}/range/{range}", model);
 
             if (!result.IsSuccessStatusCode)
             {
