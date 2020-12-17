@@ -16,5 +16,7 @@
         Task<IEnumerable<TOut>> GetAllPlanetaryResources<TOut>();
 
         Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInConstellation(long constellationId, BestInputModel input);
+
+        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegion(long regionId, BestInputModel input);
     }
 }

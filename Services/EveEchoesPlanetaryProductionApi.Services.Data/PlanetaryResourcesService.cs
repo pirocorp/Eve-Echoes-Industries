@@ -84,6 +84,43 @@
                 .To<BestResourceServiceModel>()
                 .ToListAsync();
 
+            await this.PopulatePrices(input, resources);
+
+            var page = GetPage(input, resources, GlobalConstants.Ui.BestResourcesPageSize);
+
+            return (resources.Count, page);
+        }
+
+        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegion(long regionId, BestInputModel input)
+        {
+            var resources = await this.dbContext.Regions
+                .Where(r => r.Id.Equals(regionId))
+                .SelectMany(r => r.SolarSystems)
+                .SelectMany(ss => ss.Planets)
+                .SelectMany(p => p.PlanetResources)
+                .To<BestResourceServiceModel>()
+                .ToListAsync();
+
+            await this.PopulatePrices(input, resources);
+
+            var page = GetPage(input, resources, GlobalConstants.Ui.BestResourcesPageSize);
+
+            return (resources.Count, page);
+        }
+
+        private static IEnumerable<BestResourceServiceModel> GetPage(BestInputModel input, IEnumerable<BestResourceServiceModel> resources, int pageSize)
+        {
+            var pageOfResources = resources
+                .OrderByDescending(i => i.ResourceValue)
+                .Skip((input.Page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return pageOfResources;
+        }
+
+        private async Task PopulatePrices(BestInputModel input, IEnumerable<BestResourceServiceModel> resources)
+        {
             Dictionary<long, ItemServiceModel> prices;
 
             if (input.PriceSelector is PriceSelector.UserProvided)
@@ -101,14 +138,6 @@
             {
                 resource.Price = prices[resource.ItemId].Price;
             }
-
-            var pageOfResources = resources
-                .OrderByDescending(i => i.ResourceValue)
-                .Skip((input.Page - 1) * GlobalConstants.Ui.BestResourcesPageSize)
-                .Take(GlobalConstants.Ui.BestResourcesPageSize)
-                .ToList();
-
-            return (resources.Count, pageOfResources);
         }
     }
 }

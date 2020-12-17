@@ -5,7 +5,7 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-    using Api.Models.PlanetaryResources.BestPlanetaryResourcesInConstellation;
+    using Api.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
@@ -27,7 +27,7 @@
         public async Task<IEnumerable<PlanetaryResource>> GetPlanetaryResourcesCurrentPrices()
             => (await this.httpClient.GetFromJsonAsync<GetAllPlanetResourcesWithPricesModel>("api/resources/all"))?.Resources;
 
-        public async Task<BestPlanetaryResourcesInConstellationModel> GetBestResourcesInConstellation(long constellationId, BestInputModel model)
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInConstellation(long constellationId, BestInputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/resources/constellation/{constellationId}", model);
 
@@ -36,7 +36,19 @@
                 return null;
             }
 
-            return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesInConstellationModel>();
+            return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
+        }
+
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRegion(long regionId, BestInputModel model)
+        {
+            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/region/{regionId}", model);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
         }
     }
 }

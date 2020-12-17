@@ -1,10 +1,10 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.BestPlanetaryResourcesInConstellation
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources
 {
     using System.Collections.Generic;
 
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
-    public class BestPlanetaryResourcesInConstellationModel
+    public class BestPlanetaryResourcesModel
     {
         public int Count { get; set; }
 

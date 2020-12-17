@@ -1,7 +1,7 @@
-﻿@page "/resources/constellation/"
-@page "/resources/constellation/{ConstellationId:long}"
+﻿@page "/resources/region/"
+@page "/resources/region/{RegionId:long}"
 
-@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
@@ -16,8 +16,7 @@
 <div class="container">
     <section class="row">
         <ResourceCardComponent>
-            <h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
-            <h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
+            <h4 class="card-title">Region: @this.RegionDetails?.Name</h4>
 
             <div class="row">
                 <div class="col-md-5 offset-md-1">
@@ -53,31 +52,31 @@
 
 @code {
     [Parameter]
-    public long ConstellationId { get; set; }
+    public long RegionId { get; set; }
 
-    private ConstellationSimpleDetailsModel ConstellationDetails { get; set; }
+    private RegionSimpleDetailsModel RegionDetails { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        this.ConstellationId = this.ConstellationId == 0 ? this.appDataService.CurrentSolarSystem?.ConstellationId ?? 0 : this.ConstellationId;
+        this.RegionId = this.RegionId == 0 ? this.appDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
 
-        if (this.ConstellationId <= 0)
+        if (this.RegionId <= 0)
         {
             this.navigationManager.NavigateTo("/404");
             return;
         }
 
         this.MiningPlanets = 1;
-        this.navigationManager.NavigateTo($"/resources/constellation/{this.ConstellationId}");
+        this.navigationManager.NavigateTo($"/resources/region/{this.RegionId}");
 
-        this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
+        this.RegionDetails = await this.eveApiService.Regions.GetSimpleDetailsAsync(this.RegionId);
     }
 
     protected override async Task LoadData()
     {
         this.CreateInputModelFromUserInput();
 
-        var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInConstellation(this.ConstellationId, this.UserInput));
+        var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInRegion(this.RegionId, this.UserInput));
 
         this.BestItems = model.Resources;
         var count = model.Count;

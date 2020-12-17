@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetBestPlanetaryResourcesInRange;
-    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.BestPlanetaryResourcesInConstellation;
+    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
@@ -97,9 +97,41 @@
 
             input.PriceSelector = priceSelector;
 
-            var (count, resources) = await this.planetaryResourcesService.GetBestResourcesInConstellation(constellationId, input);
+            var (count, resources) = await this.planetaryResourcesService
+                .GetBestResourcesInConstellation(constellationId, input);
 
-            var model = new BestPlanetaryResourcesInConstellationModel()
+            var model = new BestPlanetaryResourcesModel()
+            {
+                Count = count,
+                Resources = resources,
+            };
+
+            return this.Ok(model);
+        }
+
+        [Route("~/api/resources/region/{regionId:long}")]
+        public async Task<IActionResult> BestPlanetaryResourcesInRegion(long regionId, BestInputModel input)
+        {
+            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
+
+            if (!priceSelectorSuccess)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            input.PriceSelector = priceSelector;
+
+            var (count, resources) = await this.planetaryResourcesService
+                .GetBestResourcesInRegion(regionId, input);
+
+            var model = new BestPlanetaryResourcesModel()
             {
                 Count = count,
                 Resources = resources,
