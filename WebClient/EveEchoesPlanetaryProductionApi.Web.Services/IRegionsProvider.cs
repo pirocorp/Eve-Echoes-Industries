@@ -2,8 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
+    using Api.Models.SolarSystems.GetBestSystemsInRegion;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails;

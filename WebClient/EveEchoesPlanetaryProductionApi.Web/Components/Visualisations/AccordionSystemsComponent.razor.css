@@ -124,7 +124,7 @@ td {
 }
 
     td:last-child {
-        border-right: 0px;
+        border-right: 0;
     }
 
 th.text-left {

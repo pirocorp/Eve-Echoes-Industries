@@ -5,10 +5,8 @@
 
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemInRange;
-    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSolarSystemSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Common;
@@ -19,6 +17,8 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using Models.SolarSystems.GetBestSystemsInConstellation;
+    using Models.SolarSystems.GetBestSystemsInRegion;
 
     [ApiController]
     public class SolarSystemsController : ControllerBase
@@ -175,7 +175,7 @@
 
         [HttpPost]
         [Route("~/api/systems/regions/{regionId}")]
-        public async Task<IActionResult> GetBestSystemsInRegionAsync(long regionId, [FromBody] InputModel input)
+        public async Task<IActionResult> GetBestSystemsInRegion(long regionId, [FromBody] InputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 

@@ -4,7 +4,6 @@
     using System.Text.Json.Serialization;
 
     using EveEchoesPlanetaryProductionApi.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     public class SolarSystemServiceModel : IMapFrom<SolarSystem>

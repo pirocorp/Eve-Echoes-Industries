@@ -4,14 +4,12 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-
-    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
-    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSolarSystemSimpleDetails;
+    using Api.Models.SolarSystems.GetBestSystemsInRegion;
+    using Api.Models.SolarSystems.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public class SolarSystemsProvider : ISolarSystemsProvider

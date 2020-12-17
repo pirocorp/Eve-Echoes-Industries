@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources;
-    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
+    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetResources;
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;

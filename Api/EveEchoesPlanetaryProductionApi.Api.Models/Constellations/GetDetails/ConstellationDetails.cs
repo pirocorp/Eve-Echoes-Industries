@@ -8,14 +8,6 @@
 
     public class ConstellationDetails : IMapFrom<Constellation>
     {
-        public long Id { get; set; }
-
-        public string Name { get; set; }
-
-        public long RegionId { get; set; }
-
-        public string RegionName { get; set; }
-
         public IEnumerable<SolarSystemListingModel> SolarSystems { get; set; }
     }
 }

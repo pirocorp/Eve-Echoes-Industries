@@ -1,8 +1,7 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInRegion
 {
     using System.Collections.Generic;
-
-    using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
+    using BestSystemModel;
 
     public class BestRegionModel
     {

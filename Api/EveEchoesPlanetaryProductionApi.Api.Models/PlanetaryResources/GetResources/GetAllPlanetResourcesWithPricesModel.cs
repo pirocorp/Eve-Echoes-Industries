@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetResources
 {
     using System.Collections.Generic;
 

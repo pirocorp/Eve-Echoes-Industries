@@ -1,4 +1,4 @@
-﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSolarSystemSimpleDetails
+﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails
 {
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;

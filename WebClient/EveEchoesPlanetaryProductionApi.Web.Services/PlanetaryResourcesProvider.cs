@@ -6,7 +6,7 @@
     using System.Net.Http.Json;
     using System.Threading.Tasks;
     using Api.Models.PlanetaryResources;
-    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetAllPlanetResourcesWithPrices;
+    using Api.Models.PlanetaryResources.GetResources;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class PlanetaryResourcesProvider : IPlanetaryResourcesProvider

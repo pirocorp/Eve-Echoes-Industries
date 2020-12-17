@@ -6,10 +6,10 @@
     using System.Threading.Tasks;
 
     using Api.Models;
-    using Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
     using Api.Models.Regions.GetDetails;
     using Api.Models.Regions.GetRegions;
     using Api.Models.Regions.GetSimpleDetails;
+    using Api.Models.SolarSystems.GetBestSystemsInRegion;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class RegionsProvider : IRegionsProvider

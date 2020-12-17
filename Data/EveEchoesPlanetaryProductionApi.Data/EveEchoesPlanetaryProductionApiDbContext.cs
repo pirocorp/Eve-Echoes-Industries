@@ -46,7 +46,7 @@
         {
             await this.Database.OpenConnectionAsync();
 
-            var count = 0;
+            int count;
 
             try
             {

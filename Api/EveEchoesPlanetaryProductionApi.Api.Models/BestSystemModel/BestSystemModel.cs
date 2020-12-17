@@ -4,7 +4,6 @@
     using System.Linq;
 
     using AutoMapper;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SystemsBestModel;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 

@@ -35,7 +35,7 @@
 
 .radiobtn label:before {
     background: transparent;
-    transition: 0.1s width cubic-bezier(0.075, 0.82, 0.165, 1) 0s, 0.3s, height cubic-bezier(0.075, 0.82, 0.165, 2) 0.1s;
+    transition: 0.1s width cubic-bezier(0.075, 0.82, 0.165, 1) 0, 0.3s, height cubic-bezier(0.075, 0.82, 0.165, 2) 0.1s;
     z-index: 2;
     overflow: hidden;
     background-repeat: no-repeat;

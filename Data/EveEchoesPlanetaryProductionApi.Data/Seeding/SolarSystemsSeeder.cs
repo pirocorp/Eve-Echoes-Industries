@@ -1,7 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Seeding
 {
     using System;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Common;
@@ -26,35 +25,6 @@
             }
 
             await SeedSolarSystemsAsync(dbContext, logger);
-        }
-
-        private static async Task UpdateSolarSystemsSecurity(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
-        {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.SolarSystemsCsvFilePath))
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
-
-                var solarSystemSuccess = long.TryParse(lineArgs[2], out var solarSystemId);
-                var solarSystemName = lineArgs[3];
-                var securitySuccess = double.TryParse(lineArgs[21], out var security);
-
-                if (!solarSystemSuccess || !securitySuccess)
-                {
-                    logger.LogWarning(string.Format(
-                        DatabaseConstants.SeedingConstants.SolarSystemErrorParseMessage, solarSystemName));
-                    logger.LogWarning(line);
-                    continue;
-                }
-
-                var solarSystem = await dbContext.SolarSystems.FindAsync(solarSystemId);
-                solarSystem.Security = security;
-                await dbContext.SaveChangesAsync();
-            }
         }
 
         private static async Task SeedSolarSystemsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)

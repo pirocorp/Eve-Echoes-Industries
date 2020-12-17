@@ -10,19 +10,15 @@
     using EveEchoesPlanetaryProductionApi.Services.Data;
 
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
     public class RegionsController : ControllerBase
     {
         private readonly IRegionsService regionsService;
-        private readonly IOptions<ApiBehaviorOptions> apiBehaviorOptions;
 
         public RegionsController(
-            IRegionsService regionsService,
-            IOptions<ApiBehaviorOptions> apiBehaviorOptions)
+            IRegionsService regionsService)
         {
             this.regionsService = regionsService;
-            this.apiBehaviorOptions = apiBehaviorOptions;
         }
 
         [Route("~/api/regions/count")]

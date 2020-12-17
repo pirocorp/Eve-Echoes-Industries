@@ -2,13 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSolarSystemSimpleDetails;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetBestSolarSystemsInRegionAsync;
+    using Api.Models.SolarSystems.GetBestSystemsInRegion;
+    using Api.Models.SolarSystems.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public interface ISolarSystemsProvider

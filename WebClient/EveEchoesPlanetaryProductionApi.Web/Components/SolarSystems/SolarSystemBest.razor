@@ -1,5 +1,4 @@
-﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
+﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
@@ -65,7 +64,7 @@
             {
                 var bestPlanetResource = p
                     .PlanetResources
-                    .OrderByDescending(p => func(p) * (decimal)p.Output)
+                    .OrderByDescending(x => func(x) * (decimal)x.Output)
                     .First();
 
                 return new PlanetValue()

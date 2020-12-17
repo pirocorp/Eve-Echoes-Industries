@@ -5,10 +5,10 @@
     using System.Net.Http.Json;
     using System.Threading.Tasks;
     using Api.Models;
-    using Api.Models.Constellations.BestSolarSystemsInConstellation;
     using Api.Models.Constellations.GetConstellations;
     using Api.Models.Constellations.GetDetails;
     using Api.Models.Constellations.GetSimpleDetails;
+    using Api.Models.SolarSystems.GetBestSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class ConstellationsProvider : IConstellationsProvider

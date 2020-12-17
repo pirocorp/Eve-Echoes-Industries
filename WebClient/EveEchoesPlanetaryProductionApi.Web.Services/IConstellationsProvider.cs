@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Api.Models.SolarSystems.GetBestSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.BestSolarSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
