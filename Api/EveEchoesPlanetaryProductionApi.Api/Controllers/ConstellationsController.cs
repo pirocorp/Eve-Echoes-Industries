@@ -32,7 +32,7 @@
         }
 
         [Route("~/api/constellations/count")]
-        public async Task<ActionResult<CountModel>> GetConstellationsCount()
+        public async Task<ActionResult<CountModel>> GetCount()
         {
             var model = new CountModel()
             {
@@ -42,7 +42,7 @@
             return model;
         }
 
-        [Route("~/api/constellations/{page?}")]
+        [Route("~/api/constellations/page/{page?}")]
         public async Task<ActionResult<ConstellationPage>> GetConstellations(int page = 1)
         {
             if (page <= 0)
@@ -58,41 +58,12 @@
             return model;
         }
 
-        [Route("~/api/constellation/{id}")]
-        public async Task<ActionResult<ConstellationDetails>> GetDetails(long id)
-            => await this.constellationService.GetByIdAsync<ConstellationDetails>(id);
+        [Route("~/api/constellations/{constellationId}")]
+        public async Task<ActionResult<ConstellationDetails>> GetDetails(long constellationId)
+            => await this.constellationService.GetByIdAsync<ConstellationDetails>(constellationId);
 
-        [Route("~/api/constellation/simple/{id}")]
-        public async Task<ActionResult<ConstellationSimpleDetailsModel>> GetSimpleDetails(long id)
-            => await this.constellationService.GetByIdAsync<ConstellationSimpleDetailsModel>(id);
-
-        [HttpPost]
-        [Route("~/api/solarSystems/best/constellation/{constellationId}")]
-        public async Task<IActionResult> GetBestSolarSystemsInConstellation(long constellationId, [FromBody]BestInputModel input)
-        {
-            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
-
-            if (!priceSelectorSuccess)
-            {
-                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
-                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
-            }
-
-            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
-            {
-                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
-                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
-            }
-
-            input.PriceSelector = priceSelector;
-
-            var model = new BestConstellationModel
-            {
-                Systems = await this.constellationService
-                    .GetBestSolarSystem<BestSystemModel>(constellationId, input),
-            };
-
-            return this.Ok(model);
-        }
+        [Route("~/api/constellations/{constellationId}/short")]
+        public async Task<ActionResult<ConstellationSimpleDetailsModel>> GetSimpleDetails(long constellationId)
+            => await this.constellationService.GetByIdAsync<ConstellationSimpleDetailsModel>(constellationId);
     }
 }

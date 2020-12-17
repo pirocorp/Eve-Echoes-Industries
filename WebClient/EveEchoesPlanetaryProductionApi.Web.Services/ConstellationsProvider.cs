@@ -24,17 +24,17 @@
             => (await this.httpClient.GetFromJsonAsync<CountModel>("api/constellations/count"))?.Count ?? 0;
 
         public async Task<IEnumerable<ConstellationListingModel>> GetPageAsync(int page = 1)
-            => (await this.httpClient.GetFromJsonAsync<ConstellationPage>($"api/constellations/{page}"))?.Constellations;
+            => (await this.httpClient.GetFromJsonAsync<ConstellationPage>($"api/constellations/page/{page}"))?.Constellations;
 
         public async Task<ConstellationDetails> GetDetailsAsync(long id)
-            => await this.httpClient.GetFromJsonAsync<ConstellationDetails>($"api/constellation/{id}");
+            => await this.httpClient.GetFromJsonAsync<ConstellationDetails>($"api/constellations/{id}");
 
-        public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id)
-            => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellation/simple/{id}");
+        public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long constellationId)
+            => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellations/{constellationId}/short");
 
         public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/solarSystems/best/constellation/{constellationId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/constellations/{constellationId}", model);
 
             if (!result.IsSuccessStatusCode)
             {

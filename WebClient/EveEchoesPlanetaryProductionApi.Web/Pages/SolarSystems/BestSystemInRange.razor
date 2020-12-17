@@ -10,6 +10,7 @@
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
+@inject IJSRuntime JS;
 
 <div class="container">
     <section class="row">
@@ -26,7 +27,7 @@
                 </div>
                 <div class="col-md-5 align-self-center">
                     <SelectComponent Label="Colonies" Range="GlobalConstants.Ui.MaxColonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
-                    <SelectComponent Label="Range" Start="2" Range="GlobalConstants.MaxSearchRange" OnChange="this.OnRangeChangeHandler"></SelectComponent>
+                    <SelectComponent Label="Range" Start="GlobalConstants.MinRange" Range="GlobalConstants.MaxRange" OnChange="this.OnRangeChangeHandler"></SelectComponent>
                 </div>
             </div>
 
@@ -96,6 +97,7 @@
         this.StateHasChanged();
 
         this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
+        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
     }
 
     private async Task OnRangeChangeHandler(int range)

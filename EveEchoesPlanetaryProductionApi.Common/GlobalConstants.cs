@@ -22,7 +22,10 @@
 
         public const int InMemoryCachingSolarSystemCountInDays = 1;
 
-        public const int MaxSearchRange = 15;
+        public const int MaxRange = 15;
+
+        public const int MinRange = 2;
+
 
         public static class Items
         {

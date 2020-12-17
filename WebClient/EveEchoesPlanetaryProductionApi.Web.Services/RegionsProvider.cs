@@ -25,17 +25,17 @@
             => (await this.httpClient.GetFromJsonAsync<CountModel>("api/regions/count"))?.Count ?? 0;
 
         public async Task<IEnumerable<RegionListingModel>> GetPageAsync(int page = 1)
-            => (await this.httpClient.GetFromJsonAsync<RegionsPage>($"api/regions/{page}"))?.Regions;
+            => (await this.httpClient.GetFromJsonAsync<RegionsPage>($"api/regions/page/{page}"))?.Regions;
 
         public async Task<RegionDetails> GetDetailsAsync(long regionId)
-            => await this.httpClient.GetFromJsonAsync<RegionDetails>($"api/region/{regionId}");
+            => await this.httpClient.GetFromJsonAsync<RegionDetails>($"api/regions/{regionId}");
 
         public async Task<RegionSimpleDetailsModel> GetSimpleDetailsAsync(long regionId)
-            => await this.httpClient.GetFromJsonAsync<RegionSimpleDetailsModel>($"/api/region/simple/{regionId}");
+            => await this.httpClient.GetFromJsonAsync<RegionSimpleDetailsModel>($"/api/regions/{regionId}/short");
 
         public async Task<BestRegionModel> GetBestSystemsInRegion(long regionId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/solarSystems/best/region/{regionId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/regions/{regionId}", model);
 
             if (!result.IsSuccessStatusCode)
             {

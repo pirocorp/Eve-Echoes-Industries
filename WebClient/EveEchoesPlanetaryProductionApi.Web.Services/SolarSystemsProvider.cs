@@ -23,23 +23,26 @@
         }
 
         public async Task<int> GetCountAsync()
-            => (await this.httpClient.GetFromJsonAsync<CountModel>("api/solarSystems/count"))?.Count ?? 0;
-
-        public async Task<IEnumerable<SolarSystemListingModel>> GetPageAsync(int page = 1)
-            => (await this.httpClient.GetFromJsonAsync<SystemsPageModel>($"api/solarSystems/page/{page}"))?.Systems;
+            => (await this.httpClient.GetFromJsonAsync<CountModel>("api/systems/count"))?.Count ?? 0;
 
         public async Task<SolarSystemServiceModel> GetRandomAsync()
-            => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>("api/SolarSystems");
+            => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>("api/systems/random");
 
-        public async Task<SolarSystemServiceModel> GetAsync(long solarSystemId)
-            => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>($"api/SolarSystems/{solarSystemId}");
+        public async Task<SolarSystemServiceModel> GetAsync(long systemId)
+            => await this.httpClient.GetFromJsonAsync<SolarSystemServiceModel>($"api/systems/{systemId}");
 
+        public async Task<SolarSystemSimpleDetailsModel> GetSolarSystemSimpleDetails(long systemId)
+            => await this.httpClient.GetFromJsonAsync<SolarSystemSimpleDetailsModel>($"/api/systems/{systemId}/short");
+
+        public async Task<IEnumerable<SolarSystemListingModel>> GetPageAsync(int page = 1)
+            => (await this.httpClient.GetFromJsonAsync<SystemsPageModel>($"api/systems/page/{page}"))?.Systems;
+        
         public async Task<SearchResultModel> GetSearchResultsAsync(string searchTerm, int page = 1)
-            => await this.httpClient.GetFromJsonAsync<SearchResultModel>($"api/solarSystems/search/{searchTerm}/{page}");
+            => await this.httpClient.GetFromJsonAsync<SearchResultModel>($"api/systems/search/{searchTerm}/page/{page}");
 
         public async Task<BestRegionModel> GetBestSystemsInRange(int range, long systemId, BestInputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/SolarSystems/{range}/{systemId}", model);
+            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/{systemId}/range/{range}", model);
 
             if (!result.IsSuccessStatusCode)
             {
@@ -48,8 +51,5 @@
 
             return await result.Content.ReadFromJsonAsync<BestRegionModel>();
         }
-
-        public async Task<SolarSystemSimpleDetailsModel> GetSolarSystemSimpleDetails(long solarSystemId)
-            => await this.httpClient.GetFromJsonAsync<SolarSystemSimpleDetailsModel>($"/api/solarSystem/simple/{solarSystemId}");
     }
 }
