@@ -1,0 +1,91 @@
+﻿@page "/resources/constellation/"
+@page "/resources/constellation/{ConstellationId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
+
+@inherits BestBase<BestResourceServiceModel>
+
+@inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
+@inject IAppDataService appDataService;
+@inject IJSRuntime JS;
+
+<div class="container">
+    <section class="row">
+        <ResourceCardComponent>
+            <h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
+            <h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
+
+            <div class="row">
+                <div class="col-md-5 offset-md-1">
+                    <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
+                </div>
+            </div>
+
+            @if (this.PriceSelector is PriceSelector.UserProvided)
+            {
+                <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
+            }
+
+            @if (this.BestItems is not null)
+            {
+                <h2 class="card-title my-4">Best Resources In Constellation</h2>
+                <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="system"></ListingTableComponent>
+
+                <Paginator Page="@(this.PageNumber)"
+                           TotalPages="@this.TotalPages"
+                           Radius="3"
+                           SelectedPage="this.ChangePage" />
+            }
+            else
+            {
+                if (this.ShowLoader)
+                {
+                    <Loader></Loader>
+                }
+            }
+        </ResourceCardComponent>
+    </section>
+</div>
+
+@code {
+    [Parameter]
+    public long ConstellationId { get; set; }
+
+    private ConstellationSimpleDetailsModel ConstellationDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ConstellationId = this.ConstellationId == 0 ? this.appDataService.CurrentSolarSystem?.ConstellationId ?? 0 : this.ConstellationId;
+
+        if (this.ConstellationId <= 0)
+        {
+            this.navigationManager.NavigateTo("/404");
+            return;
+        }
+
+        this.MiningPlanets = 1;
+        this.navigationManager.NavigateTo($"/resources/constellation/{this.ConstellationId}");
+
+        this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
+    }
+
+    protected override async Task LoadData()
+    {
+        this.CreateInputModelFromUserInput();
+
+        var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInConstellation(this.ConstellationId, this.UserInput));
+
+        this.BestItems = model.Resources;
+        var count = model.Count;
+
+        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestResourcesPageSize);
+
+        this.StateHasChanged();
+    }
+}
