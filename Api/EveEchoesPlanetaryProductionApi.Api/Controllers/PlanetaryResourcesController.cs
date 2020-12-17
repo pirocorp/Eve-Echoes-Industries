@@ -35,22 +35,6 @@
             this.apiBehaviorOptions = apiBehaviorOptions;
         }
 
-        [HttpPost("{id}")]
-        public async Task<ActionResult<IEnumerable<PlanetaryResourceServiceModel>>> GetBestPlanetaryResourcesInRange(long id, [FromBody]GetBestPlanetaryResourcesInRangeInputModel model)
-        {
-            var selectorIsParsedSuccessful = Enum.TryParse<PriceSelector>(model.PriceSelector, out var priceSelector);
-
-            if (!selectorIsParsedSuccessful)
-            {
-                return this.BadRequest();
-            }
-
-            var resources =
-                await this.planetaryResourcesService.GetBestPlanetaryResourcesInRangeAsync(id, priceSelector, model.Range, model.MiningPlanets);
-
-            return this.Ok(resources);
-        }
-
         [Route("~/api/resources/simple/all")]
         public async Task<IEnumerable<string>> GetAllPlanetResources()
             => await this.planetaryResourcesService.GetAllPlanetaryResources();
@@ -78,6 +62,7 @@
             return model;
         }
 
+        [HttpPost]
         [Route("~/api/resources/constellation/{constellationId:long}")]
         public async Task<IActionResult> BestPlanetaryResourcesInConstellation(long constellationId, BestInputModel input)
         {
@@ -109,6 +94,7 @@
             return this.Ok(model);
         }
 
+        [HttpPost]
         [Route("~/api/resources/region/{regionId:long}")]
         public async Task<IActionResult> BestPlanetaryResourcesInRegion(long regionId, BestInputModel input)
         {
@@ -130,6 +116,38 @@
 
             var (count, resources) = await this.planetaryResourcesService
                 .GetBestResourcesInRegion(regionId, input);
+
+            var model = new BestPlanetaryResourcesModel()
+            {
+                Count = count,
+                Resources = resources,
+            };
+
+            return this.Ok(model);
+        }
+
+        [HttpPost]
+        [Route("~/api/resources/{range}/{solarSystemId}")]
+        public async Task<IActionResult> BestPlanetaryResourcesInRegion(int range, long solarSystemId, BestInputModel input)
+        {
+            var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
+
+            if (!priceSelectorSuccess)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
+            {
+                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
+            }
+
+            input.PriceSelector = priceSelector;
+
+            var (count, resources) = await this.planetaryResourcesService
+                .GetBestResourcesInRange(range, solarSystemId, input);
 
             var model = new BestPlanetaryResourcesModel()
             {

@@ -8,12 +8,10 @@
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.PlanetaryResources;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.EntityFrameworkCore;
-
 
     public class PlanetaryResourcesService : IPlanetaryResourcesService
     {
@@ -29,29 +27,6 @@
             this.dbContext = dbContext;
             this.solarSystemsService = solarSystemsService;
             this.itemsService = itemsService;
-        }
-
-        public async Task<IEnumerable<PlanetaryResourceServiceModel>> GetBestPlanetaryResourcesInRangeAsync(
-            long solarSystemId, PriceSelector priceSelector, int range, int resourcesCount)
-        {
-            var solarSystemsInRange = await this.solarSystemsService.GetSolarSystemsInRangeIds(range, solarSystemId);
-
-            var resources = await this.dbContext.PlanetsResources
-                .Where(pr => solarSystemsInRange.Contains(pr.Planet.SolarSystemId))
-                .To<PlanetaryResourceServiceModel>()
-                .ToListAsync();
-
-            var planetaryResourcesPrices = (await this.itemsService.GetPlanetaryResources(priceSelector))
-                .ToDictionary(x => x.Id, x => x);
-
-            foreach (var resource in resources)
-            {
-                resource.Price = planetaryResourcesPrices[resource.ItemId].Price;
-            }
-
-            return resources
-                .OrderByDescending(x => x.ResourceValue)
-                .Take(resourcesCount);
         }
 
         public async Task<IEnumerable<string>> GetAllPlanetaryResources()
@@ -74,7 +49,9 @@
                 .ToListAsync();
         }
 
-        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInConstellation(long constellationId, BestInputModel input)
+        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInConstellation(
+            long constellationId,
+            BestInputModel input)
         {
             var resources = await this.dbContext.Constellations
                 .Where(c => c.Id.Equals(constellationId))
@@ -91,7 +68,9 @@
             return (resources.Count, page);
         }
 
-        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegion(long regionId, BestInputModel input)
+        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegion(
+            long regionId,
+            BestInputModel input)
         {
             var resources = await this.dbContext.Regions
                 .Where(r => r.Id.Equals(regionId))
@@ -108,7 +87,25 @@
             return (resources.Count, page);
         }
 
-        private static IEnumerable<BestResourceServiceModel> GetPage(BestInputModel input, IEnumerable<BestResourceServiceModel> resources, int pageSize)
+        public async Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRange(
+            int range,
+            long solarSystemId,
+            BestInputModel input)
+        {
+            var resources = (await this
+                .GetBestPlanetaryResourcesInRangeAsync<BestResourceServiceModel>(solarSystemId, range)).ToList();
+
+            await this.PopulatePrices(input, resources);
+
+            var page = GetPage(input, resources, GlobalConstants.Ui.BestResourcesPageSize);
+
+            return (resources.Count, page);
+        }
+
+        private static IEnumerable<BestResourceServiceModel> GetPage(
+            BestInputModel input,
+            IEnumerable<BestResourceServiceModel> resources,
+            int pageSize)
         {
             var pageOfResources = resources
                 .OrderByDescending(i => i.ResourceValue)
@@ -138,6 +135,16 @@
             {
                 resource.Price = prices[resource.ItemId].Price;
             }
+        }
+
+        private async Task<IEnumerable<TOut>> GetBestPlanetaryResourcesInRangeAsync<TOut>(long solarSystemId, int range)
+        {
+            var solarSystemsInRange = await this.solarSystemsService.GetSolarSystemsInRangeIds(range, solarSystemId);
+
+            return await this.dbContext.PlanetsResources
+                .Where(pr => solarSystemsInRange.Contains(pr.Planet.SolarSystemId))
+                .To<TOut>()
+                .ToListAsync();
         }
     }
 }

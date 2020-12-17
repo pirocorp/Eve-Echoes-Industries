@@ -50,5 +50,17 @@
 
             return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
         }
+
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRange(int range, long solarSystemId, BestInputModel model)
+        {
+            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/{range}/{solarSystemId}", model);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
+        }
     }
 }
