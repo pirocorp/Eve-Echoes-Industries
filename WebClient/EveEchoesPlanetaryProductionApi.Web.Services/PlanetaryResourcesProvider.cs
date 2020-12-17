@@ -27,7 +27,7 @@
         public async Task<IEnumerable<PlanetaryResource>> GetPlanetaryResourcesCurrentPrices()
             => (await this.httpClient.GetFromJsonAsync<GetAllPlanetResourcesWithPricesModel>("api/resources"))?.Resources;
 
-        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInConstellation(long constellationId, BestInputModel model)
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInConstellation(long constellationId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/resources/constellations/{constellationId}", model);
 
@@ -39,7 +39,7 @@
             return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
         }
 
-        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRegion(long regionId, BestInputModel model)
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRegion(long regionId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/resources/regions/{regionId}", model);
 
@@ -51,7 +51,7 @@
             return await result.Content.ReadFromJsonAsync<BestPlanetaryResourcesModel>();
         }
 
-        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRange(int range, long solarSystemId, BestInputModel model)
+        public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRange(int range, long solarSystemId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"/api/resources/systems/{solarSystemId}/range/{range}", model);
 

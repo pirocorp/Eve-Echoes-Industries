@@ -7,14 +7,14 @@
 
     public interface IPlanetaryResourcesService
     {
-        Task<IEnumerable<string>> GetAllPlanetaryResources();
+        Task<IEnumerable<string>> GetResourcesListAsync();
 
-        Task<IEnumerable<TOut>> GetAllPlanetaryResources<TOut>();
+        Task<IEnumerable<TOut>> GetResourcesAsync<TOut>();
 
-        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInConstellation(long constellationId, BestInputModel input);
+        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInConstellationAsync(long constellationId, InputModel input);
 
-        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegion(long regionId, BestInputModel input);
+        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRegionAsync(long regionId, InputModel input);
 
-        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRange(int range, long solarSystemId, BestInputModel input);
+        Task<(int Count, IEnumerable<BestResourceServiceModel> Resources)> GetBestResourcesInRangeAsync(int range, long solarSystemId, InputModel input);
     }
 }

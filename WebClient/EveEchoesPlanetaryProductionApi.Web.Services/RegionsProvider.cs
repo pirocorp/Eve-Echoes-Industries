@@ -33,7 +33,7 @@
         public async Task<RegionSimpleDetailsModel> GetSimpleDetailsAsync(long regionId)
             => await this.httpClient.GetFromJsonAsync<RegionSimpleDetailsModel>($"/api/regions/{regionId}/short");
 
-        public async Task<BestRegionModel> GetBestSystemsInRegion(long regionId, BestInputModel model)
+        public async Task<BestRegionModel> GetBestSystemsInRegion(long regionId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/systems/regions/{regionId}", model);
 

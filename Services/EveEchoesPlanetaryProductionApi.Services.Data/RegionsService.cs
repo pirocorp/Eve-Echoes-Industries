@@ -51,13 +51,13 @@
                 .To<TOut>()
                 .ToListAsync();
 
-        public async Task<TOut> GetByIdAsync<TOut>(long id)
+        public async Task<TOut> GetRegionAsync<TOut>(long id)
             => await this.DbContext.Regions
                 .Where(r => r.Id.Equals(id))
                 .To<TOut>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long regionId, BestInputModel input)
+        public async Task<IEnumerable<TOut>> GetBestSystemsInRegionAsync<TOut>(long regionId, InputModel input)
             => (await this.GetBestSolarSystem(input, s => s.RegionId.Equals(regionId)))
                 .AsQueryable()
                 .Skip((input.Page - 1) * GlobalConstants.Ui.BestSystemResultsSize)
@@ -65,7 +65,7 @@
                 .To<TOut>(new { miningPlanets = input.MiningPlanets })
                 .ToList();
 
-        public async Task<int> GetSolarSystemsCountInRegionAsync(long regionId)
+        public async Task<int> GetSystemsCountInRegionAsync(long regionId)
             => await this.DbContext.Regions.Where(r => r.Id.Equals(regionId))
                 .Select(r => r.SolarSystems.Count())
                 .FirstOrDefaultAsync();

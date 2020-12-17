@@ -16,7 +16,7 @@
 
         Task<ConstellationDetails> GetDetailsAsync(long id);
 
-        Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model);
+        Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, InputModel model);
 
         Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long id);
     }

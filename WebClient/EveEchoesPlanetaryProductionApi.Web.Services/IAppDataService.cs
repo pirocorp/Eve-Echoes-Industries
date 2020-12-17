@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public interface IAppDataService
     {

@@ -14,7 +14,7 @@
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
@@ -41,11 +41,11 @@
         }
 
         [Route("~/api/systems/count")]
-        public async Task<CountModel> GetSystemsCount()
+        public async Task<CountModel> GetCount()
         {
             var model = new CountModel()
             {
-                Count = await this.solarSystemService.GetSolarSystemsCount(),
+                Count = await this.solarSystemService.GetCountAsync(),
             };
 
             return model;
@@ -53,12 +53,12 @@
 
         [Route("~/api/systems/random")]
         public async Task<ActionResult<SolarSystemServiceModel>> GetRandomSystem()
-            => await this.solarSystemService.GetRandomAsync();
+            => await this.solarSystemService.GetRandomSystemAsync();
 
         [Route("~/api/systems/{systemId}")]
-        public async Task<ActionResult<SolarSystemServiceModel>> GetSystemDetails(long systemId)
+        public async Task<ActionResult<SolarSystemServiceModel>> GetDetails(long systemId)
         {
-            var solarSystem = await this.solarSystemService.GetByIdAsync(systemId);
+            var solarSystem = await this.solarSystemService.GetSystemAsync(systemId);
 
             if (solarSystem is null)
             {
@@ -69,8 +69,8 @@
         }
 
         [Route("~/api/systems/{systemId}/short")]
-        public async Task<SolarSystemSimpleDetailsModel> GetSimpleSystemDetails(long systemId)
-            => await this.solarSystemService.GetByIdAsync<SolarSystemSimpleDetailsModel>(systemId);
+        public async Task<SolarSystemSimpleDetailsModel> GetSimpleDetails(long systemId)
+            => await this.solarSystemService.GetSystemAsync<SolarSystemSimpleDetailsModel>(systemId);
 
         [Route("~/api/systems/page/{page?}")]
         public async Task<ActionResult<SystemsPageModel>> GetSystems(int page = 1)
@@ -82,7 +82,7 @@
 
             var model = new SystemsPageModel()
             {
-                Systems = await this.solarSystemService.GetAllAsync<SolarSystemListingModel>(GlobalConstants.Ui.SolarSystemsSearchPageSize, page),
+                Systems = await this.solarSystemService.GetSystemsAsync<SolarSystemListingModel>(GlobalConstants.Ui.SolarSystemsSearchPageSize, page),
             };
 
             return model;
@@ -92,7 +92,7 @@
         public async Task<ActionResult<SearchResultModel>> Search(string searchTerm, int page = 1)
         {
             var (results, count) = await this.solarSystemService
-                .Search<SearchResultSolarSystemModel>(searchTerm, GlobalConstants.Ui.SolarSystemsSearchPageSize, page);
+                .SearchAsync<SearchResultSolarSystemModel>(searchTerm, GlobalConstants.Ui.SolarSystemsSearchPageSize, page);
 
             var model = new SearchResultModel()
             {
@@ -105,19 +105,19 @@
 
         [HttpPost]
         [Route("~/api/systems/{systemId}/range/{range}")]
-        public async Task<IActionResult> GetBestSystemInRange(long systemId, int range, [FromBody]BestInputModel input)
+        public async Task<IActionResult> GetBestSystemInRange(long systemId, int range, [FromBody]InputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 
             if (!priceSelectorSuccess)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                this.ModelState.AddModelError(nameof(InputModel.Price), "Invalid price selector");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
             if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                this.ModelState.AddModelError(nameof(InputModel.Prices), "User prices are not provided");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
@@ -133,7 +133,7 @@
 
             input.PriceSelector = priceSelector;
 
-            var result = await this.solarSystemService.GetBestSolarSystemInRange<BestSystemModel>(systemId, range, input);
+            var result = await this.solarSystemService.GetBestSystemInRangeAsync<BestSystemModel>(systemId, range, input);
 
             var model = new BestRangeModel
             {
@@ -146,19 +146,19 @@
 
         [HttpPost]
         [Route("~/api/systems/constellations/{constellationId}")]
-        public async Task<IActionResult> GetBestSolarSystemsInConstellation(long constellationId, [FromBody]BestInputModel input)
+        public async Task<IActionResult> GetBestSystemsInConstellation(long constellationId, [FromBody]InputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 
             if (!priceSelectorSuccess)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                this.ModelState.AddModelError(nameof(InputModel.Price), "Invalid price selector");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
             if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                this.ModelState.AddModelError(nameof(InputModel.Prices), "User prices are not provided");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
@@ -167,7 +167,7 @@
             var model = new BestConstellationModel
             {
                 Systems = await this.constellationService
-                    .GetBestSolarSystem<BestSystemModel>(constellationId, input),
+                    .GetBestSystemInConstellationAsync<BestSystemModel>(constellationId, input),
             };
 
             return this.Ok(model);
@@ -175,19 +175,19 @@
 
         [HttpPost]
         [Route("~/api/systems/regions/{regionId}")]
-        public async Task<IActionResult> GetBestSolarSystemsInRegionAsync(long regionId, [FromBody] BestInputModel input)
+        public async Task<IActionResult> GetBestSystemsInRegionAsync(long regionId, [FromBody] InputModel input)
         {
             var priceSelectorSuccess = Enum.TryParse<PriceSelector>(input.Price, out var priceSelector);
 
             if (!priceSelectorSuccess)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Price), "Invalid price selector");
+                this.ModelState.AddModelError(nameof(InputModel.Price), "Invalid price selector");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
             if (priceSelector is PriceSelector.UserProvided && input.Prices is null)
             {
-                this.ModelState.AddModelError(nameof(BestInputModel.Prices), "User prices are not provided");
+                this.ModelState.AddModelError(nameof(InputModel.Prices), "User prices are not provided");
                 return this.apiBehaviorOptions.Value.InvalidModelStateResponseFactory(this.ControllerContext);
             }
 
@@ -195,8 +195,8 @@
 
             var model = new BestRegionModel()
             {
-                Count = await this.regionsService.GetSolarSystemsCountInRegionAsync(regionId),
-                Systems = await this.regionsService.GetBestSolarSystemAsync<BestSystemModel>(regionId, input),
+                Count = await this.regionsService.GetSystemsCountInRegionAsync(regionId),
+                Systems = await this.regionsService.GetBestSystemsInRegionAsync<BestSystemModel>(regionId, input),
             };
 
             return this.Ok(model);

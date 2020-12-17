@@ -43,13 +43,7 @@
             return cacheEntry;
         }
 
-        public async Task<int> GetSolarSystemsInConstellationCount(long constellationId)
-            => await this.DbContext.Constellations
-                .Where(c => c.Id.Equals(constellationId))
-                .Select(c => c.SolarSystems.Count())
-                .FirstOrDefaultAsync();
-
-        public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
+        public async Task<IEnumerable<TOut>> GetConstellationsAsync<TOut>(int pageSize, int page = 1)
             => await this.DbContext.Constellations
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
@@ -57,13 +51,13 @@
                 .To<TOut>()
                 .ToListAsync();
 
-        public async Task<TOut> GetByIdAsync<TOut>(long id)
+        public async Task<TOut> GetConstellationAsync<TOut>(long constellationId)
             => await this.DbContext.Constellations
-                .Where(c => c.Id.Equals(id))
+                .Where(c => c.Id.Equals(constellationId))
                 .To<TOut>()
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<TOut>> GetBestSolarSystem<TOut>(long constellationId, BestInputModel input)
+        public async Task<IEnumerable<TOut>> GetBestSystemInConstellationAsync<TOut>(long constellationId, InputModel input)
             => (await this.GetBestSolarSystem(input, s => s.ConstellationId.Equals(constellationId)))
                 .AsQueryable()
                 .To<TOut>(new { miningPlanets = input.MiningPlanets })

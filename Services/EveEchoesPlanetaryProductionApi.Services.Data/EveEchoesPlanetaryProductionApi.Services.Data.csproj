@@ -24,8 +24,4 @@
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\SolarSystems\GetBestPlanetaryResourcesInRange\" />
-  </ItemGroup>
-
 </Project>

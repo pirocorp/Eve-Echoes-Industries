@@ -12,6 +12,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public class SolarSystemsProvider : ISolarSystemsProvider
     {
@@ -40,7 +41,7 @@
         public async Task<SearchResultModel> GetSearchResultsAsync(string searchTerm, int page = 1)
             => await this.httpClient.GetFromJsonAsync<SearchResultModel>($"api/systems/search/{searchTerm}/page/{page}");
 
-        public async Task<BestRegionModel> GetBestSystemsInRange(int range, long systemId, BestInputModel model)
+        public async Task<BestRegionModel> GetBestSystemsInRange(int range, long systemId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/systems/{systemId}/range/{range}", model);
 

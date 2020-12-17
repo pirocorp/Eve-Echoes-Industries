@@ -19,6 +19,6 @@
 
         Task<RegionSimpleDetailsModel> GetSimpleDetailsAsync(long regionId);
 
-        Task<BestRegionModel> GetBestSystemsInRegion(long regionId, BestInputModel model);
+        Task<BestRegionModel> GetBestSystemsInRegion(long regionId, InputModel model);
     }
 }

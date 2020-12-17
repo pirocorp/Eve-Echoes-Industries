@@ -26,7 +26,7 @@
         }
 
         [Route("~/api/regions/count")]
-        public async Task<ActionResult<CountModel>> GetRegionsCount()
+        public async Task<ActionResult<CountModel>> GetCount()
         {
             var model = new CountModel()
             {
@@ -54,10 +54,10 @@
 
         [Route("~/api/regions/{regionId}")]
         public async Task<ActionResult<RegionDetails>> GetDetails(long regionId)
-            => await this.regionsService.GetByIdAsync<RegionDetails>(regionId);
+            => await this.regionsService.GetRegionAsync<RegionDetails>(regionId);
 
         [Route("~/api/regions/{regionId}/short")]
         public async Task<ActionResult<RegionSimpleDetailsModel>> GetSimpleDetails(long regionId)
-            => await this.regionsService.GetByIdAsync<RegionSimpleDetailsModel>(regionId);
+            => await this.regionsService.GetRegionAsync<RegionSimpleDetailsModel>(regionId);
     }
 }

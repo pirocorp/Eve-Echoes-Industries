@@ -32,7 +32,7 @@
         public async Task<ConstellationSimpleDetailsModel> GetSimpleDetailsAsync(long constellationId)
             => await this.httpClient.GetFromJsonAsync<ConstellationSimpleDetailsModel>($"api/constellations/{constellationId}/short");
 
-        public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, BestInputModel model)
+        public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, InputModel model)
         {
             var result =  await this.httpClient.PostAsJsonAsync($"api/systems/constellations/{constellationId}", model);
 

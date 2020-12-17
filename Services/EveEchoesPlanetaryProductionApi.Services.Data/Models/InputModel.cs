@@ -6,9 +6,9 @@
 
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
-    public class BestInputModel
+    public class InputModel
     {
-        public BestInputModel()
+        public InputModel()
         {
             this.Page = 1;
         }

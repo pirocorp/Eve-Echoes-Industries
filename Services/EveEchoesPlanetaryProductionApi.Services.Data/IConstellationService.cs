@@ -9,12 +9,10 @@
     {
         Task<int> GetCountAsync();
 
-        Task<int> GetSolarSystemsInConstellationCount(long constellationId);
+        Task<IEnumerable<TOut>> GetConstellationsAsync<TOut>(int pageSize, int page = 1);
 
-        Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1);
+        Task<TOut> GetConstellationAsync<TOut>(long constellationId);
 
-        Task<TOut> GetByIdAsync<TOut>(long id);
-
-        Task<IEnumerable<TOut>> GetBestSolarSystem<TOut>(long constellationId, BestInputModel input);
+        Task<IEnumerable<TOut>> GetBestSystemInConstellationAsync<TOut>(long constellationId, InputModel input);
     }
 }

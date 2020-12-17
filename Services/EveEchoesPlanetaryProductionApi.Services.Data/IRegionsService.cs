@@ -11,10 +11,10 @@
 
         Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1);
 
-        Task<TOut> GetByIdAsync<TOut>(long id);
+        Task<TOut> GetRegionAsync<TOut>(long id);
 
-        Task<IEnumerable<TOut>> GetBestSolarSystemAsync<TOut>(long regionId, BestInputModel input);
+        Task<IEnumerable<TOut>> GetBestSystemsInRegionAsync<TOut>(long regionId, InputModel input);
 
-        Task<int> GetSolarSystemsCountInRegionAsync(long regionId);
+        Task<int> GetSystemsCountInRegionAsync(long regionId);
     }
 }

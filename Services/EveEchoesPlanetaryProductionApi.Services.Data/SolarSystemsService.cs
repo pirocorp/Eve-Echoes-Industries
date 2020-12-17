@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -13,14 +12,13 @@
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetBestPlanetaryResourcesById;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystems.GetSolarSystemById;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
-    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
+    using Models.SolarSystemServiceModel;
 
     public class SolarSystemsService : BestSystemService, ISolarSystemsService
     {
@@ -38,33 +36,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<SolarSystemServiceModel> GetRandomAsync()
-        {
-            var solarSystem = await this.DbContext.SolarSystems
-                .OrderBy(ss => Guid.NewGuid())
-                .To<SolarSystemServiceModel>()
-                .FirstOrDefaultAsync();
-
-            await this.PopulatePricesAsync(solarSystem);
-
-            return solarSystem;
-        }
-
-        public async Task<SolarSystemServiceModel> GetByIdAsync(long id)
-        {
-            var solarSystem = await this.GetByIdAsync<SolarSystemServiceModel>(id);
-
-            if (solarSystem is null)
-            {
-                return null;
-            }
-
-            await this.PopulatePricesAsync(solarSystem);
-
-            return solarSystem;
-        }
-
-        public async Task<int> GetSolarSystemsCount()
+        public async Task<int> GetCountAsync()
         {
             var key = $"{nameof(SolarSystemsService)} Count";
 
@@ -81,7 +53,36 @@
             return cacheEntry;
         }
 
-        public async Task<IEnumerable<TOut>> GetAllAsync<TOut>(int pageSize, int page = 1)
+        public async Task<SolarSystemServiceModel> GetRandomSystemAsync()
+        {
+            var solarSystem = await this.DbContext.SolarSystems
+                .OrderBy(ss => Guid.NewGuid())
+                .To<SolarSystemServiceModel>()
+                .FirstOrDefaultAsync();
+
+            await this.PopulatePricesAsync(solarSystem);
+
+            return solarSystem;
+        }
+
+        public async Task<SolarSystemServiceModel> GetSystemAsync(long systemId)
+        {
+            var solarSystem = await this.GetSystemAsync<SolarSystemServiceModel>(systemId);
+
+            if (solarSystem is null)
+            {
+                return null;
+            }
+
+            await this.PopulatePricesAsync(solarSystem);
+
+            return solarSystem;
+        }
+
+        public async Task<TOut> GetSystemAsync<TOut>(long id)
+            => await this.GetSystemAsync<TOut>(ss => ss.Id.Equals(id));
+
+        public async Task<IEnumerable<TOut>> GetSystemsAsync<TOut>(int pageSize, int page = 1)
             => await this.DbContext.SolarSystems
                 .OrderBy(r => r.Name)
                 .Skip((page - 1) * pageSize)
@@ -89,7 +90,7 @@
                 .To<TOut>()
                 .ToListAsync();
 
-        public async Task<(IEnumerable<TOut> results, int count)> Search<TOut>(string searchTerm, int pageSize, int page = 1)
+        public async Task<(IEnumerable<TOut> results, int count)> SearchAsync<TOut>(string searchTerm, int pageSize, int page = 1)
         {
             var query = this.DbContext.SolarSystems
                 .Where(ss => ss.Name.ToLower().Contains(searchTerm.ToLower()));
@@ -106,23 +107,9 @@
             return (results, count);
         }
 
-        public async Task<string> GetSolarSystemNameAsync(long id)
-            => await this.DbContext.SolarSystems
-                .Where(ss => ss.Id.Equals(id))
-                .Select(ss => ss.Name)
-                .FirstOrDefaultAsync();
-
-        public async Task<SolarSystemBestModel> GetResourcesInSystemByIdAsync(long id, PriceSelector priceSelector)
+        public async Task<(int Count, IEnumerable<TOut> Systems)> GetBestSystemInRangeAsync<TOut>(long solarSystemId, int range, InputModel input)
         {
-            var solarSystem = await this.GetByIdAsync<SolarSystemBestModel>(id);
-            await this.PopulateSolarSystemResourcesPrice(priceSelector, solarSystem);
-
-            return solarSystem;
-        }
-
-        public async Task<(int Count, IEnumerable<TOut> Systems)> GetBestSolarSystemInRange<TOut>(long solarSystemId, int range, BestInputModel input)
-        {
-            var systemsInRangeIds = await this.GetSolarSystemsInRangeIds(range, solarSystemId);
+            var systemsInRangeIds = await this.GetSystemsInRangeIdsAsync(range, solarSystemId);
 
             var systems = (await this.GetBestSolarSystem(input, x => systemsInRangeIds.Contains(x.Id)))
                 .AsQueryable()
@@ -134,13 +121,7 @@
             return (systemsInRangeIds.Count, systems);
         }
 
-        public async Task<TOut> GetByIdAsync<TOut>(long id)
-            => await this.GetAsync<TOut>(ss => ss.Id.Equals(id));
-
-        public async Task<TOut> GetByNameAsync<TOut>(string name)
-            => await this.GetAsync<TOut>(ss => ss.Name.Equals(name));
-
-        public async Task<List<long>> GetSolarSystemsInRangeIds(int range, long solarSystemId)
+        public async Task<List<long>> GetSystemsInRangeIdsAsync(int range, long solarSystemId)
         {
             var solarSystemNameParameter = new SqlParameter("@systemId", solarSystemId);
             var distanceParameter = new SqlParameter("@distance", range.ToString());
@@ -179,23 +160,7 @@
             }
         }
 
-        private async Task PopulateSolarSystemResourcesPrice(PriceSelector priceSelector, SolarSystemBestModel solarSystem)
-        {
-            var planetaryResources = (await this.ItemsService.GetPlanetaryResources(priceSelector))
-                .ToDictionary(x => x.Name, x => x);
-
-            var updatedResources = solarSystem.PlanetResources.ToList();
-            updatedResources.ForEach(ur => ur.Price = planetaryResources[ur.ItemName].Price);
-
-            updatedResources = updatedResources
-                .OrderByDescending(pr => pr.Price * (decimal)pr.Output)
-                .DistinctBy(pr => pr.PlanetName)
-                .ToList();
-
-            solarSystem.PlanetResources = updatedResources;
-        }
-
-        private async Task<TOut> GetAsync<TOut>(Expression<Func<SolarSystem, bool>> predicate)
+        private async Task<TOut> GetSystemAsync<TOut>(Expression<Func<SolarSystem, bool>> predicate)
             => await this.DbContext.SolarSystems
                 .Where(predicate)
                 .To<TOut>()

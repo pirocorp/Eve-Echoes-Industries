@@ -29,11 +29,11 @@
 
         private PricesModel Prices { get; set; }
 
-        protected BestInputModel UserInput { get; set; }
+        protected InputModel UserInput { get; set; }
 
         protected void CreateInputModelFromUserInput()
         {
-            var model = new BestInputModel()
+            var model = new InputModel()
             {
                 MiningPlanets = this.MiningPlanets,
                 Price = this.PriceSelector.ToString(),

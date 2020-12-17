@@ -30,7 +30,7 @@
         protected IItemsService ItemsService { get; set; }
 
         protected async Task<IEnumerable<SystemBestModel>> GetBestSolarSystem(
-            BestInputModel input,
+            InputModel input,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
             if (input.PriceSelector is PriceSelector.UserProvided)
@@ -74,7 +74,7 @@
         }
 
         private async Task<IEnumerable<SystemBestModel>> GetBestByUserProvidedPrices(
-            BestInputModel input,
+            InputModel input,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
             var prices = await this.ItemsService.GetPlanetaryResources(input.Prices);
@@ -83,7 +83,7 @@
         }
 
         private async Task<IEnumerable<SystemBestModel>> GetBestByExternalPrices(
-            BestInputModel input,
+            InputModel input,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
             var prices = await this.ItemsService.GetPlanetaryResources(input.PriceSelector);
@@ -92,7 +92,7 @@
         }
 
         private async Task<IEnumerable<SystemBestModel>> CalculateBest(
-            BestInputModel input,
+            InputModel input,
             IEnumerable<ItemServiceModel> prices,
             Expression<Func<SolarSystem, bool>> solarSystems)
         {
