@@ -15,6 +15,20 @@
                     <span class="nav-link">Home</span>
                 </NavLink>
             </li>
+            @*<li class="nav-item">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active">
+                    <div class="dropdown @(this.NavigationButtonController())">
+                        <button class="nav-link btn btn-secondary dropdown-toggle" type="button" @onfocus="OnFocusNavigationButtonEventHandler" data-toggle="dropdown">
+                            Navigation
+                        </button>
+                        <div class="dropdown-menu @this.NavigationButtonController()">
+                            <a class="dropdown-item" href="/navigation/regions">Regions</a>
+                            <a class="dropdown-item" href="/navigation/constellations">Constellations</a>
+                            <a class="dropdown-item" href="/navigation/systems">Solar Systems</a>
+                        </div>
+                    </div>
+                </NavLink>
+            </li>*@
             <li class="nav-item">
                 <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/regions">
                     <span class="nav-link">Regions</span>
@@ -30,21 +44,21 @@
                     <span class="nav-link">Solar Systems</span>
                 </NavLink>
             </li>
-            
+
             @*<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-            </li>*@
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+        </li>*@
             @*<li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>*@
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>*@
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" @bind-value="@this.searchTerm" placeholder="Search Solar System">
@@ -67,6 +81,8 @@
     private string NavMenuCssClass => this.collapseNavMenu ? "collapse" : null;
 
     private bool searchError = false;
+
+    private bool showNavigationDropDown = false;
 
     private void ToggleNavMenu()
     {
@@ -93,5 +109,12 @@
     private void CloseModal()
     {
         this.searchError = false;
+    }
+
+    private string NavigationButtonController() => this.showNavigationDropDown ? "show" : string.Empty;
+
+    private void OnFocusNavigationButtonEventHandler()
+    {
+        this.showNavigationDropDown = !this.showNavigationDropDown;
     }
 }
