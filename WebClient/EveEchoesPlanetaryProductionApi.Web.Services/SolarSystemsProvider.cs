@@ -35,7 +35,7 @@
 
         public async Task<IEnumerable<SolarSystemListingModel>> GetPageAsync(int page = 1)
             => (await this.httpClient.GetFromJsonAsync<SystemsPageModel>($"api/systems/page/{page}"))?.Systems;
-        
+
         public async Task<SearchResultModel> GetSearchResultsAsync(string searchTerm, int page = 1)
             => await this.httpClient.GetFromJsonAsync<SearchResultModel>($"api/systems/search/{searchTerm}/page/{page}");
 

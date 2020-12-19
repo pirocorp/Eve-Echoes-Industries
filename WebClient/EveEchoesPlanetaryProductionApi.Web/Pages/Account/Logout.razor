@@ -1,0 +1,13 @@
+﻿@page "/account/logout"
+
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@layout MainLayout
+@inject IAccountService AccountService
+
+@code {
+    protected override async void OnInitialized()
+    {
+        await this.AccountService.Logout();
+    }
+}

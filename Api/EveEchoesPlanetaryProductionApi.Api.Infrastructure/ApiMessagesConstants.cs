@@ -2,6 +2,6 @@
 {
     public static class ApiMessagesConstants
     {
-        public const string InvalidCredentials = "Email or password is incorrect.";
+        public const string InvalidCredentials = "Username or password is incorrect.";
     }
 }

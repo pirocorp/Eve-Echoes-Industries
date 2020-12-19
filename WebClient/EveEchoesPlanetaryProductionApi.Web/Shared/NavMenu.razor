@@ -1,5 +1,7 @@
 ﻿@using EveEchoesPlanetaryProductionApi.Web.Components
+@using EveEchoesPlanetaryProductionApi.Web.Services
 
+@inject IAppDataService appDataService
 @inject NavigationManager navigationManager;
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light">
@@ -15,20 +17,6 @@
                     <span class="nav-link">Home</span>
                 </NavLink>
             </li>
-            @*<li class="nav-item">
-                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active">
-                    <div class="dropdown @(this.NavigationButtonController())">
-                        <button class="nav-link btn btn-secondary dropdown-toggle" type="button" @onfocus="OnFocusNavigationButtonEventHandler" data-toggle="dropdown">
-                            Navigation
-                        </button>
-                        <div class="dropdown-menu @this.NavigationButtonController()">
-                            <a class="dropdown-item" href="/navigation/regions">Regions</a>
-                            <a class="dropdown-item" href="/navigation/constellations">Constellations</a>
-                            <a class="dropdown-item" href="/navigation/systems">Solar Systems</a>
-                        </div>
-                    </div>
-                </NavLink>
-            </li>*@
             <li class="nav-item">
                 <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/regions">
                     <span class="nav-link">Regions</span>
@@ -46,20 +34,44 @@
             </li>
 
             @*<li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-        </li>*@
-            @*<li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-        </li>*@
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Navigation
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/navigation/regions">Regions</a>
+                    <a class="dropdown-item" href="/navigation/constellations">Constellations</a>
+                    <a class="dropdown-item" href="/navigation/systems">Solar Systems</a>
+                </div>
+            </li>*@
+                @*<li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>*@
         </ul>
+        
+        <ul class="navbar-nav mr-auto">
+            @if (this.LoggedIn)
+            {
+                <li>
+                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/logout">
+                        <span class="nav-link">Logout</span>
+                    </NavLink>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/login">
+                        <span class="nav-link">Login</span>
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/register">
+                        <span class="nav-link">Register</span>
+                    </NavLink>
+                </li>
+            }
+        </ul>
+
         <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" @bind-value="@this.searchTerm" placeholder="Search Solar System">
             <button class="btn btn-outline-success my-2 my-sm-0" @onclick="this.Search">Search</button>
@@ -83,6 +95,14 @@
     private bool searchError = false;
 
     private bool showNavigationDropDown = false;
+
+    private bool LoggedIn => this.appDataService.User != null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.appDataService.OnStateChange += this.OnStateChangeHandler;
+        await base.OnInitializedAsync();
+    }
 
     private void ToggleNavMenu()
     {
@@ -116,5 +136,10 @@
     private void OnFocusNavigationButtonEventHandler()
     {
         this.showNavigationDropDown = !this.showNavigationDropDown;
+    }
+
+    private async Task OnStateChangeHandler()
+    {
+        await this.InvokeAsync(this.StateHasChanged);
     }
 }
