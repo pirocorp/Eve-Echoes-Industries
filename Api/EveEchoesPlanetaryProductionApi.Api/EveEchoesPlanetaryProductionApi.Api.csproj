@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\Data\EveEchoesPlanetaryProductionApi.Data\EveEchoesPlanetaryProductionApi.Data.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Mapping\EveEchoesPlanetaryProductionApi.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Messaging\EveEchoesPlanetaryProductionApi.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services\EveEchoesPlanetaryProductionApi.Services.csproj" />
     <ProjectReference Include="..\..\WebClient\EveEchoesPlanetaryProductionApi.Web\EveEchoesPlanetaryProductionApi.Web.csproj" />
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj" />

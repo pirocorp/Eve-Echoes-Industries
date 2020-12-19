@@ -8,6 +8,7 @@
     using EveEchoesPlanetaryProductionApi.Services;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
+    using EveEchoesPlanetaryProductionApi.Services.Messaging;
     using EveEchoesPlanetaryProductionApi.Services.Settings;
 
     using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,8 @@
                     options.Password.RequiredUniqueChars = 0;
 
                     options.User.RequireUniqueEmail = true;
+
+                    options.SignIn.RequireConfirmedEmail = true;
                 })
                 .AddEntityFrameworkStores<EveEchoesPlanetaryProductionApiDbContext>()
                 .AddDefaultTokenProviders(); // just adds the default providers to generate tokens for a password reset, 2-factor authentication, change email, and change telephone.
@@ -82,6 +85,10 @@
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IRegionsService, RegionsService>();
             services.AddTransient<IConstellationService, ConstellationService>();
+
+            // SendGrid
+            var sendGridKey = this.configuration.GetSection("SendGrid:ApiKey").Value;
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(sendGridKey));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

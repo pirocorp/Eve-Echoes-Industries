@@ -26,7 +26,6 @@
 
         public const int MinRange = 2;
 
-
         public static class Items
         {
             public const long PlanetaryResourcesStartId = 42001000000;
@@ -74,6 +73,8 @@
             public const string ConstellationsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/ConstellationsJumps.csv";
 
             public const string SolarSystemsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystemsJumps.csv";
+
+            public const string ConfirmEmailTemplate = "../../Api/EveEchoesPlanetaryProductionApi.Api/Resources/ConfirmEmailTemplate.html";
         }
 
         public static class Ui
@@ -89,6 +90,15 @@
             public const int BestResourcesPageSize = 10;
 
             public const int MaxColonies = 6;
+        }
+
+        public static class Email
+        {
+            public const string From = "eve.echoes.industries@gmail.com";
+            public const string FromName = "Admin";
+            public const string Subject = "Email confirmation";
+            public const string EmailValidationPath = "/account/confirm";
+            public const string EmailValidationParameter = "token";
         }
     }
 }
