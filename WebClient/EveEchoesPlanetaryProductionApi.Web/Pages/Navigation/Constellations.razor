@@ -1,46 +1,45 @@
-﻿@page "/constellations"
-@page "/constellations/{PageNumber:int}"
+﻿@page "/navigation/constellations"
+@page "/navigation/constellations/page/{PageNumber:int}"
 
-@inherits PaginationBase
 @using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
 
 @inject IEveApiService eveApiService
 @inject IAppDataService appDataService
 @inject NavigationManager navigation
 
-<section class="container mb-5">
-    @if (this.Constellations is not null)
-    {
-        <ListingTableComponent Data="(this.Constellations)" Location=@("constellation")></ListingTableComponent>
+@if (this.AllConstellations is not null)
+{
+    <ListingTableComponent Data="(this.AllConstellations)" Location=@("navigation/constellations")></ListingTableComponent>
 
-        <Paginator Page="@(this.PageNumber)"
-                    TotalPages="@this.TotalPages"
-                    Radius="3"
-                    SelectedPage="this.ChangePage" />
-    }
-    else
-    {
-        <Loader></Loader>
-    }
-</section>
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
 
 
 @code {
-    private IEnumerable<ConstellationListingModel> Constellations { get; set; }
+    private IEnumerable<ConstellationListingModel> AllConstellations { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         this.NavigationManager = this.navigation;
-        this.Location = "constellations";
+        this.Location = "navigation/constellations/page";
 
         await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()
     {
-        this.Constellations = await this.eveApiService.Constellations.GetPageAsync(this.PageNumber);
+        this.AllConstellations = await this.eveApiService.Constellations.GetPageAsync(this.PageNumber);
 
         var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.Constellations.GetCountAsync();
         this.appDataService.ConstellationsCount ??= totalConstellations;

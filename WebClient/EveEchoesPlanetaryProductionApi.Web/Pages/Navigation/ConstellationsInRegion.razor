@@ -1,0 +1,31 @@
+﻿@page "/navigation/regions/{RegionId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+
+@if (this.RegionDetails is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <section class="container mb-5">
+        <ListingTableComponent Data="@(this.RegionDetails.Constellations)" Location="@location"></ListingTableComponent>
+    </section>
+}
+
+@code {
+    private const string location = "navigation/constellations";
+
+    [Parameter]
+    public long RegionId { get; set; }
+
+    private RegionDetails RegionDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.RegionDetails = await this.eveApiService.Regions.GetDetailsAsync(this.RegionId);
+    }
+}

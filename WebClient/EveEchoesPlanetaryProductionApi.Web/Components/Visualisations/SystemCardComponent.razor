@@ -2,19 +2,16 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <NavLink class="nav-link" href=@($"details/") ActiveClass="active" Match="NavLinkMatch.Prefix">System Details</NavLink>
+                <NavLink class="nav-link" href=@($"systems") ActiveClass="active" Match="NavLinkMatch.All">System Details</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="@($"best/")" ActiveClass="active" Match="NavLinkMatch.Prefix">Best Resources In System</NavLink>
+                <NavLink class="nav-link" href="@($"systems/constellation")" ActiveClass="active" Match="NavLinkMatch.All">Best System In Constellation</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="@($"constellation/best")" ActiveClass="active" Match="NavLinkMatch.Prefix">Best System In Constellation</NavLink>
+                <NavLink class="nav-link" href="@($"systems/region")" ActiveClass="active" Match="NavLinkMatch.All">Best System In Region</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="@($"region/best")" ActiveClass="active" Match="NavLinkMatch.Prefix">Best System In Region</NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="@($"range/best")" ActiveClass="active" Match="NavLinkMatch.Prefix">Best System In Range</NavLink>
+                <NavLink class="nav-link" href="@($"systems/range")" ActiveClass="active" Match="NavLinkMatch.All">Best System In Range</NavLink>
             </li>
         </ul>
     </div>

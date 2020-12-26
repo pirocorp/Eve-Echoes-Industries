@@ -1,48 +1,45 @@
-﻿@page "/systems"
-@page "/systems/{PageNumber:int}"
+﻿@page "/navigation/systems"
+@page "/navigation/systems/page/{PageNumber:int}"
 
-@inherits PaginationBase
 @using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
 
 @inject IEveApiService eveApiService
 @inject IAppDataService appDataService
 @inject NavigationManager navigation
 
-<section class="container mb-5">
-    @if (this.Systems is not null)
-    {
-        <ListingTableComponent Data="(this.Systems)" Location=@("system")></ListingTableComponent>
+@if (this.AllSystems is not null)
+{
+    <ListingTableComponent Data="(this.AllSystems)" Location=@("system")></ListingTableComponent>
 
-        <Paginator Page="@(this.PageNumber)"
-                   TotalPages="@this.TotalPages"
-                   Radius="3"
-                   SelectedPage="this.ChangePage" />
-    }
-    else
-    {
-        <Loader></Loader>
-    }
-
-    
-</section>
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
 
 @code {
 
-    private IEnumerable<SolarSystemListingModel> Systems { get; set; }
+    private IEnumerable<SolarSystemListingModel> AllSystems { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         this.NavigationManager = this.navigation;
-        this.Location = "systems";
+        this.Location = "navigation/systems/page";
 
         await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()
     {
-        this.Systems = await this.eveApiService.Systems.GetPageAsync(this.PageNumber);
+        this.AllSystems = await this.eveApiService.Systems.GetPageAsync(this.PageNumber);
 
         var totalSystems = this.appDataService.SolarSystemCount ?? await this.eveApiService.Systems.GetCountAsync();
         this.appDataService.SolarSystemCount ??= totalSystems;

@@ -1,18 +1,18 @@
-﻿@page "/resources/range/"
-@page "/resources/range/{SolarSystemId:long}"
-@using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails
-@using EveEchoesPlanetaryProductionApi.Common
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models
-@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
-@using EveEchoesPlanetaryProductionApi.Web.Services
+﻿@page "/systems/range"
+@page "/systems/range/{SystemId:long}"
 
-@inherits BestBase<BestResourceServiceModel>
+@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+
+@inherits BestBase<BestSystemModel>
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
-@inject IAppDataService appDataService;
+@inject IJSRuntime JS;
 
-<h2>Best Planetary Resources In Range Of System: @this.SystemDetails?.Name</h2>
+<h2>Best Systems In Range Of System: @this.SystemName</h2>
 @if (this.Range > 0)
 {
     <h3 class="card-title">Range: @this.Range</h3>
@@ -23,6 +23,7 @@
         <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
     </div>
     <div class="col-md-5 align-self-center">
+        <SelectComponent Label="Colonies" Range="GlobalConstants.Ui.MaxColonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
         <SelectComponent Label="Range" Start="GlobalConstants.MinRange" Range="GlobalConstants.MaxRange" OnChange="this.OnRangeChangeHandler"></SelectComponent>
     </div>
 </div>
@@ -34,8 +35,8 @@
 
 @if (this.BestItems is not null)
 {
-    <h2 class="card-title my-4">Best Resources In Range</h2>
-    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="system"></ListingTableComponent>
+    <h2 class="card-title my-4">Best Systems In Range</h2>
+    <AccordionSystemsComponent Systems="this.BestItems"></AccordionSystemsComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
@@ -52,40 +53,45 @@ else
 
 @code {
     [Parameter]
-    public long SolarSystemId { get; set; }
-
-    private SolarSystemSimpleDetailsModel SystemDetails { get; set; }
+    public long SystemId { get; set; }
 
     private int Range { get; set; }
 
+    public string SystemName { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        this.SolarSystemId = this.SolarSystemId == 0 ? this.appDataService.CurrentSolarSystem?.Id ?? 0 : this.SolarSystemId;
+        this.SystemId = this.SystemId == 0 ? this.AppDataService.CurrentSolarSystem?.Id ?? 0 : this.SystemId;
 
-        if (this.SolarSystemId <= 0)
+        if (this.SystemId <= 0)
         {
             this.navigationManager.NavigateTo("/");
             return;
         }
 
-        this.MiningPlanets = 1;
-        this.navigationManager.NavigateTo($"/resources/range");
+        this.navigationManager.NavigateTo($"/systems/range");
 
-        this.SystemDetails = await this.eveApiService.Systems.GetSolarSystemSimpleDetails(this.SolarSystemId);
+        this.SystemName = (await this.eveApiService.Systems.GetSolarSystemSimpleDetails(this.SystemId)).Name;
     }
 
     protected override async Task LoadData()
     {
         this.CreateInputModelFromUserInput();
 
-        var model = await this.eveApiService.PlanetaryResources.GetBestResourcesInRange(this.Range, this.SolarSystemId, this.UserInput);
+        if (this.Range <= 0)
+        {
+            return;
+        }
 
-        this.BestItems = model?.Resources;
-        var count = model?.Count;
+        var model = (await this.eveApiService.Systems.GetBestSystemsInRange(this.Range, this.SystemId, this.UserInput));
 
-        this.TotalPages = (int)Math.Ceiling(count ?? 0 / (double)GlobalConstants.Ui.BestResourcesPageSize);
+        this.BestItems = model.Systems;
+        var count = model.Count;
 
         this.StateHasChanged();
+
+        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
+        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
     }
 
     private async Task OnRangeChangeHandler(int range)

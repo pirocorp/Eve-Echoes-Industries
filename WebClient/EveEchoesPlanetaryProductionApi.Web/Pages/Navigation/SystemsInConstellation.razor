@@ -1,17 +1,18 @@
-﻿@page "/constellation/{ConstellationId:long}"
+﻿@page "/navigation/constellations/{ConstellationId:long}"
+
 @using EveEchoesPlanetaryProductionApi.Web.Services
 @using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails
 
 @inject IEveApiService eveApiService
 
-@if (this.Constellation is null)
+@if (this.ConstellationDetails is null)
 {
     <Loader></Loader>
 }
 else
 {
     <section class="container mb-5">
-        <ListingTableComponent Data="@(this.Constellation.SolarSystems)" Location="@location"></ListingTableComponent>
+        <ListingTableComponent Data="@(this.ConstellationDetails.SolarSystems)" Location="@location"></ListingTableComponent>
     </section>
 }
 
@@ -21,10 +22,10 @@ else
     [Parameter]
     public long ConstellationId { get; set; }
 
-    private ConstellationDetails Constellation { get; set; }
+    private ConstellationDetails ConstellationDetails { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        this.Constellation = await this.eveApiService.Constellations.GetDetailsAsync(this.ConstellationId);
+        this.ConstellationDetails = await this.eveApiService.Constellations.GetDetailsAsync(this.ConstellationId);
     }
 }

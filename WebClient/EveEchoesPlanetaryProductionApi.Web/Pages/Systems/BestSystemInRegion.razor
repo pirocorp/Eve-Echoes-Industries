@@ -1,23 +1,26 @@
-﻿@page "/resources/region/"
-@page "/resources/region/{RegionId:long}"
+﻿@page "/systems/region"
+@page "/systems/region/{RegionId:long}"
 
+@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel 
 @using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails
 @using EveEchoesPlanetaryProductionApi.Common
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models
 @using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
-@inherits BestBase<BestResourceServiceModel>
+@inherits BestBase<BestSystemModel>
 
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
-@inject IAppDataService appDataService;
+@inject IJSRuntime JS;
 
-<h4 class="card-title">Region: @this.RegionDetails?.Name</h4>
+<h3 class="card-title">Region: @this.RegionDetails?.Name</h3>
 
 <div class="row">
     <div class="col-md-5 offset-md-1">
         <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
+    </div>
+    <div class="col-md-5 align-self-center">
+        <SelectComponent Label="Colonies" Range="GlobalConstants.Ui.MaxColonies" OnChange="this.OnPlanetsChangeHandler"></SelectComponent>
     </div>
 </div>
 
@@ -25,11 +28,11 @@
 {
     <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
 }
-
+            
 @if (this.BestItems is not null)
 {
-    <h2 class="card-title my-4">Best Resources In Region</h2>
-    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="system"></ListingTableComponent>
+    <h2 class="card-title my-4">Best Systems In Region</h2>
+    <AccordionSystemsComponent Systems="this.BestItems"></AccordionSystemsComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
@@ -45,6 +48,7 @@ else
 }
 
 @code {
+
     [Parameter]
     public long RegionId { get; set; }
 
@@ -52,7 +56,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.RegionId = this.RegionId == 0 ? this.appDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
+        this.RegionId = this.RegionId == 0 ? this.AppDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
 
         if (this.RegionId <= 0)
         {
@@ -60,8 +64,7 @@ else
             return;
         }
 
-        this.MiningPlanets = 1;
-        this.navigationManager.NavigateTo($"/resources/region");
+        this.navigationManager.NavigateTo($"/systems/region");
 
         this.RegionDetails = await this.eveApiService.Regions.GetSimpleDetailsAsync(this.RegionId);
     }
@@ -70,13 +73,14 @@ else
     {
         this.CreateInputModelFromUserInput();
 
-        var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInRegion(this.RegionId, this.UserInput));
+        var model = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput));
 
-        this.BestItems = model.Resources;
+        this.BestItems = model.Systems;
         var count = model.Count;
 
-        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestResourcesPageSize);
-
         this.StateHasChanged();
+        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
+
+        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
     }
 }

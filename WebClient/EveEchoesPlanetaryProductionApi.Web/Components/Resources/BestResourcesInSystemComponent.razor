@@ -4,29 +4,29 @@
 
 @inject IAppDataService AppDataService;
 
-<SystemCardComponent>
-    <h3 class="card-title">System: @this.SolarSystem.Name</h3>
+<h3 class="card-title">System: @this.SolarSystem.Name</h3>
+<h4 class="card-title">Constellation: @this.SolarSystem.ConstellationName</h4>
+<h5 class="card-title">Region: @this.SolarSystem.RegionName</h5>
 
-    <div class="row">
-        <div class="col-md-5 offset-md-1">
-            <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
-        </div>
-        @if (this.PriceUpdateDate != default)
-        {
-            <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
-        }
+<div class="row">
+    <div class="col-md-5 offset-md-1">
+        <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
     </div>
-
-    @if (this.PriceSelector is PriceSelector.UserProvided)
+    @if (this.PriceUpdateDate != default)
     {
-        <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
+        <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
     }
+</div>
 
-    @if (this.BestPlanets is not null)
-    {
-        <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
-    }
-</SystemCardComponent>
+@if (this.PriceSelector is PriceSelector.UserProvided)
+{
+    <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
+}
+
+@if (this.BestPlanets is not null)
+{
+    <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
+}
 
 
 @code {

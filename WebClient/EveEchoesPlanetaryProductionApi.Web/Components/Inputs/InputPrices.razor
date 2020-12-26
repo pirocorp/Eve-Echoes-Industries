@@ -27,7 +27,7 @@
             }
 
             <div class="col-12 col-lg-6 col-xl-3">
-                <button class="btn-form btn-form-submit ">Submit</button>
+                <button class="btn-form btn-form-submit" @onclick="this.Submit">Submit</button>
             </div>
             <div class="col-12 col-lg-6 col-xl-3">
                 <button class="btn-form btn-danger" @onclick="this.ClearPrices">Clear</button>
@@ -37,7 +37,6 @@
 </section>
 
 @code {
-
     [Parameter]
     public SolarSystemServiceModel SolarSystem { get; set; }
 
@@ -72,27 +71,30 @@
 
         var success = this.AppDataService.PlanetaryResourcesPrices?.TryGetValue(planetaryResource, out value) ?? false;
 
-        if (success)
-        {
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        return planetaryResource;
+        return success ? value.ToString(CultureInfo.InvariantCulture) : planetaryResource;
     }
 
     private void ChangeResourceValue(string value, string resource)
     {
         var success = decimal.TryParse(value, out var price);
 
-        if (success)
+        if (!success)
         {
-            this.AppDataService.PlanetaryResourcesPrices[resource] = price;
-            this.OnChange.InvokeAsync(true);
+            return;
         }
+
+        this.AppDataService.PlanetaryResourcesPrices[resource] = price;
+        this.OnChange.InvokeAsync(true);
+    }
+
+    private void Submit()
+    {
+        this.OnChange.InvokeAsync(true);
     }
 
     private void ClearPrices()
     {
         this.AppDataService.PlanetaryResourcesPrices = new Dictionary<string, decimal>();
+        this.OnChange.InvokeAsync(true);
     }
 }

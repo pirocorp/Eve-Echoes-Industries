@@ -1,45 +1,44 @@
-﻿@page "/regions"
-@page "/regions/{PageNumber:int}"
+﻿@page "/navigation/regions"
+@page "/navigation/regions/page/{PageNumber:int}"
 
-@inherits PaginationBase
 @using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions
 @using EveEchoesPlanetaryProductionApi.Common
 @using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
 
 @inject IEveApiService eveApiService
 @inject IAppDataService appDataService
 @inject NavigationManager navigation
 
-<section class="container mb-5">
-    @if (this.Regions is not null)
-    {
-        <ListingTableComponent Data="(this.Regions)" Location="@("region")"></ListingTableComponent>
+@if (this.AllRegions is not null)
+{
+    <ListingTableComponent Data="(this.AllRegions)" Location="@("navigation/regions")"></ListingTableComponent>
 
-        <Paginator Page="@(this.PageNumber)"
-                   TotalPages="@this.TotalPages"
-                   Radius="3"
-                   SelectedPage="this.ChangePage" />
-    }
-    else
-    {
-        <Loader></Loader>
-    }
-</section>
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
 
 @code {
-    private IEnumerable<RegionListingModel> Regions { get; set; }
+    private IEnumerable<RegionListingModel> AllRegions { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         this.NavigationManager = this.navigation;
-        this.Location = "regions";
+        this.Location = "navigation/regions/page";
 
         await base.OnInitializedAsync();
     }
 
     protected override async Task LoadData()
     {
-        this.Regions = await this.eveApiService.Regions.GetPageAsync(this.PageNumber);
+        this.AllRegions = await this.eveApiService.Regions.GetPageAsync(this.PageNumber);
 
         var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.Regions.GetCountAsync();
         this.appDataService.RegionsCount ??= totalRegions;

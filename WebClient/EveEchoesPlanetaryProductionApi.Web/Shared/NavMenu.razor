@@ -17,62 +17,102 @@
                     <span class="nav-link">Home</span>
                 </NavLink>
             </li>
-            <li class="nav-item">
-                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/regions">
-                    <span class="nav-link">Regions</span>
+            <li class="nav-item dropdown">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/navigation" @onclick:preventDefault>
+                    <span class="nav-link dropdown-toggle"
+                          id="navigationDropdown"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          @onclick="this.OnNavigationClick">
+                        Navigation
+                    </span>
                 </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/constellations">
-                    <span class="nav-link">Constellations</span>
-                </NavLink>
-            </li>
-            <li class="nav-item">
-                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/systems">
-                    <span class="nav-link">Solar Systems</span>
-                </NavLink>
-            </li>
-
-            @*<li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Navigation
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu @this.ShowNavigationDropDown()"
+                     aria-labelledby="navigationDropdown"
+                     @onclick="this.OnNavigationSubItemClick">
                     <a class="dropdown-item" href="/navigation/regions">Regions</a>
                     <a class="dropdown-item" href="/navigation/constellations">Constellations</a>
                     <a class="dropdown-item" href="/navigation/systems">Solar Systems</a>
                 </div>
-            </li>*@
+            </li>
+            <li class="nav-item dropdown">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/resources" @onclick:preventDefault>
+                    <span class="nav-link dropdown-toggle"
+                          id="resourcesDropdown"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          @onclick="this.OnResourcesClick">
+                        Resources
+                    </span>
+                </NavLink>
+                <div class="dropdown-menu @this.ShowResourcesDropDown()"
+                     aria-labelledby="navigationDropdown"
+                     @onclick="this.OnResourcesSubItemClick">
+                    <a class="dropdown-item" href="/resources/details">Current prices</a>
+                    <a class="dropdown-item" href="/resources/system">Best in system</a>
+                    <a class="dropdown-item" href="/resources/constellation">Best in constellation</a>
+                    <a class="dropdown-item" href="/resources/region">Best in Region</a>
+                    <a class="dropdown-item" href="/resources/range ">Best in Range</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/systems" @onclick:preventDefault>
+                    <span class="nav-link dropdown-toggle"
+                          id="systemsDropdown"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          @onclick="this.OnSystemsClick">
+                        Systems
+                    </span>
+                </NavLink>
+                <div class="dropdown-menu @this.ShowSystemsDropDown()"
+                     aria-labelledby="systemsDropdown"
+                     @onclick="this.OnSystemsSubItemClick">
+                    <a class="dropdown-item" href="/systems">System Details</a>
+                    <a class="dropdown-item" href="/systems/constellation">Best in constellation</a>
+                    <a class="dropdown-item" href="/systems/region">Best in Region</a>
+                    <a class="dropdown-item" href="/systems/range ">Best in Range</a>
+                </div>
+            </li>
                 @*<li class="nav-item">
                 <a class="nav-link disabled" href="#">Disabled</a>
             </li>*@
         </ul>
         
-        <ul class="navbar-nav mr-auto">
-            @if (this.LoggedIn)
-            {
-                <li>
-                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/logout">
-                        <span class="nav-link">Logout</span>
-                    </NavLink>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item">
-                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/login">
-                        <span class="nav-link">Login</span>
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/register">
-                        <span class="nav-link">Register</span>
-                    </NavLink>
-                </li>
-            }
-        </ul>
-
         <div class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav mr-4">
+                @if (this.LoggedIn)
+                {
+                    <li>
+                        <span>Hi, @this.appDataService.User.Username</span>
+                    </li>
+                    <li>
+                        <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/logout">
+                            <span class="nav-link">Logout</span>
+                        </NavLink>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/login">
+                            <span class="nav-link">Login</span>
+                        </NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/account/register">
+                            <span class="nav-link">Register</span>
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+
             <input class="form-control mr-sm-2" type="search" @bind-value="@this.searchTerm" placeholder="Search Solar System">
             <button class="btn btn-outline-success my-2 my-sm-0" @onclick="this.Search">Search</button>
         </div>
@@ -95,6 +135,10 @@
     private bool searchError = false;
 
     private bool showNavigationDropDown = false;
+
+    private bool showResourcesDropDown = false;
+
+    private bool showSystemsDropDown = false;
 
     private bool LoggedIn => this.appDataService.User != null;
 
@@ -131,11 +175,40 @@
         this.searchError = false;
     }
 
-    private string NavigationButtonController() => this.showNavigationDropDown ? "show" : string.Empty;
-
-    private void OnFocusNavigationButtonEventHandler()
+    private void OnNavigationClick()
     {
-        this.showNavigationDropDown = !this.showNavigationDropDown;
+        this.ClearDropDowns();
+        this.showNavigationDropDown = true;
+    }
+
+    private void OnNavigationSubItemClick() => this.showNavigationDropDown = false;
+
+    private void OnResourcesClick()
+    {
+        this.ClearDropDowns();
+        this.showResourcesDropDown = true;
+    }
+
+    private void OnResourcesSubItemClick() => this.showResourcesDropDown = false;
+
+    private void OnSystemsClick()
+    {
+        this.ClearDropDowns();
+        this.showSystemsDropDown = true;
+    }
+
+    private void OnSystemsSubItemClick() => this.showSystemsDropDown = false;
+
+    private string ShowNavigationDropDown() => this.showNavigationDropDown ? "show" : string.Empty;
+
+    private string ShowResourcesDropDown() => this.showResourcesDropDown ? "show" : string.Empty;
+
+    private string ShowSystemsDropDown() => this.showSystemsDropDown ? "show" : string.Empty;
+
+    private void ClearDropDowns()
+    {
+        this.showNavigationDropDown = false;
+        this.showResourcesDropDown = false;
     }
 
     private async Task OnStateChangeHandler()

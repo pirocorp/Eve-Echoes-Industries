@@ -1,5 +1,5 @@
-﻿@page "/best"
-@page "/best/{SolarSystemId:long}"
+﻿@page "/systems"
+@page "/systems/{SolarSystemId:long}"
 
 @using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
 @using EveEchoesPlanetaryProductionApi.Web.Services
@@ -8,18 +8,14 @@
 @inject IEveApiService eveApiService;
 @inject NavigationManager navigationManager;
 
-<div class="container">
-    <div class="row">
-        @if (this.SolarSystem is null)
-        {
-            <Loader></Loader>
-        }
-        else
-        {
-            <SolarSystemBest SolarSystem="this.SolarSystem"></SolarSystemBest>
-        }
-    </div>
-</div>
+@if (this.SolarSystem is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <SolarSystemDetails SolarSystem="this.SolarSystem"></SolarSystemDetails>
+}
 
 @code {
     [Parameter]
@@ -40,7 +36,7 @@
             this.AppDataService.CurrentSolarSystem = this.SolarSystem;
         }
 
-        this.navigationManager.NavigateTo($"/best");
+        this.navigationManager.NavigateTo($"/systems");
         await base.OnInitializedAsync();
     }
 }
