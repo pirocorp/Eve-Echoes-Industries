@@ -12,6 +12,8 @@
 
         Task Register(UserRegisterInputModel model);
 
+        Task ConfirmEmail(EmailConfirmationInput model);
+
         Task Logout();
     }
 }

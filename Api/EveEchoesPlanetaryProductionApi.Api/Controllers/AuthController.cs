@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -11,6 +10,7 @@
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.Auth;
     using EveEchoesPlanetaryProductionApi.Common;
+    using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services;
     using EveEchoesPlanetaryProductionApi.Services.Messaging;
@@ -93,7 +93,6 @@
         public async Task<IActionResult> ConfirmEmail([FromBody] EmailConfirmationInput input)
         {
             var user = await this.userManager.FindByEmailAsync(input.Email);
-
             var result = await this.userManager.ConfirmEmailAsync(user, input.Token);
 
             if (result.Succeeded)
@@ -127,7 +126,7 @@
                                        + "/"
                                        + nameof(GlobalConstants.Email).ToLower()
                                        + "/"
-                                       + user.Email;
+                                       + WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(user.Email));
 
             var html = await System.IO.File.ReadAllTextAsync(GlobalConstants.FilePaths.ConfirmEmailTemplate);
             html = html.Replace("{url}", emailConfirmationUrl);

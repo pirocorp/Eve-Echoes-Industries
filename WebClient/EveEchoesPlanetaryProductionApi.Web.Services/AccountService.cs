@@ -53,6 +53,12 @@
             this.appDataService.StateHasChanged();
         }
 
+        public async Task ConfirmEmail(EmailConfirmationInput model)
+        {
+            await this.httpService.Post("api/users/email/confirm", model);
+            this.appDataService.StateHasChanged();
+        }
+
         public async Task Logout()
         {
             this.appDataService.User = null;

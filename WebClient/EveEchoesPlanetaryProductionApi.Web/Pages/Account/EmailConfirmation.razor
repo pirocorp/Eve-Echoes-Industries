@@ -1,0 +1,62 @@
+﻿@page "/account/confirm/token/{Token}/email/{Email}"
+
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+@using EveEchoesPlanetaryProductionApi.Api.Models.Auth
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using Microsoft.AspNetCore.WebUtilities
+@using System.Text
+
+@inject IAccountService AccountService
+@inject IAlertService AlertService
+@inject NavigationManager NavigationManager
+
+<h3>
+    Email Confirmation:
+    @if (this.loading)
+    {
+        <span class="spinner-border spinner-border-sm mr-1"></span>
+    }
+    else
+    {
+        <b> Failed</b>
+    }
+</h3>
+
+@code {
+    private bool loading;
+
+    [Parameter]
+    public string Token { get; set; }
+
+    [Parameter]
+    public string Email { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // reset alerts on submit
+        this.AlertService.Clear();
+        this.loading = true;
+
+        this.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(this.Token));
+        this.Email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(this.Email));
+
+        var model = new EmailConfirmationInput
+        {
+            Email = this.Email,
+            Token = this.Token,
+        };
+
+        try
+        {
+            await this.AccountService.ConfirmEmail(model);
+            this.AlertService.Success("Email confirmation successful", keepAfterRouteChange: true);
+            this.NavigationManager.NavigateTo("account/login");
+        }
+        catch (Exception ex)
+        {
+            this.AlertService.Error(ex.Message);
+            this.loading = false;
+            this.StateHasChanged();
+        }
+    }
+}
