@@ -35,7 +35,7 @@
 @if (this.BestItems is not null)
 {
     <h2 class="card-title my-4">Best Resources In Range</h2>
-    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="system"></ListingTableComponent>
+    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="systems"></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
