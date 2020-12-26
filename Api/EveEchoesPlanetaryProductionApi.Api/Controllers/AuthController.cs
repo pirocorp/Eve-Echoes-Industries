@@ -10,7 +10,6 @@
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.Auth;
     using EveEchoesPlanetaryProductionApi.Common;
-    using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services;
     using EveEchoesPlanetaryProductionApi.Services.Messaging;
@@ -24,6 +23,7 @@
     public class AuthController : ControllerBase
     {
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         private readonly IAuthService authService;
         private readonly IMapper mapper;
         private readonly IEmailSender emailSender;
@@ -32,12 +32,14 @@
             UserManager<User> userManager,
             IAuthService authService,
             IMapper mapper,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            SignInManager<User> signInManager)
         {
             this.userManager = userManager;
             this.authService = authService;
             this.mapper = mapper;
             this.emailSender = emailSender;
+            this.signInManager = signInManager;
         }
 
         [HttpPost]
@@ -45,9 +47,10 @@
         public async Task<IActionResult> SigIn([FromBody]UserLoginInputModel inputModel)
         {
             var user = await this.userManager.Users.SingleOrDefaultAsync(u => u.UserName.Equals(inputModel.Username));
+            var cansSignIn = user is not null && await this.signInManager.CanSignInAsync(user);
             var userSignInResult = await this.userManager.CheckPasswordAsync(user, inputModel.Password);
 
-            if (user is null || !userSignInResult)
+            if (user is null || !userSignInResult || !cansSignIn)
             {
                 var error = new ApiErrorModel()
                 {

@@ -45,7 +45,7 @@
 
                     options.User.RequireUniqueEmail = true;
 
-                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedEmail = false;
                 })
                 .AddEntityFrameworkStores<EveEchoesPlanetaryProductionApiDbContext>()
                 .AddDefaultTokenProviders(); // just adds the default providers to generate tokens for a password reset, 2-factor authentication, change email, and change telephone.
