@@ -14,10 +14,8 @@
 
     public abstract class BestBase<T> : PaginationBase
     {
-        [Inject] 
+        [Inject]
         protected IAppDataService AppDataService { get; set; }
-
-        private bool IsSelected { get; set; }
 
         protected bool ShowLoader { get; set; }
 
@@ -27,9 +25,11 @@
 
         protected IEnumerable<T> BestItems { get; set; }
 
-        private PricesModel Prices { get; set; }
-
         protected InputModel UserInput { get; set; }
+
+        private bool IsSelected { get; set; }
+
+        private PricesModel Prices { get; set; }
 
         protected void CreateInputModelFromUserInput()
         {
@@ -37,7 +37,7 @@
             {
                 MiningPlanets = this.MiningPlanets,
                 Price = this.PriceSelector.ToString(),
-                Prices = null
+                Prices = null,
             };
 
             if (this.PriceSelector is PriceSelector.UserProvided)
@@ -96,13 +96,6 @@
             }
         }
 
-        private bool ValidUserPrices()
-            => !this.Prices
-                .GetType()
-                .GetProperties()
-                .Select(property => property.GetValue(this.Prices) as decimal? ?? 0)
-                .Any(value => value <= 0);
-
         protected async Task ValidateUserInput()
         {
             this.ShowLoader = false;
@@ -129,5 +122,12 @@
             this.ShowLoader = true;
             await this.LoadData();
         }
+
+        private bool ValidUserPrices()
+            => !this.Prices
+                .GetType()
+                .GetProperties()
+                .Select(property => property.GetValue(this.Prices) as decimal? ?? 0)
+                .Any(value => value <= 0);
     }
 }

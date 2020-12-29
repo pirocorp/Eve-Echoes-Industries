@@ -57,17 +57,17 @@
                 var planets = system.Planets.ToList();
                 foreach (var planet in planets)
                 {
-                    planet.Resources = planet.Resources.OrderByDescending(r => r.Price * (decimal) r.Output).ToList();
+                    planet.Resources = planet.Resources.OrderByDescending(r => r.Price * (decimal)r.Output).ToList();
                 }
 
                 system.Planets = planets
-                    .OrderByDescending(p => p.Resources.Select(r => r.Price * (decimal) r.Output).FirstOrDefault())
+                    .OrderByDescending(p => p.Resources.Select(r => r.Price * (decimal)r.Output).FirstOrDefault())
                     .ToList();
             }
 
             return systems
                 .OrderByDescending(s => s.Planets
-                    .Select(p => p.Resources.Select(r => r.Price * (decimal) r.Output).FirstOrDefault())
+                    .Select(p => p.Resources.Select(r => r.Price * (decimal)r.Output).FirstOrDefault())
                     .Take(miningPlanets)
                     .Sum())
                 .ToList();

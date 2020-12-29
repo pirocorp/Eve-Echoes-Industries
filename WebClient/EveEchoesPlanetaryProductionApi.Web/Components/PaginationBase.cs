@@ -7,7 +7,7 @@
 
     public abstract class PaginationBase : ComponentBase
     {
-        [Parameter] 
+        [Parameter]
         public int PageNumber { get; set; } = 1;
 
         protected int TotalPages { get; set; }
