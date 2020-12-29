@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.1" />
+    <PackageReference Include="Microsoft.JSInterop" Version="5.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,11 +24,4 @@
     <ProjectReference Include="..\..\Services\EveEchoesPlanetaryProductionApi.Services.Data\EveEchoesPlanetaryProductionApi.Services.Data.csproj" />
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Web.Common\EveEchoesPlanetaryProductionApi.Web.Common.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.JSInterop">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.JSInterop.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
