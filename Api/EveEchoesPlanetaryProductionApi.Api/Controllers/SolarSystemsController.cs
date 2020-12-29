@@ -6,6 +6,8 @@
     using EveEchoesPlanetaryProductionApi.Api.Models;
     using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemInRange;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInConstellation;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInRegion;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
@@ -17,8 +19,6 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using Models.SolarSystems.GetBestSystemsInConstellation;
-    using Models.SolarSystems.GetBestSystemsInRegion;
 
     [ApiController]
     public class SolarSystemsController : ControllerBase

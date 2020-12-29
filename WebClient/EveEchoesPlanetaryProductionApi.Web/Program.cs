@@ -1,4 +1,4 @@
-namespace EveEchoesPlanetaryProductionApi.Web
+﻿namespace EveEchoesPlanetaryProductionApi.Web
 {
     using System;
     using System.Net.Http;
