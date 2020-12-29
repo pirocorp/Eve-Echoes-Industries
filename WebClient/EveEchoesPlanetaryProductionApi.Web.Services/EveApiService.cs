@@ -5,7 +5,7 @@
         public EveApiService(
             ISolarSystemsProvider solarSystemsProvider,
             IConstellationsProvider constellationsProvider,
-            IRegionsProvider regionsProvider, 
+            IRegionsProvider regionsProvider,
             IPlanetaryResourcesProvider planetaryResourcesProvider)
         {
             this.Systems = solarSystemsProvider;

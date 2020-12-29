@@ -2,10 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.SolarSystems.GetBestSystemsInConstellation;
-    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
+
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
     using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public interface IConstellationsProvider

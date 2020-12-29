@@ -43,7 +43,7 @@
 
         public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRegion(long regionId, InputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/resources/regions/{regionId}", model);
+            var result = await this.httpClient.PostAsJsonAsync($"api/resources/regions/{regionId}", model);
 
             if (!result.IsSuccessStatusCode)
             {
@@ -55,7 +55,7 @@
 
         public async Task<BestPlanetaryResourcesModel> GetBestResourcesInRange(int range, long solarSystemId, InputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"/api/resources/systems/{solarSystemId}/range/{range}", model);
+            var result = await this.httpClient.PostAsJsonAsync($"/api/resources/systems/{solarSystemId}/range/{range}", model);
 
             if (!result.IsSuccessStatusCode)
             {

@@ -2,10 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.SolarSystems.GetBestSystemsInRegion;
+
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
     using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInRegion;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public interface IRegionsProvider

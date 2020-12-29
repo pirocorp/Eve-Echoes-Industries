@@ -4,9 +4,10 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-    using Api.Models.SolarSystems.GetBestSystemsInRegion;
-    using Api.Models.SolarSystems.GetSimpleDetails;
+
     using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInRegion;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSystems;
     using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.Search;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
@@ -41,7 +42,7 @@
 
         public async Task<BestRegionModel> GetBestSystemsInRange(int range, long systemId, InputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/{systemId}/range/{range}", model);
+            var result = await this.httpClient.PostAsJsonAsync($"api/systems/{systemId}/range/{range}", model);
 
             if (!result.IsSuccessStatusCode)
             {

@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api.Models.PlanetaryResources;
-    using Api.Models.PlanetaryResources.GetResources;
+
+    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources;
+    using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetResources;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public interface IPlanetaryResourcesProvider

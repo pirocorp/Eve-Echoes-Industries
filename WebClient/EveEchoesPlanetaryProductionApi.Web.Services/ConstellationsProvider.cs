@@ -4,11 +4,12 @@
     using System.Net.Http;
     using System.Net.Http.Json;
     using System.Threading.Tasks;
-    using Api.Models;
-    using Api.Models.Constellations.GetConstellations;
-    using Api.Models.Constellations.GetDetails;
-    using Api.Models.Constellations.GetSimpleDetails;
-    using Api.Models.SolarSystems.GetBestSystemsInConstellation;
+
+    using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInConstellation;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class ConstellationsProvider : IConstellationsProvider
@@ -34,13 +35,13 @@
 
         public async Task<BestConstellationModel> GetBestSystemsInConstellation(long constellationId, InputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/constellations/{constellationId}", model);
+            var result = await this.httpClient.PostAsJsonAsync($"api/systems/constellations/{constellationId}", model);
 
             if (!result.IsSuccessStatusCode)
             {
                 return null;
             }
-            
+
             return await result.Content.ReadFromJsonAsync<BestConstellationModel>();
         }
     }

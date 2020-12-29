@@ -5,11 +5,11 @@
     using System.Net.Http.Json;
     using System.Threading.Tasks;
 
-    using Api.Models;
-    using Api.Models.Regions.GetDetails;
-    using Api.Models.Regions.GetRegions;
-    using Api.Models.Regions.GetSimpleDetails;
-    using Api.Models.SolarSystems.GetBestSystemsInRegion;
+    using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetSimpleDetails;
+    using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetBestSystemsInRegion;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
 
     public class RegionsProvider : IRegionsProvider
@@ -35,7 +35,7 @@
 
         public async Task<BestRegionModel> GetBestSystemsInRegion(long regionId, InputModel model)
         {
-            var result =  await this.httpClient.PostAsJsonAsync($"api/systems/regions/{regionId}", model);
+            var result = await this.httpClient.PostAsJsonAsync($"api/systems/regions/{regionId}", model);
 
             if (!result.IsSuccessStatusCode)
             {
