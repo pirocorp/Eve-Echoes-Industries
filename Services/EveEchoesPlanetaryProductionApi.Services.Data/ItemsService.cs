@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Common.Extensions;
+
     using EveEchoesPlanetaryProductionApi.Common;
+    using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
@@ -14,7 +16,6 @@
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
-    using Models;
 
     /// <summary>
     /// This service returns current price/s for item.

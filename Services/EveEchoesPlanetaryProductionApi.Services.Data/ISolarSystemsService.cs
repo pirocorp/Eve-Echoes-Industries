@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
-    using Models.SolarSystemServiceModel;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public interface ISolarSystemsService
     {

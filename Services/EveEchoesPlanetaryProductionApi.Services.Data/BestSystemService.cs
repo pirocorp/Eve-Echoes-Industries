@@ -13,6 +13,7 @@
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SystemsBestModel;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
+
     using Microsoft.EntityFrameworkCore;
 
     public abstract class BestSystemService

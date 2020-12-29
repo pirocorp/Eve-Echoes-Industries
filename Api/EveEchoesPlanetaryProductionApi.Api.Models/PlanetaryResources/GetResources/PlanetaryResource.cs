@@ -1,9 +1,9 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetResources
 {
     using AutoMapper;
-    using Data.Models;
-    using Services.Mapping;
-    using Services.Models.EveEchoesMarket;
+    using EveEchoesPlanetaryProductionApi.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Mapping;
+    using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     public class PlanetaryResource : IMapFrom<Item>
     {

@@ -12,12 +12,12 @@
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
+    using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
     using EveEchoesPlanetaryProductionApi.Services.Mapping;
 
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
-    using Models.SolarSystemServiceModel;
 
     public class SolarSystemsService : BestSystemService, ISolarSystemsService
     {
