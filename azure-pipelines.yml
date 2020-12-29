@@ -58,6 +58,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
+        azureSubscription: 'Free Trial(72591b22-7953-473e-b65b-7608371577f2)'
         appType: 'webApp'
-        WebAppName: 'EveEchoesIndustriesDevOpsApp'
+        WebAppName: 'AzureRmPipeline-conn'
         packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
