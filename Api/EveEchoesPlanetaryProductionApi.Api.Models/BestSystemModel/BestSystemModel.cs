@@ -36,7 +36,7 @@
                 .ForMember(d => d.EstimatedValue, opt => opt
                     .MapFrom(s => s.Planets
                         .Select(p => p.Resources
-                            .Select(r => r.Price * (decimal) r.Output)
+                            .Select(r => r.Price * (decimal)r.Output)
                             .First())
                         .Take(miningPlanets)
                         .Sum()));
