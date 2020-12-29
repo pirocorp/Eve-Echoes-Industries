@@ -39,4 +39,25 @@ stages:
     #    command: 'test'
     #    projects: '**/TestProjectLocation/test.csproj' 
         
+- stage: Release
+  displayName: Release stage
 
+  jobs:
+  - job: Release
+    displayName: Release to Azure
+
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Publish the project
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        appType: 'webApp'
+        WebAppName: 'EveEchoesIndustriesDevOpsApp'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
