@@ -20,7 +20,7 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlanetTypesCsvFilePath",
+                name: "PlanetTypes",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
