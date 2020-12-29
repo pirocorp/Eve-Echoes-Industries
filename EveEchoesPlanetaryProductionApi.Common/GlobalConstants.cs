@@ -26,6 +26,8 @@
 
         public const int MinRange = 2;
 
+        public const string JsonContentType = "application/json";
+
         public static class Items
         {
             public const long PlanetaryResourcesStartId = 42001000000;

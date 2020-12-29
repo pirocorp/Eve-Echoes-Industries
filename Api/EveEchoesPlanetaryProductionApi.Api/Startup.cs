@@ -1,6 +1,13 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
     using EveEchoesPlanetaryProductionApi.Api.Infrastructure.Extensions;
+    using EveEchoesPlanetaryProductionApi.Api.Models;
+    using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Data;
     using EveEchoesPlanetaryProductionApi.Data.Common;
     using EveEchoesPlanetaryProductionApi.Data.Models;
@@ -12,12 +19,16 @@
     using EveEchoesPlanetaryProductionApi.Services.Settings;
 
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -118,13 +129,51 @@
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            // Global Error Handling
+            app.UseExceptionHandler(
+                alternativeApp =>
+                {
+                    alternativeApp.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.OK;
+                            context.Response.ContentType = GlobalConstants.JsonContentType;
+                            var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                            if (exceptionHandlerFeature?.Error != null)
+                            {
+                                var ex = exceptionHandlerFeature.Error;
+                                while (ex is AggregateException aggregateException
+                                       && aggregateException.InnerExceptions.Any())
+                                {
+                                    ex = aggregateException.InnerExceptions.First();
+                                }
+
+                                //// TODO: Log it
+
+                                var exceptionMessage = ex.Message;
+                                if (env.IsDevelopment())
+                                {
+                                    exceptionMessage = ex.ToString();
+                                }
+
+                                var errors = new List<ApiErrorModel>()
+                                {
+                                    new ApiErrorModel() { Code = "GLOBAL", Description = exceptionMessage },
+                                };
+
+                                await context.Response
+                                    .WriteAsync(JsonConvert.SerializeObject(errors))
+                                    .ConfigureAwait(continueOnCapturedContext: false);
+                            }
+                        });
+                });
+
             app.UseRouting();
 
             app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
