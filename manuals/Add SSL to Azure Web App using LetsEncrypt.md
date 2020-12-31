@@ -52,7 +52,7 @@ Check if you can access the file in your browser by going to the full url with t
 
 ## Step 4: Modify your web.config to rewrite the challenge file without extension
 
-As you can see in the instructions in Step 1. The servers of LetsEncrypt will visit your challenge file without the .txt extension. By default this isn’t supported by .NET / IIS and that’s why we add an IIS rewrite rule to redirect the url LetsEncrypt checks to the .txt file we’ve uploaded.
+As you can see in the instructions in Step 1. The servers of LetsEncrypt will visit your challenge file without the .txt extension. By default this isn’t supported by .NET / IIS and that’s why we add an IIS **rewrite** rule to redirect the url LetsEncrypt checks to the .txt file we’ve uploaded.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
