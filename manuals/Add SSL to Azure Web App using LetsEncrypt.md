@@ -36,4 +36,4 @@ We use the flag manual to indicate we’re doing this on behalf of a different s
 
 Note: you should replace **example.com** with your own domain.
 
-*Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter **www.yourdomain.com** or **yourdomain.com!** If you want both, complete the steps twice.*
+**Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter `www.yourdomain.com` or `yourdomain.com!` If you want both, complete the steps twice.**
