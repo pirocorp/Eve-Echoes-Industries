@@ -57,19 +57,21 @@ As you can see in the instructions in Step 1. The servers of LetsEncrypt will vi
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-<system.webServer>
-<handlers>
-<add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
-</handlers>
-<aspNetCore processPath="dotnet" arguments=".\OMT.Web.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" />
-**<rewrite> 
-<rules> 
-<rule name="wildcard"> 
-<match url=".*well-known/acme-challenge/(?!.*?\.txt$)(.*)$" /> 
-<action type="Redirect" url="/.well-known/acme-challenge/{R:1}.txt" /> 
-</rule> 
-</rules> 
-</rewrite>**
-</system.webServer>
+  <system.webServer>
+    <handlers>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
+    </handlers>
+    <aspNetCore processPath="dotnet" arguments=".\OMT.Web.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" />
+	
+    <rewrite> 
+      <rules> 
+        <rule name="wildcard"> 
+          <match url=".*well-known/acme-challenge/(?!.*?\.txt$)(.*)$" /> 
+          <action type="Redirect" url="/.well-known/acme-challenge/{R:1}.txt" /> 
+		</rule> 
+	  </rules> 
+	</rewrite>
+	
+  </system.webServer>
 </configuration>
 ```
