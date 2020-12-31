@@ -17,4 +17,6 @@ Currently supported features
   - [Best Resources In Range](https://www.echoesindustries.com/resources/range) Returns best resources in range of given number of jumps and given price.
 - Systems
   - [System Details](https://www.echoesindustries.com/systems) Returns all resources produced in given system and their output and price. Can be sorted by price and output.
-  - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on number of colonies and given prices.
+  - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on number of colonies and given prices. Can show which resource from which planet to produce in each colony.
+  - [Best System in Region](https://www.echoesindustries.com/systems/region) Calculates system with most valuable resources based on number of colonies and given prices. Can show which resource from which planet in the system to produce in each colony to get calculated value.
+  - [Best System in Range](https://www.echoesindustries.com/systems/range) Calculates system with most valuable resources based on number of colonies, given prices and given range (jumps). Can show which resource from which planet in the system to produce in each colony to get calculated value.
