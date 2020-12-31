@@ -17,7 +17,9 @@ The tools you need to create the certificate with LetsEncrypt and convert it to 
 
 I’ve installed these tools in the [Ubuntu app](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6) on my Windows Machine using the following commands:
 
-```sudo apt-get install software-properties-common
+```
+sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get install certbot
-sudo apt-get install openssl```
+sudo apt-get install openssl
+```
