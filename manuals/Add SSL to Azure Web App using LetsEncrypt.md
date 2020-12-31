@@ -68,7 +68,7 @@ As you can see in the instructions in Step 1. The servers of LetsEncrypt will vi
         <rule name="wildcard"> 
           <match url=".*well-known/acme-challenge/(?!.*?\.txt$)(.*)$" /> 
           <action type="Redirect" url="/.well-known/acme-challenge/{R:1}.txt" /> 
-		</rule> 
+	</rule> 
 	  </rules> 
 	</rewrite>
 	
