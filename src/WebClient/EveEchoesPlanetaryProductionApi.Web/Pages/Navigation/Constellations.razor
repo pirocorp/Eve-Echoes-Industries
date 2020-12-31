@@ -13,7 +13,7 @@
 
 @if (this.AllConstellations is not null)
 {
-    <ListingTableComponent Data="(this.AllConstellations)" Location=@("navigation/constellations")></ListingTableComponent>
+    <ListingTableComponent Data="(this.AllConstellations)" Location=@("constellation")></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"

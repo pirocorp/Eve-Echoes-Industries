@@ -13,7 +13,7 @@
 
 @if (this.AllRegions is not null)
 {
-    <ListingTableComponent Data="(this.AllRegions)" Location="@("navigation/regions")"></ListingTableComponent>
+    <ListingTableComponent Data="(this.AllRegions)" Location="@("region")"></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
