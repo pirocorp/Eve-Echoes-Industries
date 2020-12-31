@@ -128,3 +128,6 @@ Add the SSL binding to the uploaded certificate
 
 ![SSL Bindings](SSL_Bindings.png "SSL Bindings")
 
+Wait a few minutes and visit your website using https and you’ll see that it’s served with the LetsEncrypt certificate.
+
+**Remember to do these steps for each subdomain**
