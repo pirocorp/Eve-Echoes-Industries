@@ -69,8 +69,8 @@ As you can see in the instructions in Step 1. The servers of LetsEncrypt will vi
           <match url=".*well-known/acme-challenge/(?!.*?\.txt$)(.*)$" /> 
           <action type="Redirect" url="/.well-known/acme-challenge/{R:1}.txt" /> 
 	</rule> 
-	  </rules> 
-	</rewrite>
+      </rules> 
+    </rewrite>
 	
   </system.webServer>
 </configuration>
