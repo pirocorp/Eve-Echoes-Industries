@@ -23,3 +23,17 @@ sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get install certbot
 sudo apt-get install openssl
 ```
+
+## Step 2: Setup a challenge with LetsEncrypt
+
+Now we’ve installed Certbot we can tell it to setup a challenge with the LetsEncrypt servers to verify you’re the owner of the domain. In this example I will use the HTTP challenge.
+
+```bash
+sudo certbot certonly --preferred-challenges http -d example.com --manual
+```
+
+We use the flag manual to indicate we’re doing this on behalf of a different server, since we’re not running this command from web server itself (Azure doesn’t allow this).
+
+Note: you should replace **example.com** with your own domain.
+
+*Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter **www.yourdomain.com** or **yourdomain.com!** If you want both, complete the steps twice.*
