@@ -29,12 +29,12 @@ sudo apt-get install openssl
 Now we’ve installed Certbot we can tell it to setup a challenge with the LetsEncrypt servers to verify you’re the owner of the domain. In this example I will use the HTTP challenge.
 
 ```bash
-sudo certbot certonly --preferred-challenges http -d example.com --manual
+sudo certbot certonly --preferred-challenges http -d www.example.com --manual
 ```
 
 We use the flag manual to indicate we’re doing this on behalf of a different server, since we’re not running this command from web server itself (Azure doesn’t allow this).
 
-Note: you should replace **example.com** with your own domain.
+Note: you should replace **www.example.com** with your own domain.
 
 **Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter `www.yourdomain.com` or `yourdomain.com`! If you want both, complete the steps twice.**
 
@@ -75,3 +75,56 @@ As you can see in the instructions in Step 1. The servers of LetsEncrypt will vi
   </system.webServer>
 </configuration>
 ```
+
+Now you should be able to visit the **exact url**:
+
+```bash
+And make it available on your web server at this URL:
+
+http://www.echoesindustries.com/.well-known/acme-challenge/Asdfsgsdfgsdfg34523adf234
+```
+
+When successful (you see the contents of the .txt file) you can press enter in your Ubuntu console to complete the challenge and generate the certificate.
+
+## Step 5: Convert the certificate to PFX using OpenSSL
+
+```bash
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/www.example.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/www.example.com/privkey.pem
+   Your cert will expire on 2021-03-31. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot
+   again. To non-interactively renew *all* of your certificates, run
+   "certbot renew"
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+```
+
+When you’ve done this you can convert the certificates using the following command.
+
+```bash
+sudo openssl pkcs12 -export -out /etc/letsencrypt/live/www.example.com/www.example.com.pfx -inkey /et c/letsencrypt/live/www.example.com/privkey.pem -in /etc/letsencrypt/live/www.example.com/cert.pem
+```
+
+It will ask you for a password (remember this) and will generate a .pfx file you can upload into the Azure portal.
+
+If you want to copy the PFX file from your Windows Ubuntu app to your Windows Environment you can use the following folder
+
+`/mnt/c`
+
+There you’ll find the generated PFX file. Copy it to somewhere convenient.
+
+## Step 6: Upload your PFX certificate into the Azure Portal and add the SSL binding
+
+Go to the SSL settings of your web app and upload certificate
+
+Upload your .pfx file and enter the password you remembered from Step 4.
+
+Add the SSL binding to the uploaded certificate
+
+![SSL Bindings](SSL_Bindings.png "SSL Bindings")
+
