@@ -88,7 +88,7 @@ When successful (you see the contents of the .txt file) you can press enter in y
 
 ## Step 5: Convert the certificate to PFX using OpenSSL
 
-```bash
+```
 IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/www.example.com/fullchain.pem
@@ -106,7 +106,7 @@ IMPORTANT NOTES:
 
 When you’ve done this you can convert the certificates using the following command.
 
-```bash
+```
 sudo openssl pkcs12 -export -out /etc/letsencrypt/live/www.example.com/www.example.com.pfx -inkey /et c/letsencrypt/live/www.example.com/privkey.pem -in /etc/letsencrypt/live/www.example.com/cert.pem
 ```
 
