@@ -1,5 +1,5 @@
 # Eve Echoes Planetary Production API v0.5-alpha
 
-This API will return the best plnetary resources.
+This projects aims to help players in Eve Echoes with industries in the game.
 
-Minimum viable product stage is reached. 
+[Echoes Industries](https://www.echoesindustries.com/)
