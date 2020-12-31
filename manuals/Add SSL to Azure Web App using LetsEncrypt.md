@@ -36,4 +36,40 @@ We use the flag manual to indicate we’re doing this on behalf of a different s
 
 Note: you should replace **example.com** with your own domain.
 
-**Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter `www.yourdomain.com` or `yourdomain.com!` If you want both, complete the steps twice.**
+**Please note that these steps will generate the certificate for the exact domain you enter. It matters if you enter `www.yourdomain.com` or `yourdomain.com`! If you want both, complete the steps twice.**
+
+You’ll see instructions on your screen on what file and contents you should create.
+
+Create the file and use the .txt extension . Why? You’ll see in the next step.
+
+## Step 3: Upload the challenge file to your Azure Web App
+
+So now you have a .txt file with the contents that you were supposed to add. You upload this file into a directory on your app service plan. Upload it any way you like (I used FTP (WinSCP client)).
+
+Since I have a .NET core application I had to upload into the `wwwroot` folder in the `wwwroot` of my Azure website. This is the folder for your static files in .NET core.
+
+Check if you can access the file in your browser by going to the full url with the .txt extension.
+
+## Step 4: Modify your web.config to rewrite the challenge file without extension
+
+As you can see in the instructions in Step 1. The servers of LetsEncrypt will visit your challenge file without the .txt extension. By default this isn’t supported by .NET / IIS and that’s why we add an IIS rewrite rule to redirect the url LetsEncrypt checks to the .txt file we’ve uploaded.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+<system.webServer>
+<handlers>
+<add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModule" resourceType="Unspecified" />
+</handlers>
+<aspNetCore processPath="dotnet" arguments=".\OMT.Web.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\stdout" />
+**<rewrite> 
+<rules> 
+<rule name="wildcard"> 
+<match url=".*well-known/acme-challenge/(?!.*?\.txt$)(.*)$" /> 
+<action type="Redirect" url="/.well-known/acme-challenge/{R:1}.txt" /> 
+</rule> 
+</rules> 
+</rewrite>**
+</system.webServer>
+</configuration>
+```
