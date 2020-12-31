@@ -20,4 +20,4 @@ Currently supported features
   - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on number of colonies and given prices. Can show which resource from which planet to produce in each colony.
   - [Best System in Region](https://www.echoesindustries.com/systems/region) Calculates system with most valuable resources based on number of colonies and given prices. Can show which resource from which planet in the system to produce in each colony to get calculated value.
   - [Best System in Range](https://www.echoesindustries.com/systems/range) Calculates system with most valuable resources based on number of colonies, given prices and given range (jumps). Can show which resource from which planet in the system to produce in each colony to get calculated value.
-- [Search] (https://www.echoesindustries.com/) Search for given system. When system is selected it became your location.
+- [Search](https://www.echoesindustries.com/) Search for given system. When system is selected it became your location.
