@@ -65,6 +65,8 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.CreateInputModelFromUserInput();
 
         this.BestItems = (await this.eveApiService.Constellations.GetBestSystemsInConstellation(this.ConstellationId, this.UserInput)).Systems;

@@ -76,6 +76,8 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.CreateInputModelFromUserInput();
 
         if (this.Range <= 0)
@@ -88,11 +90,11 @@ else
         this.BestItems = model.Systems;
         var count = model.Count;
 
-        this.StateHasChanged();
-
         this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
         await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
-    }
+
+        this.StateHasChanged();
+    }    
 
     private async Task OnRangeChangeHandler(int range)
     {

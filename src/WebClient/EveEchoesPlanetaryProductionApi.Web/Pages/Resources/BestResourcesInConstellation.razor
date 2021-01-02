@@ -69,6 +69,8 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.CreateInputModelFromUserInput();
 
         var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInConstellation(this.ConstellationId, this.UserInput));

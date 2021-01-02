@@ -123,6 +123,14 @@
             await this.LoadData();
         }
 
+        protected async Task ClearPage()
+        {
+            this.BestItems = null;
+            this.StateHasChanged();
+
+            await Task.Delay(1);
+        }
+
         private bool ValidUserPrices()
             => !this.Prices
                 .GetType()

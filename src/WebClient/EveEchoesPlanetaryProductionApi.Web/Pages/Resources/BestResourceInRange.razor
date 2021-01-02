@@ -76,6 +76,8 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.CreateInputModelFromUserInput();
 
         var model = await this.eveApiService.PlanetaryResources.GetBestResourcesInRange(this.Range, this.SolarSystemId, this.UserInput);

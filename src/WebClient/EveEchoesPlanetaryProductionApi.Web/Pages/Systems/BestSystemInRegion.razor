@@ -71,6 +71,8 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.CreateInputModelFromUserInput();
 
         var model = (await this.eveApiService.Regions.GetBestSystemsInRegion(this.RegionId, this.UserInput));
