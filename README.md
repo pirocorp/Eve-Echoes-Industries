@@ -2,7 +2,7 @@
 
 ## Current Build Status
 
-[![Build status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=1)
+[![Build status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI)]
 
 This projects aims to help players in Eve Echoes with industries in the game.
 
