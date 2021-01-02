@@ -1,5 +1,9 @@
 # Eve Echoes Planetary Production API v0.5-alpha
 
+## Current Build Status
+
+https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI
+
 This projects aims to help players in Eve Echoes with industries in the game.
 
 [Echoes Industries](https://www.echoesindustries.com/) Every time page is open random system is selected.
