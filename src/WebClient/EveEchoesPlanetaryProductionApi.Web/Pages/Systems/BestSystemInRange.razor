@@ -91,10 +91,10 @@ else
         var count = model.Count;
 
         this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
-        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
-
         this.StateHasChanged();
-    }    
+
+        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
+    }
 
     private async Task OnRangeChangeHandler(int range)
     {
