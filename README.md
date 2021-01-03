@@ -1,4 +1,4 @@
-# Eve Echoes Planetary Production API v0.5-alpha
+# Eve Echoes Industries API v0.5-alpha
 
 [![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=1&branchName=main)
 
