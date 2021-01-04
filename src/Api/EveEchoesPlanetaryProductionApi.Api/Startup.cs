@@ -111,24 +111,24 @@
                     .GetResult();
             }
 
-            app.Use(async (context, next) =>
-            {
-                if (!context.Connection.LocalIpAddress.Equals(context.Connection.RemoteIpAddress))
-                {
-                    var errors = new List<ApiErrorModel>()
-                    {
-                        new ApiErrorModel() { Code = "Unauthorized", Description = "Unauthorized" },
-                    };
+            //app.Use(async (context, next) =>
+            //{
+            //    if (!context.Connection.LocalIpAddress.Equals(context.Connection.RemoteIpAddress))
+            //    {
+            //        var errors = new List<ApiErrorModel>()
+            //        {
+            //            new ApiErrorModel() { Code = "Unauthorized", Description = "Unauthorized" },
+            //        };
 
-                    context.Response.StatusCode = (int)HttpStatusCode.OK;
-                    context.Response.ContentType = GlobalConstants.JsonContentType;
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(errors));
+            //        context.Response.StatusCode = (int)HttpStatusCode.OK;
+            //        context.Response.ContentType = GlobalConstants.JsonContentType;
+            //        await context.Response.WriteAsync(JsonConvert.SerializeObject(errors));
 
-                    return;
-                }
+            //        return;
+            //    }
 
-                await next.Invoke();
-            });
+            //    await next.Invoke();
+            //});
 
             if (env.IsDevelopment())
             {
