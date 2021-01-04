@@ -1,64 +1,48 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+pool:
+  name: Azure Pipelines
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet 5.8.0'
+    inputs:
+      versionSpec: 5.8.0
 
-trigger:
-  branches:
-    include:
-    - master
-  paths:
-    exclude:
-    - azure-pipelines.yml
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(Parameters.solution)'
 
-variables:
-  buildConfiguration: 'Release'
-  vmImageName: 'ubuntu-latest'
+  - task: VSBuild@1
+    displayName: 'Build solution'
+    inputs:
+      solution: '$(Parameters.solution)'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+      clean: true
+      msbuildArchitecture: x64
 
-stages:
-- stage: Build
-  displayName: Build stage
+  - task: VSTest@2
+    displayName: 'Test Assemblies'
+    inputs:
+      testAssemblyVer2: |
+        **\$(BuildConfiguration)\*test*.dll
+        !**\obj\**
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '**/SkillBoard.Server.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
-  jobs:
-  - job: Build
-    displayName: Build
-
-    pool:
-      vmImage: $(vmImageName)
-
-    steps:
-    - task: DotNetCoreCLI@2
-      displayName: Build Server
-      inputs: 
-        command: 'build'
-        projects: '**/src/Api/EveEchoesPlanetaryProductionApi.Api/EveEchoesPlanetaryProductionApi.Api.csproj'
-    
-    #- task: DotNetCoreCLI@2
-    #  displayName: Run Unit Tests
-    #  inputs: 
-    #    command: 'test'
-    #    projects: '**/src/TestProjectLocation/test.csproj' 
-        
-- stage: Release
-  displayName: Release stage
-
-  jobs:
-  - job: Release
-    displayName: Release to Azure
-
-    pool:
-      vmImage: $(vmImageName)
-
-    steps:
-    - task: DotNetCoreCLI@2
-      displayName: Publish the project
-      inputs:
-        command: 'publish'
-        publishWebProjects: true
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Free Trial(72591b22-7953-473e-b65b-7608371577f2)'
-        appType: 'webApp'
-        WebAppName: 'EveEchoesIndustiresApp'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
