@@ -27,8 +27,18 @@ else
     {
         if (this.SolarSystemId <= 0)
         {
-            this.SolarSystem = this.AppDataService.CurrentSolarSystem ?? await this.eveApiService.Systems.GetRandomAsync();
-            this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
+            if (this.AppDataService.Location is not null)
+            {
+                this.SolarSystem = this.AppDataService.CurrentSolarSystem 
+                    ?? await this.eveApiService.Systems.GetAsync(this.AppDataService.Location.SystemId);
+
+                this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
+            }
+            else
+            {
+                this.SolarSystem = this.AppDataService.CurrentSolarSystem ?? await this.eveApiService.Systems.GetRandomAsync();
+                this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
+            }
         }
         else
         {

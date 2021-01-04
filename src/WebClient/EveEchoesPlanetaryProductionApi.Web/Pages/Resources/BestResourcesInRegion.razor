@@ -52,7 +52,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.RegionId = this.RegionId == 0 ? this.appDataService.CurrentSolarSystem?.RegionId ?? 0 : this.RegionId;
+        this.RegionId = this.RegionId == 0 ? this.appDataService.Location?.RegionId ?? 0 : this.RegionId;
 
         if (this.RegionId <= 0)
         {

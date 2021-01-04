@@ -9,5 +9,7 @@
         IRegionsProvider Regions { get; }
 
         IPlanetaryResourcesProvider PlanetaryResources { get; }
+
+        ILocationProvider Locations { get; }
     }
 }

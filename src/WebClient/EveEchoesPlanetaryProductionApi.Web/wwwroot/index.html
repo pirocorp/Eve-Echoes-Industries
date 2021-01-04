@@ -7,10 +7,10 @@
     <title>Eve Echoes Industries</title>
     <base href="/" />
 
-    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="lib/font-awesome/css/all.min.css" rel="stylesheet" />
-    <link href="css/app.css" />
-    <link href="EveEchoesPlanetaryProductionApi.Web.styles.css" rel="stylesheet" />
+    <link rel="preload" as="style" href="lib/bootstrap/dist/css/bootstrap.min.css" onload="this.rel='stylesheet'"/>
+    <link rel="preload" as="style" href="lib/font-awesome/css/all.min.css" onload="this.rel='stylesheet'"/>
+    <link rel="preload" as="style" href="css/app.css" onload="this.rel='stylesheet'"/>
+    <link rel="preload" as="style" href="EveEchoesPlanetaryProductionApi.Web.styles.css" onload="this.rel='stylesheet'"/>
 
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/apple-touch-icon.png" rel="apple-touch-icon">
@@ -70,9 +70,6 @@
                                   from="0 50 50"
                                   to="360 50 50"
                                   repeatCount="indefinite" />
-
-
-
                                     </path>
                     </svg>
             </div>

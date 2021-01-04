@@ -13,7 +13,7 @@
 
 @if (this.AllConstellations is not null)
 {
-    <ListingTableComponent Data="(this.AllConstellations)" Location=@("constellation")></ListingTableComponent>
+    <ListingTableComponent Data="(this.AllConstellations)" Location=@("navigation/constellations")></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
@@ -39,11 +39,20 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.AllConstellations = await this.eveApiService.Constellations.GetPageAsync(this.PageNumber);
 
         var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.Constellations.GetCountAsync();
         this.appDataService.ConstellationsCount ??= totalConstellations;
 
         this.TotalPages = (int)Math.Ceiling(totalConstellations / (double)GlobalConstants.Ui.ConstellationsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.AllConstellations = null;
+
+        await Task.Delay(1);
     }
 }

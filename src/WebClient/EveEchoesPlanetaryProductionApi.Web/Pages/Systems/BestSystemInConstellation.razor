@@ -50,7 +50,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.ConstellationId = this.ConstellationId == 0 ? this.AppDataService.CurrentSolarSystem?.ConstellationId ?? 0 : this.ConstellationId;
+        this.ConstellationId = this.ConstellationId == 0 ? this.AppDataService.Location?.ConstellationId ?? 0 : this.ConstellationId;
 
         if (this.ConstellationId <= 0)
         {

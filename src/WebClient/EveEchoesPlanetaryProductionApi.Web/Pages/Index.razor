@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/index.html"
 
-@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
+@using EveEchoesPlanetaryProductionApi.Api.Models.Locations
 @using EveEchoesPlanetaryProductionApi.Web.Services
 
 @inject IEveApiService eveApiService
@@ -9,18 +9,19 @@
 
 <div class="container">
     <section class="row">
-        @if (this.randomSolarSystem is null)
+        <EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
+
+        @if (this.location is null)
         {
             <Loader></Loader>
         }
         else
         {
-            <EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
             <div class="w-100 my-4">
                 <SystemCardComponent>
-                    <h3 class="card-title">System: @this.randomSolarSystem.Name</h3>
-                    <h4 class="card-text">Constellation: @this.randomSolarSystem.ConstellationName</h4>
-                    <h5 class="card-text">Region: @this.randomSolarSystem.RegionName</h5>
+                    <h3 class="card-title">System: @this.location.System</h3>
+                    <h4 class="card-text">Constellation: @this.location.Constellation</h4>
+                    <h5 class="card-text">Region: @this.location.Region</h5>
                 </SystemCardComponent>
             </div>
             <div class="w-100 my-4">
@@ -29,7 +30,7 @@
                 </ResourceCardComponent>
             </div>
         }
-</section>
+    </section>
 </div>
 
 @code
@@ -39,58 +40,48 @@
     private int solarSystemCount;
     private int planetaryResourcesCount;
 
-    private SolarSystemServiceModel randomSolarSystem;
+    private LocationModel location;
 
     protected override async Task OnInitializedAsync()
     {
-        if (this.appDataService.RegionsCount is null)
+        if (this.appDataService.RegionsCount is null
+            || this.appDataService.ConstellationsCount is null
+            || this.appDataService.SolarSystemCount is null)
         {
-            this.regionsCount = await this.eveApiService.Regions.GetCountAsync();
+            var regionsCountTask = this.eveApiService.Regions.GetCountAsync();
+            var constellationsCountTaks = this.eveApiService.Constellations.GetCountAsync();
+            var solarSystemsCountTask = this.eveApiService.Systems.GetCountAsync();
+            var planetaryResourcesCountTask = this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCount();
+
+            // Parallel API calls, but chrome is stupid -> Chrome will only let a single request exist for the same URL at a time
+            await Task.WhenAll(regionsCountTask, constellationsCountTaks, solarSystemsCountTask, planetaryResourcesCountTask);
+
+            this.regionsCount = await regionsCountTask;
+            this.constellationsCount = await constellationsCountTaks;
+            this.solarSystemCount = await solarSystemsCountTask;
+            this.planetaryResourcesCount = await planetaryResourcesCountTask;
+
             this.appDataService.RegionsCount = this.regionsCount;
-        }
-        else
-        {
-            this.regionsCount = this.appDataService.RegionsCount.Value;
-        }
-
-        if (this.appDataService.ConstellationsCount is null)
-        {
-            this.constellationsCount = await this.eveApiService.Constellations.GetCountAsync();
             this.appDataService.ConstellationsCount = this.constellationsCount;
-        }
-        else
-        {
-            this.constellationsCount = this.appDataService.ConstellationsCount.Value;
-        }
-
-        if (this.appDataService.SolarSystemCount is null)
-        {
-            this.solarSystemCount = await this.eveApiService.Systems.GetCountAsync();
             this.appDataService.SolarSystemCount = this.solarSystemCount;
-        }
-        else
-        {
-            this.solarSystemCount = this.appDataService.SolarSystemCount.Value;
-        }
-
-        if (this.appDataService.PlanetaryResourcesCount is null)
-        {
-            this.planetaryResourcesCount = await this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCount();
             this.appDataService.PlanetaryResourcesCount = this.planetaryResourcesCount;
         }
         else
         {
+            this.regionsCount = this.appDataService.RegionsCount.Value;
+            this.constellationsCount = this.appDataService.ConstellationsCount.Value;
+            this.solarSystemCount = this.appDataService.SolarSystemCount.Value;
             this.planetaryResourcesCount = this.appDataService.PlanetaryResourcesCount.Value;
         }
 
-        if (this.appDataService.CurrentSolarSystem is null)
+        if (this.appDataService.Location is null)
         {
-            this.randomSolarSystem = await this.eveApiService.Systems.GetRandomAsync();
-            this.appDataService.CurrentSolarSystem = this.randomSolarSystem;
+            this.location = await this.eveApiService.Locations.GetRandomAsync();
+            this.appDataService.Location = this.location;
         }
         else
         {
-            this.randomSolarSystem = this.appDataService.CurrentSolarSystem;
+            this.location = this.appDataService.Location;
         }
     }
 }

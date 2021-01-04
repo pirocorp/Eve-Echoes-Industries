@@ -76,11 +76,6 @@
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            /* services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EveEchoesPlanetaryProductionApi.Api", Version = "v1" });
-            });*/
-
             services.AddSingleton(this.configuration);
 
             // Data
@@ -116,13 +111,29 @@
                     .GetResult();
             }
 
+            app.Use(async (context, next) =>
+            {
+                if (!context.Connection.LocalIpAddress.Equals(context.Connection.RemoteIpAddress))
+                {
+                    var errors = new List<ApiErrorModel>()
+                    {
+                        new ApiErrorModel() { Code = "Unauthorized", Description = "Unauthorized" },
+                    };
+
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    context.Response.ContentType = GlobalConstants.JsonContentType;
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(errors));
+
+                    return;
+                }
+
+                await next.Invoke();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
-
-                // app.UseSwagger();
-                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EveEchoesPlanetaryProductionApi.Api v1"));
             }
 
             app.UseHttpsRedirection();
@@ -139,6 +150,7 @@
                             context.Response.StatusCode = (int)HttpStatusCode.OK;
                             context.Response.ContentType = GlobalConstants.JsonContentType;
                             var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+
                             if (exceptionHandlerFeature?.Error != null)
                             {
                                 var ex = exceptionHandlerFeature.Error;
@@ -148,8 +160,7 @@
                                     ex = aggregateException.InnerExceptions.First();
                                 }
 
-                                //// TODO: Log it
-
+                                // TODO: Log it
                                 var exceptionMessage = ex.Message;
                                 if (env.IsDevelopment())
                                 {

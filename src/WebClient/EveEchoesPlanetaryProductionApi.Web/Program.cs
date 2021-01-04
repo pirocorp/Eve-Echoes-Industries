@@ -29,6 +29,7 @@
             builder.Services.AddTransient<IConstellationsProvider, ConstellationsProvider>();
             builder.Services.AddTransient<IRegionsProvider, RegionsProvider>();
             builder.Services.AddTransient<IPlanetaryResourcesProvider, PlanetaryResourcesProvider>();
+            builder.Services.AddTransient<ILocationProvider, LocationProvider>();
 
             var host = builder.Build();
 
