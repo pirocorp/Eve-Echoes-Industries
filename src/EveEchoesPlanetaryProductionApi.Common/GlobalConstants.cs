@@ -96,7 +96,7 @@
 
         public static class Email
         {
-            public const string From = "eve.echoes.industries@gmail.com";
+            public const string From = "admin@echoesindustries.com";
             public const string FromName = "Admin";
             public const string Subject = "Email confirmation";
             public const string EmailValidationPath = "/account/confirm";
