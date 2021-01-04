@@ -1,4 +1,10 @@
-# Eve Echoes Planetary Production API v0.5-alpha
+# Eve Echoes Planetary Production API 0.6-alpha
+
+Whats new in version 0.6:
+- Best system in range bug fix. When you click on the row with the system subtable wont open.
+- Navigation bugs (a lot of them) fix. 
+- Improved loading times
+- Add loading animations in pagination.
 
 [![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=1&branchName=main)
 
