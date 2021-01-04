@@ -13,7 +13,7 @@
 
 @if (this.AllRegions is not null)
 {
-    <ListingTableComponent Data="(this.AllRegions)" Location="@("region")"></ListingTableComponent>
+    <ListingTableComponent Data="(this.AllRegions)" Location="@("navigation/regions")"></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
@@ -38,11 +38,20 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.AllRegions = await this.eveApiService.Regions.GetPageAsync(this.PageNumber);
 
         var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.Regions.GetCountAsync();
         this.appDataService.RegionsCount ??= totalRegions;
 
         this.TotalPages = (int)Math.Ceiling(totalRegions / (double)GlobalConstants.Ui.RegionsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.AllRegions = null;
+
+        await Task.Delay(1);
     }
 }

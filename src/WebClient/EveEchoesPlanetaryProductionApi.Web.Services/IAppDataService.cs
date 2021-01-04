@@ -5,25 +5,28 @@
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.Auth;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Locations;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel;
 
     public interface IAppDataService
     {
-        public event Func<Task> OnStateChange;
+        event Func<Task> OnStateChange;
 
-        public SolarSystemServiceModel CurrentSolarSystem { get; set; }
+        UserResponseModel User { get; set; }
 
-        public int? RegionsCount { get; set; }
+        LocationModel Location { get; set; }
 
-        public int? ConstellationsCount { get; set; }
-
-        public int? SolarSystemCount { get; set; }
-
-        public int? PlanetaryResourcesCount { get; set; }
+        SolarSystemServiceModel CurrentSolarSystem { get; set; }
 
         IDictionary<string, decimal> PlanetaryResourcesPrices { get; set; }
 
-        UserResponseModel User { get; set; }
+        int? RegionsCount { get; set; }
+
+        int? ConstellationsCount { get; set; }
+
+        int? SolarSystemCount { get; set; }
+
+        int? PlanetaryResourcesCount { get; set; }
 
         public void StateHasChanged();
     }

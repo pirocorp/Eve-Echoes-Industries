@@ -54,15 +54,18 @@
 
         public async Task<SolarSystemServiceModel> GetRandomSystemAsync()
         {
-            var solarSystem = await this.DbContext.SolarSystems
-                .OrderBy(ss => Guid.NewGuid())
-                .To<SolarSystemServiceModel>()
-                .FirstOrDefaultAsync();
+            var solarSystem = await this.GetRandomSystemAsync<SolarSystemServiceModel>();
 
             await this.PopulatePricesAsync(solarSystem);
 
             return solarSystem;
         }
+
+        public async Task<TOut> GetRandomSystemAsync<TOut>()
+            => await this.DbContext.SolarSystems
+                .OrderBy(ss => Guid.NewGuid())
+                .To<TOut>()
+                .FirstOrDefaultAsync();
 
         public async Task<SolarSystemServiceModel> GetSystemAsync(long systemId)
         {

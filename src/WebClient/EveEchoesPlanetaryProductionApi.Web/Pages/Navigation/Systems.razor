@@ -13,7 +13,7 @@
 
 @if (this.AllSystems is not null)
 {
-    <ListingTableComponent Data="(this.AllSystems)" Location=@("system")></ListingTableComponent>
+    <ListingTableComponent Data="(this.AllSystems)" Location=@("systems")></ListingTableComponent>
 
     <Paginator Page="@(this.PageNumber)"
                TotalPages="@this.TotalPages"
@@ -39,11 +39,20 @@ else
 
     protected override async Task LoadData()
     {
+        await this.ClearPage();
+
         this.AllSystems = await this.eveApiService.Systems.GetPageAsync(this.PageNumber);
 
         var totalSystems = this.appDataService.SolarSystemCount ?? await this.eveApiService.Systems.GetCountAsync();
         this.appDataService.SolarSystemCount ??= totalSystems;
 
         this.TotalPages = (int)Math.Ceiling(totalSystems / (double)GlobalConstants.Ui.RegionsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.AllSystems = null;
+
+        await Task.Delay(1);
     }
 }

@@ -10,6 +10,8 @@
     {
         Task<SolarSystemServiceModel> GetRandomSystemAsync();
 
+        Task<TOut> GetRandomSystemAsync<TOut>();
+
         Task<SolarSystemServiceModel> GetSystemAsync(long systemId);
 
         Task<int> GetCountAsync();

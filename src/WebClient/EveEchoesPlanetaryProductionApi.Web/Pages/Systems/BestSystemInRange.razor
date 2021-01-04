@@ -61,7 +61,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.SystemId = this.SystemId == 0 ? this.AppDataService.CurrentSolarSystem?.Id ?? 0 : this.SystemId;
+        this.SystemId = this.SystemId == 0 ? this.AppDataService.Location?.SystemId ?? 0 : this.SystemId;
 
         if (this.SystemId <= 0)
         {
@@ -91,10 +91,10 @@ else
         var count = model.Count;
 
         this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestSystemResultsSize);
-        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
-
         this.StateHasChanged();
-    }    
+
+        await this.JS.InvokeAsync<Task>("addAccordionOnClickHandlers");
+    }
 
     private async Task OnRangeChangeHandler(int range)
     {

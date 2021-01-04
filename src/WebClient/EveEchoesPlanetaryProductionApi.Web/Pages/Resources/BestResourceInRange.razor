@@ -60,7 +60,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        this.SolarSystemId = this.SolarSystemId == 0 ? this.appDataService.CurrentSolarSystem?.Id ?? 0 : this.SolarSystemId;
+        this.SolarSystemId = this.SolarSystemId == 0 ? this.appDataService.Location?.SystemId ?? 0 : this.SolarSystemId;
 
         if (this.SolarSystemId <= 0)
         {
