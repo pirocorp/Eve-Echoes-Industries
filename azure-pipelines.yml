@@ -1,50 +1,48 @@
 pool:
   name: Azure Pipelines
-  vmImage: ubuntu-16.04
-
-variables:
-  Parameters.solution: '**/*.sln'
-  BuildPlatform: 'Any CPU'
-  BuildConfiguration: 'Release'
-
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .Net 5'
-  inputs:
-    version: 5.0
-    includePreviewVersions: true
-    performMultiLevelLookup: true
-    
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet 5.8.0'
+    inputs:
+      versionSpec: 5.8.0
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: 'build'
-    projects: '**/SkillBoard.Server.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '$(Parameters.solution)'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: 'test'
-    projects: '**/*[Tt]ests/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+  - task: VSBuild@1
+    displayName: 'Build solution'
+    inputs:
+      solution: '$(Parameters.solution)'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+      clean: true
+      msbuildArchitecture: x64
 
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '**/SkillBoard.Server.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+  - task: VSTest@2
+    displayName: 'Test Assemblies'
+    inputs:
+      testAssemblyVer2: |
+        **\$(BuildConfiguration)\*test*.dll
+        !**\obj\**
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '**/SkillBoard.Server.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
