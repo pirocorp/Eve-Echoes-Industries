@@ -17,5 +17,8 @@
 
         public async Task<LocationModel> GetRandomAsync()
             => await this.httpClient.GetFromJsonAsync<LocationModel>("api/locations/random");
+
+        public async Task<LocationModel> GetLocationAsync(long systemId)
+            => await this.httpClient.GetFromJsonAsync<LocationModel>($"api/locations/{systemId}");
     }
 }

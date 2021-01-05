@@ -24,6 +24,13 @@ steps:
       clean: true
       msbuildArchitecture: x64
 
+#  - task: DotNetCoreCLI@2
+#    displayName: Test
+#    inputs:
+#      command: 'test'
+#      projects: '**/*[Tt]ests/*.csproj'
+#      arguments: '--configuration $(BuildConfiguration)'
+
   - task: DotNetCoreCLI@2
     displayName: Publish
     inputs:

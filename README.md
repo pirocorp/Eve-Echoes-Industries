@@ -6,7 +6,7 @@ Whats new in version 0.6:
 - Improved loading times
 - Add loading animations in pagination.
 
-[![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=1&branchName=main)
+[![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/pirocorp.Eve-Echoes-Planetary-Production-API?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=4&branchName=main)
 
 This projects aims to help players in Eve Echoes with industries in the game.
 

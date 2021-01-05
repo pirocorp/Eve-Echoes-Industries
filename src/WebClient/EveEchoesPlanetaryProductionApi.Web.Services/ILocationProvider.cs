@@ -7,5 +7,7 @@
     public interface ILocationProvider
     {
         Task<LocationModel> GetRandomAsync();
+
+        Task<LocationModel> GetLocationAsync(long systemId);
     }
 }

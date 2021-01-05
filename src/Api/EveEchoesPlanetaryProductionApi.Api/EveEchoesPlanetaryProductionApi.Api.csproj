@@ -7,12 +7,14 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
     <UserSecretsId>bcd397e6-424d-4af6-b357-63daabb30c73</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/72591b22-7953-473e-b65b-7608371577f2/resourceGroups/EveEchoes/providers/microsoft.insights/components/EveEchoesIndustiresApp</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.1" />

@@ -14,7 +14,14 @@
 
         public static string RemoveSpaces(this string str) => str.Replace(" ", string.Empty);
 
-        public static string Capitalize(this string str) => $"{char.ToUpper(str[0])}{str.Substring(1)}";
+        public static string Capitalize(this string str)
+        {
+            var index = str.LastIndexOf("/");
+
+            str = str.Substring(index + 1);
+
+            return $"{char.ToUpper(str[0])}{str.Substring(1)}";
+        }
 
         public static string ToTitleCase(this string str)
         {

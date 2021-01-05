@@ -20,5 +20,9 @@
         [Route("~/api/locations/random")]
         public async Task<LocationModel> GetRandomLocation()
             => await this.solarSystemService.GetRandomSystemAsync<LocationModel>();
+
+        [Route("~/api/locations/{systemId}")]
+        public async Task<LocationModel> GetLocation(long systemId)
+            => await this.solarSystemService.GetSystemAsync<LocationModel>(systemId);
     }
 }
