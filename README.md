@@ -8,7 +8,7 @@ Whats new in version 0.6-alpha:
 - Improved loading times
 - Add loading animations in paginations.
 - Sending Confirmation email
-- When search for system doesn't change location
+- Sometimes search doesn't change location
 
 This projects aims to help players in Eve Echoes with industries in the game.
 
