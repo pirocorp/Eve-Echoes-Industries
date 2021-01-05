@@ -14,12 +14,12 @@ steps:
   - task: NuGetCommand@2
     displayName: 'NuGet restore'
     inputs:
-      restoreSolution: '$(Parameters.solution)'
+      restoreSolution: '**\Eve Echoes Planetary Production API.sln'
 
   - task: VSBuild@1
     displayName: 'Build solution'
     inputs:
-      solution: '$(Parameters.solution)'
+      solution: '**\Eve Echoes Planetary Production API.sln'
       msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'
@@ -39,7 +39,7 @@ steps:
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
+      projects: '**\EveEchoesPlanetaryProductionApi.Api.csproj'
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
   - task: PublishBuildArtifacts@1
