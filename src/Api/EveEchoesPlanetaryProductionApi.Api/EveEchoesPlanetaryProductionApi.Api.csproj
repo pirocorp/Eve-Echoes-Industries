@@ -38,4 +38,10 @@
     <ProjectReference Include="..\EveEchoesPlanetaryProductionApi.Api.Infrastructure\EveEchoesPlanetaryProductionApi.Api.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\ConfirmEmailTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
