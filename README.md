@@ -7,6 +7,8 @@ Whats new in version 0.6:
 - Navigation bugs fix. 
 - Improved loading times
 - Add loading animations in paginations.
+- Sending Confirmation email
+- When search for system doesn't change location
 
 This projects aims to help players in Eve Echoes with industries in the game.
 
