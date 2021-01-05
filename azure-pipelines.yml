@@ -38,7 +38,7 @@ steps:
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: '**/SkillBoard.Server.csproj'
+      projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
   - task: PublishBuildArtifacts@1
