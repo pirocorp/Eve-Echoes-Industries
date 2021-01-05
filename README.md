@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/EveEchoesIndustiresApp%20-%20CI?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=1&branchName=main)
 
-Whats new in version 0.6:
+Whats new in version 0.6-alpha:
 - Best system in range bug fix. When you click on the row with the system subtable wont open.
 - Navigation bugs fix. 
 - Improved loading times
