@@ -14,33 +14,24 @@ steps:
   - task: NuGetCommand@2
     displayName: 'NuGet restore'
     inputs:
-      restoreSolution: '**\Eve Echoes Planetary Production API.sln'
+      restoreSolution: '**/Eve Echoes Planetary Production API.sln'
 
   - task: VSBuild@1
     displayName: 'Build solution'
     inputs:
-      solution: '**\Eve Echoes Planetary Production API.sln'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
-      platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
+      solution: '**/Eve Echoes Planetary Production API.sln'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:Configuration=Release /p:Platform="Any CPU"'
       clean: true
       msbuildArchitecture: x64
 
-  - task: VSTest@2
-    displayName: 'Test Assemblies'
-    inputs:
-      testAssemblyVer2: |
-        **\$(BuildConfiguration)\*test*.dll
-        !**\obj\**
-      platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
   - task: DotNetCoreCLI@2
     displayName: Publish
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: '**\EveEchoesPlanetaryProductionApi.Api.csproj'
-      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+      projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
+      arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+      zipAfterPublish: false
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
