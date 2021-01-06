@@ -103,4 +103,6 @@ msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSi
 
 ### Step 5: Tests (not implemented yet)
 
-### Step 6: Publish [(DotNetCoreCLI@2)](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops)
+### Step 6: Publish
+
+[(DotNetCoreCLI@2)](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops) use this task to build, test, package, or publish a dotnet application, or to run a custom dotnet command.
