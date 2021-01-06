@@ -172,3 +172,17 @@ arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
 ### Step 7: [Publish Build Artifacts](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops)
 
 Use this task in a build pipeline to publish build artifacts to Azure Pipelines, TFS, or a file share.
+
+```yml
+# Publish build artifacts
+# Publish build artifacts to Azure Pipelines or a Windows file share
+- task: PublishBuildArtifacts@1
+  inputs:
+    #pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+    #artifactName: 'drop' 
+    #publishLocation: 'Container' # Options: container, filePath
+    #targetPath: # Required when publishLocation == FilePath
+    #parallel: false # Optional
+    #parallelCount: # Optional
+    #fileCopyOptions: #Optional
+```
