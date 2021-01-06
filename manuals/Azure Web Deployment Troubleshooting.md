@@ -168,3 +168,7 @@ Build.ArtifactStagingDirectory is predefined variables. These variables are auto
 ```yml
 arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
 ```
+
+### Step 7: [Publish Build Artifacts](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops)
+
+Use this task in a build pipeline to publish build artifacts to Azure Pipelines, TFS, or a file share.
