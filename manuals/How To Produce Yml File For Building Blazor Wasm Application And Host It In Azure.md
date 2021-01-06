@@ -5,10 +5,8 @@
 You can control which branches get CI triggers with a simple syntax:
 
 ```
-trigger: 
-      branches:
-      - releases/*
-      - main
+trigger:
+  - main
 ```
 
 ### Step 1: Pool
