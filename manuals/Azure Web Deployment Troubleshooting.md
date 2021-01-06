@@ -149,3 +149,9 @@ msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSi
     #verbosityPack: 'Detailed' # Options: -, quiet, minimal, normal, detailed, diagnostic
     workingDirectory:
 ```
+
+**Publish web projects is very important to be false. With Blazor Web Assembly Hosted we have to separate applications. Web application which serves blazor application. Otherwise this will produce two zip files and deployment will fail.**
+
+```yml
+publishWebProjects: false
+```
