@@ -65,3 +65,5 @@ Use this task to find, download, and cache a specified version of NuGet and add 
 
 Use this task to build with MSBuild and set the Visual Studio version property.
 
+#### Demands
+msbuild, visualstudio
