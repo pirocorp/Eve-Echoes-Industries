@@ -18,3 +18,7 @@
 ### Step 5: Configure Continuous Deployment Trigger
 
 ![Configure Continuous Deployment Trigger](Configure_Continuous_Deployment_Trigger.png "Configure Continuous Deployment Trigger")
+
+### Step 6: Select Azure Wep App
+
+![Select Azure Wep App](Select_Azure_Wep_App.png "Select Azure Wep App")
