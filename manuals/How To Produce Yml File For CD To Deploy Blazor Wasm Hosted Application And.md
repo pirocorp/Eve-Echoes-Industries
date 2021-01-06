@@ -6,3 +6,8 @@
 ### Step 2: For Select Template Choose: Or start with an Empty job
 
 ![Or start with an Empty job](Select_Template.png "Or start with an Empty job")
+
+### Step 3: Add Artifacts
+
+
+![Add Artifact](Add_Artifact.png "Add Artifact")
