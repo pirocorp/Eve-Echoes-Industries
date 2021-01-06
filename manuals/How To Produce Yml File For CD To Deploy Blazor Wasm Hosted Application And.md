@@ -22,3 +22,7 @@
 ### Step 6: Select Azure Wep App
 
 ![Select Azure Wep App](Select_Azure_Wep_App.png "Select Azure Wep App")
+
+### Step 7: Azure Web App Configuration
+
+![Azure Web App Configuration](Azure_Web_App_Configuration.png "Azure Web App Configuration")
