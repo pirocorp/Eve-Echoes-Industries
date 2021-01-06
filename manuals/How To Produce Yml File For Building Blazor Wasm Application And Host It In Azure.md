@@ -6,7 +6,7 @@ You can control which branches get CI triggers with a simple syntax:
 
 ```
 trigger:
-  - main
+- main
 ```
 
 ### Step 1: Pool
