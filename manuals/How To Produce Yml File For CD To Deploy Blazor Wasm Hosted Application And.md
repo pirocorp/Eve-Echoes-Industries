@@ -10,4 +10,4 @@
 ### Step 3: Add Artifacts
 
 
-![Add Artifact](Add_Artifact.png "Add Artifact")
+![Add Artifact](Add_artifacts.png "Add Artifact")
