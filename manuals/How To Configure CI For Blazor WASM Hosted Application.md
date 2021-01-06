@@ -1,4 +1,4 @@
-## How To Produce Yml File For CI Blazor Wasm Hosted Application
+## How To Configure CI For Blazor WASM Hosted Application
 
 ### Step 0: [Trigger](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#ci-triggers)
 
