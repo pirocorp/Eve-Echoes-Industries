@@ -14,3 +14,7 @@
 ### Step 4: Select Artifacts Location
 
 ![Select Artifacts Location](Select_Artifact_Location.png "Select Artifacts Location")
+
+### Step 5: Configure Continuous Deployment Trigger
+
+![Configure Continuous Deployment Trigger](Configure_Continuous_Deployment_Trigger.png "Configure Continuous Deployment Trigger")
