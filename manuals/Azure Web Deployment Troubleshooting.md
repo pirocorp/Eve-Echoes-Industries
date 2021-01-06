@@ -33,3 +33,11 @@ Use demands to make sure that the capabilities your pipeline needs are present o
   - visualstudio
   - vstest
 ```
+
+### Step 2: Steps
+
+A step is a linear sequence of operations that make up a job. Each step runs in its own process on an agent and has access to the pipeline workspace on a local hard drive. This behavior means environment variables aren't preserved between steps but file system changes are.
+
+```yml
+steps:
+```
