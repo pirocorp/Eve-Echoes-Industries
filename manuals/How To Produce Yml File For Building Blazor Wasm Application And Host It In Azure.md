@@ -1,5 +1,15 @@
 ## How To Produce Yml File For Building Blazor Wasm Application And Host It In Azure
 
+### Step 0: Trigger
+
+You can control which branches get CI triggers with a simple syntax:
+
+```
+trigger:
+- master
+- releases/*
+```
+
 ### Step 1: Pool
 
 Here we define what system (virtual) will be used
