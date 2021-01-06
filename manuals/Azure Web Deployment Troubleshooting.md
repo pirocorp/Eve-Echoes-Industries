@@ -5,3 +5,16 @@ Azure Web Deployment Troubleshooting
 
 ## How To Produce Yml File For Building Blazor Wasm Application And Host It In Azure
 
+### Pool
+
+Here we define what system (virtual) will be used
+
+```yml
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+  demands:  
+  - msbuild
+  - visualstudio
+  - vstest
+```
