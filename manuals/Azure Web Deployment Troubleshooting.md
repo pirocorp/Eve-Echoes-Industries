@@ -38,6 +38,9 @@ Use demands to make sure that the capabilities your pipeline needs are present o
 
 A step is a linear sequence of operations that make up a job. Each step runs in its own process on an agent and has access to the pipeline workspace on a local hard drive. This behavior means environment variables aren't preserved between steps but file system changes are.
 
+[Tasks](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops) are the building blocks of a pipeline. There's a [catalog of tasks](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/?view=azure-devops) available to choose from.
+
 ```yml
 steps:
 ```
+
