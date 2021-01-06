@@ -60,3 +60,8 @@ Use this task to find, download, and cache a specified version of NuGet and add 
       #versionSpec: # Optional
       #checkLatest: false # Optional
 ```
+
+### Step 4: [Visual Studio Build task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/visual-studio-build?view=azure-devops)
+
+Use this task to build with MSBuild and set the Visual Studio version property.
+
