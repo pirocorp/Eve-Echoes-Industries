@@ -1,6 +1,6 @@
 ## How To Produce Yml File For CI Blazor Wasm Hosted Application
 
-### Step 0: Trigger
+### Step 0: [Trigger](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#ci-triggers)
 
 You can control which branches get CI triggers with a simple syntax:
 
