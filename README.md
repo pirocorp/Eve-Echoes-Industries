@@ -35,7 +35,7 @@ Currently supported features
 
 ## Manuals
 
-[How To Configure CI For Blazor WASM Hosted Application](https://github.com/pirocorp/Eve-Echoes-Planetary-Production-API/blob/develop/manuals/How%20To%20Configure%20CI%20For%20Blazor%20WASM%20Hosted%20Application.md)
+[How To Configure CI For Blazor WASM Hosted Application](./manuals/How%20To%20Configure%20CI%20For%20Blazor%20WASM%20Hosted%20Application.md)
 
 [How Configure CD To Deploy Blazor WASM Hosted Application](https://github.com/pirocorp/Eve-Echoes-Planetary-Production-API/blob/develop/manuals/How%20Configure%20CD%20To%20Deploy%20Blazor%20WASM%20Hosted%20Application.md)
 
