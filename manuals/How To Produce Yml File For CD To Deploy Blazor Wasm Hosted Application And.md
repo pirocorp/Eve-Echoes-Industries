@@ -5,4 +5,4 @@
 
 ### Step 2: For Select Template Choose: Or start with an Empty job
 
-![Or start with an Empty job]('./Select Template.png' "Or start with an Empty job")
+![Or start with an Empty job](Select_Template.png "Or start with an Empty job")
