@@ -32,3 +32,7 @@ Currently supported features
 
 ## Demo
 ![Demo](Demo.gif)
+
+## Manuals
+
+
