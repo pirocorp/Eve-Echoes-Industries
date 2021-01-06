@@ -64,4 +64,4 @@ Default value: production
 slotName: stage
 ```
 
-### Result Deploy a release every time a new build is available.
+### Result Deploy a release in slot stage every time a new build is available.
