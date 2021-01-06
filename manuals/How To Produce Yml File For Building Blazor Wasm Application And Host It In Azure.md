@@ -1,4 +1,4 @@
-## How To Produce Yml File For Building Blazor Wasm Application And Host It In Azure
+## How To Produce Yml File For CI Blazor Wasm Hosted Application
 
 ### Step 0: Trigger
 
