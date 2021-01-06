@@ -100,3 +100,7 @@ You can pass additional arguments to MSBuild. For syntax, see [MSBuild Command-L
 ```yml
 msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:Configuration=Release /p:Platform="Any CPU"'
 ```
+
+### Step 5: Tests (not implemented yet)
+
+### Step 6: Publish [(DotNetCoreCLI@2)](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops)
