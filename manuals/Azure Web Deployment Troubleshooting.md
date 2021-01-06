@@ -5,7 +5,7 @@ Azure Web Deployment Troubleshooting
 
 ## How To Produce Yml File For Building Blazor Wasm Application And Host It In Azure
 
-### Pool
+### Step 1: Pool
 
 Here we define what system (virtual) will be used
 
@@ -19,8 +19,17 @@ pool:
   - vstest
 ```
 
-vmImage define agent specification in this case Windows Server 2019 with Visual Studio 2019. List of available [agent specifications](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software)
+vmImage define agent specification (Windows Server 2019 with Visual Studio 2019). List of available [agent specifications](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software).
 
 ```yml
 vmImage: windows-2019
+```
+
+Use demands to make sure that the capabilities your pipeline needs are present on the agents that run it. Demands are asserted automatically by tasks or manually by you.
+
+```yml
+  demands:  
+  - msbuild
+  - visualstudio
+  - vstest
 ```
