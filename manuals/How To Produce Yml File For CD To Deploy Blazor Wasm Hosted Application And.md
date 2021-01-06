@@ -9,5 +9,8 @@
 
 ### Step 3: Add Artifacts
 
-
 ![Add Artifact](Add_artifacts.png "Add Artifact")
+
+### Step 4: Select Artifacts Location
+
+![Select Artifacts Location](Select_Artifact_Location.png "Select Artifacts Location")
