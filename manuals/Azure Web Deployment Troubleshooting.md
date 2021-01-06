@@ -18,3 +18,8 @@ pool:
   - visualstudio
   - vstest
 ```
+
+Windows Server 2019
+```yml
+vmImage: windows-2019
+```
