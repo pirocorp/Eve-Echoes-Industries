@@ -86,3 +86,5 @@ msbuild, visualstudio
     #createLogFile: false # Optional
     #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
 ```
+
+`**\` or `**/` - recursive search pattern
