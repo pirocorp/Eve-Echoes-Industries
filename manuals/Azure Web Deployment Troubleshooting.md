@@ -161,3 +161,10 @@ publishWebProjects: false
 ```yml
 projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
 ```
+
+
+Build.ArtifactStagingDirectory is predefined variables. These variables are automatically set by the system and read-only. The local path on the agent where any artifacts are copied to before being pushed to their destination. For example: c:\agent_work\1\a
+
+```yml
+arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+```
