@@ -47,7 +47,7 @@ steps:
   - task:
 ```
 
-### Step 3: NuGet Tool Installer task
+### Step 3: [NuGet Tool Installer task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops)
 
 Use this task to find, download, and cache a specified version of NuGet and add it to the PATH.
 
