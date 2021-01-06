@@ -94,3 +94,9 @@ Clean set to True if you want to rebuild all the code in the code projects.
 ```yml
 clean: true
 ```
+
+You can pass additional arguments to MSBuild. For syntax, see [MSBuild Command-Line Reference](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference).
+
+```yml
+msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:Configuration=Release /p:Platform="Any CPU"'
+```
