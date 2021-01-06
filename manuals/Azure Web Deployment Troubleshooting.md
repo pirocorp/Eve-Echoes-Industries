@@ -88,3 +88,9 @@ msbuild, visualstudio
 ```
 
 `**\` or `**/` - recursive search pattern
+
+Set to True if you want to rebuild all the code in the code projects.
+
+```yml
+clean: true
+```
