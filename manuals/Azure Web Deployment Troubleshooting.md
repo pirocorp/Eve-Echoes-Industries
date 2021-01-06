@@ -155,3 +155,9 @@ msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSi
 ```yml
 publishWebProjects: false
 ```
+
+**Projects must points to Server project(Web App) not Blazor!**
+
+```yml
+projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
+```
