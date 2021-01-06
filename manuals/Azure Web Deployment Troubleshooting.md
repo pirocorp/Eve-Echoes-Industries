@@ -42,5 +42,8 @@ A step is a linear sequence of operations that make up a job. Each step runs in 
 
 ```yml
 steps:
+  - task:
+  
+  - task:
 ```
 
