@@ -150,7 +150,7 @@ msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSi
     workingDirectory:
 ```
 
-**Publish web projects is very important to be false. With Blazor Web Assembly Hosted we have to separate applications. Web application which serves blazor application. Otherwise this will produce two zip files and deployment will fail.**
+**Publish web projects is very important to be false. With Blazor Web Assembly Hosted we have two separate applications. Web application which serves blazor application. Otherwise this will produce two zip files and deployment will fail.**
 
 ```yml
 publishWebProjects: false
