@@ -19,7 +19,8 @@ pool:
   - vstest
 ```
 
-Windows Server 2019
+vmImage define agent specification in this case Windows Server 2019 with Visual Studio 2019. List of available [agent specifications](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software)
+
 ```yml
 vmImage: windows-2019
 ```
