@@ -5,3 +5,4 @@
 
 ### Step 2: For Select Template Choose: Or start with an Empty job
 
+![Or start with an Empty job]()
