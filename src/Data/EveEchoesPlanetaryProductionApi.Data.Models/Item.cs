@@ -13,6 +13,10 @@
             this.PlanetResources = new HashSet<PlanetResource>();
         }
 
+        public long? ItemTypeId { get; set; }
+
+        public virtual ItemType ItemType { get; set; }
+
         public virtual IEnumerable<PlanetResource> PlanetResources { get; set; }
 
         /// <summary>
@@ -25,6 +29,12 @@
             item
                 .HasIndex(i => i.Name)
                 .IsUnique();
+
+            item
+                .HasOne(i => i.ItemType)
+                .WithMany(item => item.Items)
+                .HasForeignKey(i => i.ItemTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

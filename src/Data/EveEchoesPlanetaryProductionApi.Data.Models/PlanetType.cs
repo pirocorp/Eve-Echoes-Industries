@@ -16,7 +16,7 @@
         /// <summary>
         /// Gets or sets all planets of this type.
         /// </summary>
-        public IEnumerable<Planet> Planets { get; set; }
+        public virtual IEnumerable<Planet> Planets { get; set; }
 
         /// <summary>
         /// This method will be used by ApplyConfigurationsFromAssembly

@@ -39,6 +39,7 @@
                 new RegionsJumpsSeeder(),
                 new ConstellationsJumpsSeeder(),
                 new SolarSystemsJumpsSeeder(),
+                new ItemTypeSeeder(),
             };
 
             foreach (var seeder in seeders)
