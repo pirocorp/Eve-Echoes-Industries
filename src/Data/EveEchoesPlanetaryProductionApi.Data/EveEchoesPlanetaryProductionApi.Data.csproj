@@ -41,6 +41,9 @@
     <None Update="Static Data\Items.csv">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="Static Data\ItemTypes.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Static Data\Planet Types.csv">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
@@ -72,6 +75,12 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Seeding\ItemTypeSeeder.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

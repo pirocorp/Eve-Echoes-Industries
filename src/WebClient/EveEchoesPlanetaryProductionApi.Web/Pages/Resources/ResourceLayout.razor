@@ -2,10 +2,23 @@
 
 @layout MainLayout
 
-<div class="container">
+@inject IJSRuntime JS;
+
+<div class="@this.MobileLayoutSwitch()">
     <section class="row">
         <ResourceCardComponent>
             @(this.Body)
         </ResourceCardComponent>
     </section>
 </div>
+
+@code{
+    private bool isMobileDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.isMobileDevice = await this.JS.InvokeAsync<bool>("isMobileDevice");
+    }
+
+    private string MobileLayoutSwitch() => this.isMobileDevice ? string.Empty : "container";
+}

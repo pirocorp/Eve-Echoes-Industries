@@ -32,3 +32,11 @@ Currently supported features
 
 ## Demo
 ![Demo](Demo.gif)
+
+## Manuals
+
+[How To Configure CI For Blazor WASM Hosted Application](./manuals/How%20To%20Configure%20CI%20For%20Blazor%20WASM%20Hosted%20Application.md)
+
+[How Configure CD To Deploy Blazor WASM Hosted Application](./manuals/How%20Configure%20CD%20To%20Deploy%20Blazor%20WASM%20Hosted%20Application.md)
+
+[Add SSL to Azure Web App using LetsEncrypt](./manuals/Add%20SSL%20to%20Azure%20Web%20App%20using%20LetsEncrypt.md)

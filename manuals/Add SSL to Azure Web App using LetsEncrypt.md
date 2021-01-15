@@ -126,7 +126,7 @@ Upload your .pfx file and enter the password you remembered from Step 4.
 
 Add the SSL binding to the uploaded certificate
 
-![SSL Bindings](SSL_Bindings.png "SSL Bindings")
+![SSL Bindings](./Resources/SSL_Bindings.png "SSL Bindings")
 
 Wait a few minutes and visit your website using https and you’ll see that it’s served with the LetsEncrypt certificate.
 
