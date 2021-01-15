@@ -13,7 +13,7 @@
             this.PlanetResources = new HashSet<PlanetResource>();
         }
 
-        public long? ItemTypeId { get; set; }
+        public long ItemTypeId { get; set; }
 
         public virtual ItemType ItemType { get; set; }
 
@@ -34,6 +34,7 @@
                 .HasOne(i => i.ItemType)
                 .WithMany(item => item.Items)
                 .HasForeignKey(i => i.ItemTypeId)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
