@@ -76,7 +76,7 @@
 
             public const string SolarSystemsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystemsJumps.csv";
 
-            public const string ItemTypesCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/ItemTypes.csv";
+            public const string ItemTypesCsvFilePath = "./Static Data/ItemTypes.csv";
 
             public const string ConfirmEmailTemplate = "./Resources/ConfirmEmailTemplate.html";
         }
