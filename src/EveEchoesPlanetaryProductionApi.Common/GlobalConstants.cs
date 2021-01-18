@@ -78,6 +78,8 @@
 
             public const string ItemTypesCsvFilePath = "./Static Data/ItemTypes.csv";
 
+            public const string BluePrintsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Blueprints.csv";
+
             public const string ConfirmEmailTemplate = "./Resources/ConfirmEmailTemplate.html";
         }
 

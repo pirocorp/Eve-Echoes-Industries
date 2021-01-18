@@ -17,6 +17,9 @@
 
         public virtual ItemType ItemType { get; set; }
 
+        // Dependent Entity in One to One Relation
+        public virtual Blueprint Blueprint { get; set; }
+
         public virtual IEnumerable<PlanetResource> PlanetResources { get; set; }
 
         /// <summary>

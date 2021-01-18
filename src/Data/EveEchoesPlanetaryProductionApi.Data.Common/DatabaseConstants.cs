@@ -8,6 +8,10 @@
 
         public const double MaxSecurityLevel = 1;
 
+        public const int MinTechLevel = 1;
+
+        public const int MaxTechLevel = 10;
+
         public class SeedingConstants
         {
             public const string ItemErrorParseMessage = "Item {0} cannot be parsed.";

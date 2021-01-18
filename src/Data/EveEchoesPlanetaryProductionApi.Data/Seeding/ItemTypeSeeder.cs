@@ -24,19 +24,18 @@
                 .GetService<ILoggerFactory>()
                 .CreateLogger(typeof(ItemTypeSeeder));
 
-            using (var dbContextTransaction = dbContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    await this.SeedItemTypesAsync(dbContext);
-                    await this.AddTypeToItems(dbContext);
+            await using var dbContextTransaction = await dbContext.Database.BeginTransactionAsync();
 
-                    dbContextTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogCritical($"Seeder ItemTypeSeeder failed with error: {ex.Message}");
-                }
+            try
+            {
+                await this.SeedItemTypesAsync(dbContext);
+                await this.AddTypeToItems(dbContext);
+
+                await dbContextTransaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical($"Seeder ItemTypeSeeder failed with error: {ex.Message}");
             }
         }
 
