@@ -39,45 +39,7 @@
             }
         }
 
-        private async Task SeedItemTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
-        {
-            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ItemTypesCsvFilePath))
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
-                var itemTypeName = lineArgs[0];
-
-                var itemType = new ItemType()
-                {
-                    Name = itemTypeName,
-                };
-
-                await dbContext.AddAsync(itemType);
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        private async Task AddTypeToItems(EveEchoesPlanetaryProductionApiDbContext dbContext)
-        {
-            var items = await dbContext.Items.ToListAsync();
-            var itemTypes = await dbContext.ItemTypes.ToDictionaryAsync(x => x.Name, y => y);
-
-            foreach (var item in items)
-            {
-                var type = this.GetItemType(item);
-
-                item.ItemType = itemTypes[type];
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        private string GetItemType(Item item)
+        public static string GetItemType(Item item)
         {
             if (item.Id <= 10190002001)
             {
@@ -171,6 +133,44 @@
             {
                 return "Misc";
             }
+        }
+
+        private async Task SeedItemTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        {
+            await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ItemTypesCsvFilePath))
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                var lineArgs = line.Split(GlobalConstants.CsvDelimiter, StringSplitOptions.RemoveEmptyEntries);
+                var itemTypeName = lineArgs[0];
+
+                var itemType = new ItemType()
+                {
+                    Name = itemTypeName,
+                };
+
+                await dbContext.AddAsync(itemType);
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        private async Task AddTypeToItems(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        {
+            var items = await dbContext.Items.ToListAsync();
+            var itemTypes = await dbContext.ItemTypes.ToDictionaryAsync(x => x.Name, y => y);
+
+            foreach (var item in items)
+            {
+                var type = GetItemType(item);
+
+                item.ItemType = itemTypes[type];
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

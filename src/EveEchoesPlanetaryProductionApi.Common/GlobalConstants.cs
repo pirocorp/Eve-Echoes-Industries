@@ -1,5 +1,6 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Common
 {
+    using System;
     using System.Collections.Generic;
 
     public static class GlobalConstants
@@ -54,8 +55,6 @@
 
         public static class FilePaths
         {
-            public const string ItemsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Items.csv";
-
             public const string PlanetsResourcesCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planets Resources.csv";
 
             public const string PlanetTypesCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planet Types.csv";
@@ -81,6 +80,10 @@
             public const string BluePrintsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Blueprints.csv";
 
             public const string ConfirmEmailTemplate = "./Resources/ConfirmEmailTemplate.html";
+
+            public static string ItemsCsvFilePath => (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty) == "Development"
+                ? "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Items.csv"
+                : "./Static Data/Items.csv";
         }
 
         public static class Ui

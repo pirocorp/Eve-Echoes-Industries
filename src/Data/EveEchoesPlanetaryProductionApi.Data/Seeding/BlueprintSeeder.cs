@@ -38,7 +38,7 @@
 
             try
             {
-                await SeedBlueprints(dbContext, logger);
+                // await SeedBlueprints(dbContext, logger);
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@
 
             using (dbContext.Database.OpenConnectionAsync())
             {
-                await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] ON");
+                 await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] ON");
 
                 await dbContext.Items.AddAsync(item);
                 await dbContext.SaveChangesAsync();
