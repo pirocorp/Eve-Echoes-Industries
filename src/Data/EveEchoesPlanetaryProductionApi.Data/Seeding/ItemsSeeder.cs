@@ -22,7 +22,7 @@
 
             if (await dbContext.Items.AnyAsync())
             {
-                await UpdateItems(dbContext, logger, true);
+                await UpdateItems(dbContext, logger, false);
                 return;
             }
 
