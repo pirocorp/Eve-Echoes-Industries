@@ -5,9 +5,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
     using EveEchoesPlanetaryProductionApi.Common;
     using EveEchoesPlanetaryProductionApi.Common.Extensions;
     using EveEchoesPlanetaryProductionApi.Data;
+    using EveEchoesPlanetaryProductionApi.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models;
     using EveEchoesPlanetaryProductionApi.Services.Data.Models.IItemsService;
     using EveEchoesPlanetaryProductionApi.Services.EveEchoesMarket;
@@ -27,16 +30,22 @@
         private readonly IMemoryCache memoryCache;
         private readonly EveEchoesPlanetaryProductionApiDbContext dbContext;
         private readonly IItemsPricesService itemsPricesService;
+        private readonly IMapper mapper;
 
         public ItemsService(
             IMemoryCache memoryCache,
             EveEchoesPlanetaryProductionApiDbContext dbContext,
-            IItemsPricesService itemsPricesService)
+            IItemsPricesService itemsPricesService,
+            IMapper mapper)
         {
             this.memoryCache = memoryCache;
             this.dbContext = dbContext;
             this.itemsPricesService = itemsPricesService;
+            this.mapper = mapper;
         }
+
+        public async Task<TOut> GetItem<TOut>(string name)
+            => this.mapper.Map<TOut>(await this.GetItem(name));
 
         public async Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PricesModel prices)
         {
@@ -99,6 +108,11 @@
 
             return cacheEntry;
         }
+
+        private async Task<Item> GetItem(string name)
+            => await this.dbContext.Items
+                .Where(i => i.Name.Equals(name))
+                .FirstOrDefaultAsync();
 
         private async Task<List<ItemServiceModel>> GetItemServiceModels()
         {

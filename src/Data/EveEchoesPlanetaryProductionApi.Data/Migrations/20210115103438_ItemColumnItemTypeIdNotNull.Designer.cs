@@ -4,77 +4,22 @@ using EveEchoesPlanetaryProductionApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EveEchoesPlanetaryProductionApi.Data.Migrations
 {
     [DbContext(typeof(EveEchoesPlanetaryProductionApiDbContext))]
-    partial class EveEchoesPlanetaryProductionApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210115103438_ItemColumnItemTypeIdNotNull")]
+    partial class ItemColumnItemTypeIdNotNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
-
-            modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("BlueprintItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductionCost")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductionCount")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductionTime")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TechLevel")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlueprintItemId")
-                        .IsUnique();
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.HasIndex("ProductTypeId");
-
-                    b.ToTable("Blueprints");
-                });
-
-            modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.BlueprintResource", b =>
-                {
-                    b.Property<string>("BlueprintId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("Quantity")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("BlueprintId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("BlueprintsResources");
-                });
 
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Constellation", b =>
                 {
@@ -585,52 +530,6 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", b =>
-                {
-                    b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.Item", "BlueprintItem")
-                        .WithOne("Blueprint")
-                        .HasForeignKey("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", "BlueprintItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.Item", "Product")
-                        .WithOne()
-                        .HasForeignKey("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.ItemType", "ProductType")
-                        .WithMany("Blueprints")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BlueprintItem");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductType");
-                });
-
-            modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.BlueprintResource", b =>
-                {
-                    b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", "Blueprint")
-                        .WithMany("Resources")
-                        .HasForeignKey("BlueprintId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Blueprint");
-
-                    b.Navigation("Item");
-                });
-
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Constellation", b =>
                 {
                     b.HasOne("EveEchoesPlanetaryProductionApi.Data.Models.Region", "Region")
@@ -890,11 +789,6 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Blueprint", b =>
-                {
-                    b.Navigation("Resources");
-                });
-
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Constellation", b =>
                 {
                     b.Navigation("ConstellationAsDestinations");
@@ -912,15 +806,11 @@ namespace EveEchoesPlanetaryProductionApi.Data.Migrations
 
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.Item", b =>
                 {
-                    b.Navigation("Blueprint");
-
                     b.Navigation("PlanetResources");
                 });
 
             modelBuilder.Entity("EveEchoesPlanetaryProductionApi.Data.Models.ItemType", b =>
                 {
-                    b.Navigation("Blueprints");
-
                     b.Navigation("Items");
                 });
 

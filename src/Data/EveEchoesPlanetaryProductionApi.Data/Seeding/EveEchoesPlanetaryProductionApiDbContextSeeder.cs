@@ -40,6 +40,7 @@
                 new ConstellationsJumpsSeeder(),
                 new SolarSystemsJumpsSeeder(),
                 new ItemTypeSeeder(),
+                new BlueprintSeeder(),
             };
 
             foreach (var seeder in seeders)

@@ -9,6 +9,8 @@
 
     public interface IItemsService
     {
+        Task<TOut> GetItem<TOut>(string name);
+
         Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PriceSelector priceSelector);
 
         Task<IEnumerable<ItemServiceModel>> GetPlanetaryResources(PricesModel prices);
