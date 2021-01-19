@@ -55,35 +55,40 @@
 
         public static class FilePaths
         {
-            public const string PlanetsResourcesCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planets Resources.csv";
-
-            public const string PlanetTypesCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planet Types.csv";
-
-            public const string RichnessCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Richness.csv";
-
-            public const string RegionsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Regions.csv";
-
-            public const string ConstellationsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Constellations.csv";
-
-            public const string SolarSystemsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystems.csv";
-
-            public const string PlanetsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Planets.csv";
-
-            public const string RegionsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/RegionsJumps.csv";
-
-            public const string ConstellationsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/ConstellationsJumps.csv";
-
-            public const string SolarSystemsJumpsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/SolarSystemsJumps.csv";
-
-            public const string ItemTypesCsvFilePath = "./Static Data/ItemTypes.csv";
-
-            public const string BluePrintsCsvFilePath = "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Blueprints.csv";
-
             public const string ConfirmEmailTemplate = "./Resources/ConfirmEmailTemplate.html";
 
-            public static string ItemsCsvFilePath => (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty) == "Development"
-                ? "../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/Items.csv"
-                : "./Static Data/Items.csv";
+            private const string AspCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
+
+            public static string ItemsCsvFilePath => GeneratePath("Items.csv");
+
+            public static string BluePrintsCsvFilePath => GeneratePath("Blueprints.csv");
+
+            public static string SolarSystemsJumpsCsvFilePath => GeneratePath("SolarSystemsJumps.csv");
+
+            public static string PlanetsResourcesCsvFilePath => GeneratePath("Planets Resources.csv");
+
+            public static string PlanetTypesCsvFilePath => GeneratePath("Planet Types.csv");
+
+            public static string RichnessCsvFilePath => GeneratePath("Richness.csv");
+
+            public static string RegionsCsvFilePath => GeneratePath("Regions.csv");
+
+            public static string ConstellationsCsvFilePath => GeneratePath("Constellations.csv");
+
+            public static string SolarSystemsCsvFilePath => GeneratePath("SolarSystems.csv");
+
+            public static string PlanetsCsvFilePath => GeneratePath("Planets.csv");
+
+            public static string RegionsJumpsCsvFilePath => GeneratePath("RegionsJumps.csv");
+
+            public static string ConstellationsJumpsCsvFilePath => GeneratePath("ConstellationsJumps.csv");
+
+            public static string ItemTypesCsvFilePath => GeneratePath("ItemTypes.csv");
+
+            private static string GeneratePath(string fileName)
+                => (Environment.GetEnvironmentVariable(AspCoreEnvironment) ?? string.Empty) == "Development"
+                    ? $"../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/{fileName}"
+                    : "./Static Data/{fileName}";
         }
 
         public static class Ui
