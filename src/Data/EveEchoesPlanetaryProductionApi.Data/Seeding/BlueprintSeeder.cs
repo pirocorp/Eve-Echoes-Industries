@@ -14,7 +14,7 @@
     public class BlueprintSeeder : ISeeder
     {
         private static long frigateBlueprintMissingId = 90000001001;
-        private static long destroyerBlueprintMissingId = 90000002001;
+        private static long destroyerBlueprintMissingId = 90000002002;
         private static long cruiserBlueprintMissingId = 90000003001;
         private static long battlecruiserBlueprintMissingId = 90000004001;
         private static long battleshipBlueprintMissingId = 90000005001;
@@ -38,7 +38,7 @@
 
             try
             {
-                // await SeedBlueprints(dbContext, logger);
+                await SeedBlueprints(dbContext, logger);
             }
             catch (Exception ex)
             {
