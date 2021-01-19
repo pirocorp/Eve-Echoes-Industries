@@ -13,32 +13,6 @@
 
     public class ItemTypeSeeder : ISeeder
     {
-        public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, [NotNull] IServiceProvider serviceProvider)
-        {
-            if (await dbContext.ItemTypes.AnyAsync())
-            {
-                return;
-            }
-
-            var logger = serviceProvider
-                .GetService<ILoggerFactory>()
-                .CreateLogger(typeof(ItemTypeSeeder));
-
-            await using var dbContextTransaction = await dbContext.Database.BeginTransactionAsync();
-
-            try
-            {
-                await this.SeedItemTypesAsync(dbContext);
-                await this.AddTypeToItems(dbContext);
-
-                await dbContextTransaction.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                logger.LogCritical($"Seeder ItemTypeSeeder failed with error: {ex.Message}");
-            }
-        }
-
         public static string GetItemType(Item item)
         {
             if (item.Id <= 10190002001)
@@ -135,7 +109,33 @@
             }
         }
 
-        private async Task SeedItemTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        public async Task SeedAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, [NotNull] IServiceProvider serviceProvider)
+        {
+            if (await dbContext.ItemTypes.AnyAsync())
+            {
+                return;
+            }
+
+            var logger = serviceProvider
+                .GetService<ILoggerFactory>()
+                .CreateLogger(typeof(ItemTypeSeeder));
+
+            await using var dbContextTransaction = await dbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                await SeedItemTypesAsync(dbContext);
+                await AddTypeToItems(dbContext);
+
+                await dbContextTransaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical($"Seeder ItemTypeSeeder failed with error: {ex.Message}");
+            }
+        }
+
+        private static async Task SeedItemTypesAsync(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ItemTypesCsvFilePath))
             {
@@ -158,7 +158,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        private async Task AddTypeToItems(EveEchoesPlanetaryProductionApiDbContext dbContext)
+        private static async Task AddTypeToItems(EveEchoesPlanetaryProductionApiDbContext dbContext)
         {
             var items = await dbContext.Items.ToListAsync();
             var itemTypes = await dbContext.ItemTypes.ToDictionaryAsync(x => x.Name, y => y);

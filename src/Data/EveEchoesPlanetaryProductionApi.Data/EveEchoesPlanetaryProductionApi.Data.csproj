@@ -39,7 +39,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Static Data\Items.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Static Data\ItemTypes.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

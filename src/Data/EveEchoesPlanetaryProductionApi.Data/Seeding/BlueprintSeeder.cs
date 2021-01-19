@@ -122,12 +122,8 @@
 
             using (dbContext.Database.OpenConnectionAsync())
             {
-                 await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] ON");
-
                 await dbContext.Items.AddAsync(item);
-                await dbContext.SaveChangesAsync();
-
-                await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] OFF");
+                await dbContext.SaveChangesWithExplicitIdentityInsertAsync(nameof(EveEchoesPlanetaryProductionApiDbContext.Items));
             }
 
             return item;

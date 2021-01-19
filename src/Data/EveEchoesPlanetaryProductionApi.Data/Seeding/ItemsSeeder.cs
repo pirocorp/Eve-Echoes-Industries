@@ -1,6 +1,7 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Data.Seeding
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -22,15 +23,22 @@
 
             if (await dbContext.Items.AnyAsync())
             {
-                await UpdateItems(dbContext, logger);
+                await UpdateItems(dbContext, logger, true);
                 return;
             }
 
             await SeedItemsAsync(dbContext, logger);
         }
 
-        private static async Task UpdateItems(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
+        private static async Task UpdateItems(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger, bool update)
         {
+            if (!update)
+            {
+                return;
+            }
+
+            var lines = new HashSet<long>();
+
             await foreach (var line in CsvFileService.ReadCsvDataLineByLineAsync(GlobalConstants.FilePaths.ItemsCsvFilePath))
             {
                 if (string.IsNullOrWhiteSpace(line))
@@ -44,11 +52,27 @@
 
                 if (!success)
                 {
+                    logger.LogError("Can't parse item");
+                    logger.LogError(line);
                     continue;
                 }
 
                 if (await dbContext.Items.AnyAsync(i => i.Id.Equals(itemId)))
                 {
+                    if (lines.TryGetValue(itemId, out var x))
+                    {
+                        var currentItem = await dbContext.Items.Where(i => i.Id.Equals(itemId)).FirstOrDefaultAsync();
+
+                        if (currentItem.Name.Contains("  "))
+                        {
+                            currentItem.Name = currentItem.Name.Replace("  ", " ");
+                        }
+                    }
+                    else
+                    {
+                        lines.Add(itemId);
+                    }
+
                     continue;
                 }
 
@@ -57,6 +81,8 @@
                 await dbContext.AddAsync(item);
                 await dbContext.SaveChangesWithExplicitIdentityInsertAsync(nameof(EveEchoesPlanetaryProductionApiDbContext.Items));
             }
+
+            Console.WriteLine(lines);
         }
 
         private static async Task SeedItemsAsync(EveEchoesPlanetaryProductionApiDbContext dbContext, ILogger logger)
