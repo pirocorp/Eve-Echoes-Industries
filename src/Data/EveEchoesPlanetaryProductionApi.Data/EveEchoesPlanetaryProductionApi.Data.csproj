@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Static Data\Blueprints.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Static Data\Constellations.csv">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
