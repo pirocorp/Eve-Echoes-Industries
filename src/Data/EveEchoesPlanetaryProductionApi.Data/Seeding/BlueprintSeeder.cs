@@ -34,7 +34,7 @@
 
             var logger = serviceProvider
                 .GetService<ILoggerFactory>()
-                .CreateLogger(typeof(ItemTypeSeeder));
+                .CreateLogger(typeof(BlueprintSeeder));
 
             try
             {
