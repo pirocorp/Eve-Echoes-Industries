@@ -41,6 +41,7 @@
                 new SolarSystemsJumpsSeeder(),
                 new ItemTypeSeeder(),
                 new BlueprintSeeder(),
+                new BlueprintsResourcesSeeder(),
             };
 
             foreach (var seeder in seeders)
