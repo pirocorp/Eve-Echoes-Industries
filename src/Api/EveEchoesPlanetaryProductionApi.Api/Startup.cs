@@ -91,6 +91,7 @@
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IRegionsService, RegionsService>();
             services.AddTransient<IConstellationService, ConstellationService>();
+            services.AddTransient<IBlueprintsService, BlueprintsService>();
 
             // SendGrid
             var sendGridKey = this.configuration.GetSection("SendGrid:ApiKey").Value;

@@ -73,7 +73,7 @@
             => await this.solarSystemService.GetSystemAsync<SolarSystemSimpleDetailsModel>(systemId);
 
         [Route("~/api/systems/page/{page?}")]
-        public async Task<ActionResult<SystemsPageModel>> GetSystems(int page = 1)
+        public async Task<IActionResult> GetSystems(int page = 1)
         {
             if (page <= 0)
             {
@@ -85,11 +85,11 @@
                 Systems = await this.solarSystemService.GetSystemsAsync<SolarSystemListingModel>(GlobalConstants.Ui.SolarSystemsSearchPageSize, page),
             };
 
-            return model;
+            return this.Ok(model);
         }
 
         [Route("~/api/systems/search/{searchTerm}/page/{page?}")]
-        public async Task<ActionResult<SearchResultModel>> Search(string searchTerm, int page = 1)
+        public async Task<IActionResult> Search(string searchTerm, int page = 1)
         {
             var (results, count) = await this.solarSystemService
                 .SearchAsync<SearchResultSolarSystemModel>(searchTerm, GlobalConstants.Ui.SolarSystemsSearchPageSize, page);
@@ -100,7 +100,7 @@
                 Count = count,
             };
 
-            return model;
+            return this.Ok(model);
         }
 
         [HttpPost]
