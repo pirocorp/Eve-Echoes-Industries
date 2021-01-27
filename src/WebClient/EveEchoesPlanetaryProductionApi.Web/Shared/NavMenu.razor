@@ -12,12 +12,6 @@
 
     <div class="@(this.NavMenuCssClass) navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/">
-                    <span class="nav-link">Home</span>
-                </NavLink>
-            </li>
-
             <li class="nav-item dropdown">
                 <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/navigation" @onclick:preventDefault>
                     <span class="nav-link dropdown-toggle"
