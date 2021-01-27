@@ -87,14 +87,14 @@
         this.OnChange.InvokeAsync(true);
     }
 
-    private void Submit()
+    private async Task Submit()
     {
-        this.OnChange.InvokeAsync(true);
+        await this.OnChange.InvokeAsync(true);
     }
 
-    private void ClearPrices()
+    private async Task ClearPrices()
     {
         this.AppDataService.PlanetaryResourcesPrices = new Dictionary<string, decimal>();
-        this.OnChange.InvokeAsync(true);
+        await this.OnChange.InvokeAsync(true);
     }
 }

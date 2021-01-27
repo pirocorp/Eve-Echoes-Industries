@@ -31,5 +31,8 @@
                 .TextInfo
                 .ToTitleCase(string.Join(" ", pattern.Matches(str)).ToLower());
         }
+
+        public static string SplitWords(this string str)
+            => Regex.Replace(str, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
     }
 }

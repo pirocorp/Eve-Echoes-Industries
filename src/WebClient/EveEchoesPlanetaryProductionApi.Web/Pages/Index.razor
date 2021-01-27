@@ -52,15 +52,15 @@
             || this.appDataService.SolarSystemCount is null)
         {
             var regionsCountTask = this.eveApiService.Regions.GetCountAsync();
-            var constellationsCountTaks = this.eveApiService.Constellations.GetCountAsync();
+            var constellationsCountTasks = this.eveApiService.Constellations.GetCountAsync();
             var solarSystemsCountTask = this.eveApiService.Systems.GetCountAsync();
             var planetaryResourcesCountTask = this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCount();
 
             // Parallel API calls, but chrome is stupid -> Chrome will only let a single request exist for the same URL at a time
-            await Task.WhenAll(regionsCountTask, constellationsCountTaks, solarSystemsCountTask, planetaryResourcesCountTask);
+            await Task.WhenAll(regionsCountTask, constellationsCountTasks, solarSystemsCountTask, planetaryResourcesCountTask);
 
             this.regionsCount = await regionsCountTask;
-            this.constellationsCount = await constellationsCountTaks;
+            this.constellationsCount = await constellationsCountTasks;
             this.solarSystemCount = await solarSystemsCountTask;
             this.planetaryResourcesCount = await planetaryResourcesCountTask;
 

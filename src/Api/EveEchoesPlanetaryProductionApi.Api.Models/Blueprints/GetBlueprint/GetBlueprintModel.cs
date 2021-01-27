@@ -8,6 +8,8 @@
 
     public class GetBlueprintModel : IMapFrom<Blueprint>, IHaveCustomMappings
     {
+        public string Name { get; set; }
+
         public long BlueprintItemId { get; set; }
 
         public int TechLevel { get; set; }
@@ -28,7 +30,8 @@
         {
             blueprint
                 .CreateMap<Blueprint, GetBlueprintModel>()
-                .ForMember(d => d.ProductType, opt => opt.MapFrom(s => s.ProductType.Name));
+                .ForMember(d => d.ProductType, opt => opt.MapFrom(s => s.ProductType.Name))
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.BlueprintItem.Name));
         }
     }
 }

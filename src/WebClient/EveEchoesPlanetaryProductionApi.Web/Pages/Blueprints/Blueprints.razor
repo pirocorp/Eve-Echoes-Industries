@@ -1,0 +1,133 @@
+﻿@page "/blueprints"
+@page "/blueprints/page/{PageNumber:int}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Blueprints
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
+
+@inject IEveApiService eveApiService
+@inject NavigationManager navigation
+
+<div class="my-5 w-100">
+    <h1 class="text-center">Blueprints</h1>
+</div>
+
+@if (this.Types is not null)
+{
+    <div class="row mx-auto mb-5" style="@this.EnableCheckboxes()">
+        @foreach (var type in this.Types)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <RadioButton TParameter="long" Label=@type.Name OnClick="this.CheckBoxHandler" Parameter="@type.Id"></RadioButton>
+            </div>
+        }
+    </div>
+}
+
+<section class="search-sec w-100 mb-5">
+    <div class="container">
+        <form action="#" method="post" novalidate="novalidate">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row justify-content-md-center">
+                        <div class="col-md-6 col-sm-12 p-0">
+                            <input type="text" class="form-control search-slt" @bind="@this.SearchValue" placeholder="Enter Search">
+                        </div>
+                        <div class="col-md-3 col-sm-12 p-0">
+                            <button type="button" class="btn btn-success wrn-btn" @onclick="this.SearchButtonHandler">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@if (this.BlueprintsListing is not null)
+{
+    <ListingTableComponent Data="(this.BlueprintsListing)" Location=@("blueprints")></ListingTableComponent>
+
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
+
+@code {
+    private IEnumerable<BlueprintListingModel> BlueprintsListing { get; set; }
+
+    private BrowseBlueprintsInputModel UserInput { get; set; }
+
+    private IEnumerable<BlueprintTypeModel> Types { get; set; }
+
+    private string SearchValue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.UserInput = new BrowseBlueprintsInputModel { Types = new List<long>() };
+        this.NavigationManager = this.navigation;
+        this.Location = "blueprints/page";
+
+        this.Types = await this.eveApiService.Blueprints.GetBlueprintTypesAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        await this.ClearPage();
+
+        int blueprintsCount;
+
+        if (string.IsNullOrWhiteSpace(this.SearchValue) || this.SearchValue.Length < 3)
+        {
+            (blueprintsCount, this.BlueprintsListing) = await this.eveApiService.Blueprints.BrowseBlueprints(this.UserInput, this.PageNumber);
+        }
+        else
+        {
+            (blueprintsCount, this.BlueprintsListing) = await this.eveApiService.Blueprints.SearchBlueprintsAsync(this.UserInput, this.SearchValue, this.PageNumber);
+        }
+
+        this.TotalPages = (int)Math.Ceiling(blueprintsCount / (double)GlobalConstants.Ui.BlueprintsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.BlueprintsListing = null;
+
+        await Task.Delay(1);
+
+        this.StateHasChanged();
+    }
+
+    private void CheckBoxHandler(long typeId)
+    {
+        if (this.UserInput.Types.Contains(typeId))
+        {
+            this.UserInput.Types = this.UserInput.Types.Where(t => t != typeId).ToList();
+        }
+        else
+        {
+            var types = this.UserInput.Types.ToList();
+            types.Add(typeId);
+
+            this.UserInput.Types = types;
+        }
+
+        this.StateHasChanged();
+    }
+
+    private async Task SearchButtonHandler()
+    {
+        await this.ChangePage(1);
+        await this.LoadData();
+    }
+
+    private string EnableCheckboxes() => this.BlueprintsListing is null ? "pointer-events:none;" : string.Empty;
+}

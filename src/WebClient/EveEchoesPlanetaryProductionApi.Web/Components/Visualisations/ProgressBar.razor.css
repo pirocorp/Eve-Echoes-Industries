@@ -1,0 +1,34 @@
+﻿:root {
+    --progress: 0%;
+}
+
+.progress {
+    background: rgba(0,0,0,0.1);
+    justify-content: flex-start;
+    border-radius: 100px;
+    align-items: center;
+    position: relative;
+    padding: 0 5px;
+    display: flex;
+    height: 40px;
+    width: 500px;
+}
+
+.progress-value {
+    animation: load 3s normal both;
+    box-shadow: 0 10px 40px -10px #343A40;
+    border-radius: 100px;
+    background: #56606A;
+    height: 30px;
+    width: var(--progress);
+}
+
+@keyframes load {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: var(--progress);
+    }
+}
