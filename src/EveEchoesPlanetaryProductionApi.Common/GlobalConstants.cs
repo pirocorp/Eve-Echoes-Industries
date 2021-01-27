@@ -104,6 +104,8 @@
 
             public const int BestResourcesPageSize = 10;
 
+            public const int BlueprintsPageSize = 10;
+
             public const int MaxColonies = 6;
         }
 

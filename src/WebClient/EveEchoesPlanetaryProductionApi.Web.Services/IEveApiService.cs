@@ -11,5 +11,9 @@
         IPlanetaryResourcesProvider PlanetaryResources { get; }
 
         ILocationProvider Locations { get; }
+
+        IBlueprintsProvider Blueprints { get; }
+
+        IItemsProvider Items { get; }
     }
 }

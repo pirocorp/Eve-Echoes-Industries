@@ -1,0 +1,25 @@
+﻿@typeparam TParameter
+
+<div>
+    @this.Label
+    <label class="switch">
+        <input type="checkbox" class="default" @onclick="this.CheckBoxHandler">
+        <span class="slider round"></span>
+    </label>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public TParameter Parameter { get; set; }
+
+    [Parameter] 
+    public EventCallback<TParameter> OnClick { get; set; }
+
+    private async Task CheckBoxHandler()
+    {
+        await this.OnClick.InvokeAsync(this.Parameter);
+    }
+}

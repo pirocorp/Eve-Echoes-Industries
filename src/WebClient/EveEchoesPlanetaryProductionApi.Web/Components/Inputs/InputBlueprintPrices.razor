@@ -1,0 +1,65 @@
+﻿@using EveEchoesPlanetaryProductionApi.Api.Models.Blueprints.GetBlueprint
+<section class="container">
+    <h3 class="text-center my-5">User Provided Resources Prices</h3>
+    <div class="row">
+        @if (this.ResourcePrices is not null)
+        {
+            foreach (var resource in this.ResourcePrices)
+            {
+                <div class="col-12 col-lg-6 col-xl-3 form-group">
+                    <label for="@resource.Key">@resource.Key</label>
+                    <input class="form-field"
+                           type="number"
+                           step="any"
+                           name=@resource.Key
+                           id="@resource.Key"
+                           value=@resource.Value
+                           placeholder="price"
+                           @onchange="@((e) => this.ChangeResourceValue((string)e.Value, resource.Key))">
+                </div>
+            }
+
+            <div class="col-12 col-lg-6 col-xl-3">
+                <button class="btn-form btn-form-submit" @onclick="this.Submit">Submit</button>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3">
+                <button class="btn-form btn-danger" @onclick="this.ClearPrices">Clear</button>
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnChange { get; set; }
+
+    [Parameter]
+    public Dictionary<string, decimal> ResourcePrices { get; set; }
+
+    private void ChangeResourceValue(string value, string resource)
+    {
+        var success = decimal.TryParse(value, out var price);
+
+        if (!success)
+        {
+            return;
+        }
+
+        this.ResourcePrices[resource] = price;
+    }
+
+    private async Task Submit()
+    {
+        await this.OnChange.InvokeAsync(true);
+    }
+
+    private async Task ClearPrices()
+    {
+        this.InitializePrices();
+
+        await this.OnChange.InvokeAsync(true);
+    }
+
+    private void InitializePrices()
+        => this.ResourcePrices.ToList().ForEach(r => this.ResourcePrices[r.Key] = 0M);
+}

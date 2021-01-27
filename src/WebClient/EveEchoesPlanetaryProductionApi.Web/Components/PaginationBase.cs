@@ -1,6 +1,5 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Web.Components
 {
-    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Components;
@@ -18,8 +17,6 @@
 
         protected override async Task OnInitializedAsync()
         {
-            Console.WriteLine(this.PageNumber);
-
             if (this.PageNumber <= 0)
             {
                 this.PageNumber = 1;
