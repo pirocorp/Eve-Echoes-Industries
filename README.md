@@ -7,13 +7,13 @@ Whats new in version 0.7:
 - UI Fixes
 - Bug Fixes
 
+[![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/pirocorp.Eve-Echoes-Planetary-Production-API?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=4&branchName=main)
+
 Whats new in version 0.6:
 - Best system in range bug fix. When you click on the row with the system subtable wont open.
 - Navigation bugs (a lot of them) fix. 
 - Improved loading times
 - Add loading animations in pagination.
-
-[![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/pirocorp.Eve-Echoes-Planetary-Production-API?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=4&branchName=main)
 
 This projects aims to help players in Eve Echoes with industries in the game.
 
