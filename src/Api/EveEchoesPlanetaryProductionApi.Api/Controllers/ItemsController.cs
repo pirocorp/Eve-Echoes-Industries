@@ -1,18 +1,15 @@
 ﻿namespace EveEchoesPlanetaryProductionApi.Api.Controllers
 {
     using System;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
 
     using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetItem;
+    using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetItemsPrices;
     using EveEchoesPlanetaryProductionApi.Services.Data;
     using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket;
 
     using Microsoft.AspNetCore.Mvc;
-    using Models.Items;
-    using Models.Items.GetItemsPrices;
-    using Services.Mapping;
 
     [ApiController]
     public class ItemsController : ControllerBase

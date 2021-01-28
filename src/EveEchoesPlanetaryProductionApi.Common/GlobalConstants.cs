@@ -89,7 +89,6 @@
                 => (Environment.GetEnvironmentVariable(AspCoreEnvironment) ?? string.Empty) == "Development"
                     ? $"../../Data/EveEchoesPlanetaryProductionApi.Data/Static Data/{fileName}"
                     : $"./Static Data/{fileName}";
-
         }
 
         public static class Ui

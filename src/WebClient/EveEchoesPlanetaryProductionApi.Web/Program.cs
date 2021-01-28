@@ -31,7 +31,7 @@
             builder.Services.AddSingleton<IAlertService, AlertService>();
             builder.Services.AddSingleton<IAppDataService, AppDataService>();
 
-            builder.Services.AddScoped(sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<ILocalStorageService, LocalStorageService>();
