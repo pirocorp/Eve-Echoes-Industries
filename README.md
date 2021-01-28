@@ -9,8 +9,8 @@ Whats new in version 0.7:
 
 [![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/pirocorp.Eve-Echoes-Planetary-Production-API?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=4&branchName=main)
 
-## Demo
-![Blueprint Demo](Blueprints%20Demo.gif)
+## Blueprints Demo
+![Blueprints Demo](Blueprints%20Demo.gif)
 
 What's new in version 0.6:
 - In module best system in a range bug fix. When you click on the row with the system sub-table won't open.
