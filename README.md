@@ -1,4 +1,4 @@
-# Eve Echoes Planetary Production API 0.7-alpha
+# Eve Echoes Industries 0.7-alpha
 
 Whats new in version 0.7:
 - Blueprints 
