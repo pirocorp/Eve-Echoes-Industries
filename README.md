@@ -1,4 +1,11 @@
-# Eve Echoes Planetary Production API 0.6-alpha
+# Eve Echoes Planetary Production API 0.7-alpha
+
+Whats new in version 0.7:
+- Blueprints 
+- Search for Blueprints
+- Blueprint Calculator
+- UI Fixes
+- Bug Fixes
 
 Whats new in version 0.6:
 - Best system in range bug fix. When you click on the row with the system subtable wont open.
