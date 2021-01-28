@@ -16,6 +16,18 @@
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            AddAppServices(builder);
+
+            var host = builder.Build();
+
+            var accountService = host.Services.GetRequiredService<IAccountService>();
+            await accountService.Initialize();
+
+            await host.RunAsync();
+        }
+
+        private static void AddAppServices(WebAssemblyHostBuilder builder)
+        {
             builder.Services.AddSingleton<IAlertService, AlertService>();
             builder.Services.AddSingleton<IAppDataService, AppDataService>();
 
@@ -30,13 +42,8 @@
             builder.Services.AddTransient<IRegionsProvider, RegionsProvider>();
             builder.Services.AddTransient<IPlanetaryResourcesProvider, PlanetaryResourcesProvider>();
             builder.Services.AddTransient<ILocationProvider, LocationProvider>();
-
-            var host = builder.Build();
-
-            var accountService = host.Services.GetRequiredService<IAccountService>();
-            await accountService.Initialize();
-
-            await host.RunAsync();
+            builder.Services.AddTransient<IBlueprintsProvider, BlueprintsProvider>();
+            builder.Services.AddTransient<IItemsProvider, ItemsProvider>();
         }
     }
 }

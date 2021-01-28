@@ -91,6 +91,7 @@
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IRegionsService, RegionsService>();
             services.AddTransient<IConstellationService, ConstellationService>();
+            services.AddTransient<IBlueprintsService, BlueprintsService>();
 
             // SendGrid
             var sendGridKey = this.configuration.GetSection("SendGrid:ApiKey").Value;
@@ -111,8 +112,8 @@
                     .GetResult();
             }
 
-            //app.Use(async (context, next) =>
-            //{
+            // app.Use(async (context, next) =>
+            // {
             //    if (!context.Connection.LocalIpAddress.Equals(context.Connection.RemoteIpAddress))
             //    {
             //        var errors = new List<ApiErrorModel>()
@@ -120,16 +121,15 @@
             //            new ApiErrorModel() { Code = "Unauthorized", Description = "Unauthorized" },
             //        };
 
-            //        context.Response.StatusCode = (int)HttpStatusCode.OK;
+            // context.Response.StatusCode = (int)HttpStatusCode.OK;
             //        context.Response.ContentType = GlobalConstants.JsonContentType;
             //        await context.Response.WriteAsync(JsonConvert.SerializeObject(errors));
 
-            //        return;
+            // return;
             //    }
 
-            //    await next.Invoke();
-            //});
-
+            // await next.Invoke();
+            // });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

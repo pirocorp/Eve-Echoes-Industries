@@ -1,0 +1,14 @@
+﻿<div class="progress">
+    <div class="progress-value"></div>
+</div>
+
+<style>
+    :root { 
+        --progress: @($"{this.Progress}%");
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int Progress { get; set; }
+}

@@ -13,6 +13,13 @@
             this.PlanetResources = new HashSet<PlanetResource>();
         }
 
+        public long ItemTypeId { get; set; }
+
+        public virtual ItemType ItemType { get; set; }
+
+        // Dependent Entity in One to One Relation
+        public virtual Blueprint Blueprint { get; set; }
+
         public virtual IEnumerable<PlanetResource> PlanetResources { get; set; }
 
         /// <summary>
@@ -25,6 +32,13 @@
             item
                 .HasIndex(i => i.Name)
                 .IsUnique();
+
+            item
+                .HasOne(i => i.ItemType)
+                .WithMany(item => item.Items)
+                .HasForeignKey(i => i.ItemTypeId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

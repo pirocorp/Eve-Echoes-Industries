@@ -75,7 +75,6 @@
         public async Task<ItemPrice> GetLatestPricesAsync(long itemId)
         {
             var key = string.Format(this.keyTemplate, itemId);
-
             var cachedValue = await this.distributedCache.GetAsync(key);
 
             string json;
@@ -86,7 +85,7 @@
 
                 if (lastPrice is null)
                 {
-                    return null;
+                    return DefaultLastPriceValue();
                 }
 
                 json = JsonSerializer.Serialize(lastPrice);
@@ -96,7 +95,6 @@
             }
 
             json = Encoding.UTF8.GetString(cachedValue);
-
             var result = JsonDocument.Parse(json);
 
             return ParseItemPrice(result.RootElement);
@@ -152,14 +150,52 @@
             return itemsPrices;
         }
 
+        private static ItemPrice DefaultLastPriceValue()
+            => new ()
+                {
+                    Time = DateTime.UtcNow,
+                    Sell = 0,
+                    Buy = 0,
+                    LowestSell = 0,
+                    HighestBuy = 0,
+                    Volume = 0,
+                };
+
+        private static string DefaultJsonValue()
+        {
+            var defaultItemPrice = new[]
+            {
+                DefaultLastPriceValue(),
+            };
+
+            return JsonSerializer.Serialize(defaultItemPrice);
+        }
+
         private async Task<string> GetItemDataFromWebApiAsync(long id)
         {
             using var httpClient = new HttpClient();
 
-            using var response = await httpClient.GetAsync($"{this.url}/{id}");
+            try
+            {
+                using var response = await httpClient.GetAsync($"{this.url}/{id}");
 
-            var json = await response.Content.ReadAsStringAsync();
-            return json;
+                if (!response.IsSuccessStatusCode)
+                {
+                    return DefaultJsonValue();
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                return json;
+            }
+            catch (Exception e)
+            {
+                if (e is HttpRequestException)
+                {
+                    return DefaultJsonValue();
+                }
+
+                throw;
+            }
         }
 
         private async Task SetDataToCacheAsync(string key, string json)

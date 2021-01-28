@@ -1,0 +1,498 @@
+﻿@page "/blueprints/{BlueprintId}"
+
+@using System.Globalization
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Blueprints.GetBlueprint
+@using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetItem
+@using EveEchoesPlanetaryProductionApi.Api.Models.Items.GetItemsPrices
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+
+@if (this.Blueprint is not null)
+{
+    <div class="card mb-3 mx-auto">
+        <div class="row no-gutters">
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        @this.Blueprint.Name&nbsp;<img width="30" src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.BlueprintItemId}")" alt="blueprint logo" />
+                    </h4>
+                    <h6 class="card-title">
+                        @this.Blueprint.ProductType
+                        <img width="20" src=@($"resources/ship classes/{this.Blueprint.ProductType}.png") />
+                    </h6>
+                    <p class="card-text"><small class="text-muted">Tech Level: @this.Blueprint.TechLevel</small></p>
+                    <p>Manufacturing Time: @this.ManufacturingTime()</p>
+                    <p><b>Note</b>: default pre-calculated time and resource efficiency are 100%.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}")" alt=@this.Blueprint.Product.Name class="card-img" style="max-width: 280px" />
+            </div>
+        </div>
+    </div>
+
+    <h2 class="my-5 text-center">Resources</h2>
+
+    @if (this.Results is null || this.Results.Count is 0)
+    {
+        <table class="table table-bordered table-striped table-hover table-image">
+            <thead>
+                <tr>
+                    <th colspan="2">Resource</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var resource in this.Blueprint.Resources)
+                {
+                    <tr>
+                        <td width="50px">
+                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.ResourceId}")" alt=@resource.ResourceName style="max-width: 50px" />
+                        </td>
+                        <td>@resource.ResourceName</td>
+                        <td>@resource.Quantity.ToString("N0", CultureInfo.InvariantCulture)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-hover table-image">
+            <thead>
+                <tr>
+                    <th colspan="2">Resource</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var resource in this.Results)
+                {
+                    if (resource.Name.Equals(PresentationConstants.BlueprintCalculationTotal))
+                    {
+                        <tr>
+                            <td colspan="4">@resource.Name</td>
+                            <td>@resource.Total.ToString("N0", CultureInfo.InvariantCulture)</td>
+                        </tr>
+
+                        continue;
+                    }
+
+                    <tr>
+                        <td width="50px">
+                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.Id}")" alt=@resource.Name style="max-width: 50px" />
+                        </td>
+                        <td>@resource.Name</td>
+                        <td>@resource.Quantity.ToString("N0", CultureInfo.InvariantCulture)</td>
+                        <td>@resource.Price.ToString("N2")</td>
+                        <td>@resource.Total.ToString("N0", CultureInfo.InvariantCulture)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    if ((this.Results is null || this.Results.Count == 0)
+        && this.IsSelected)
+    {
+        // Show price loader
+        <div class="d-flex justify-content-center flex-column align-items-center">
+            <PriceLoader></PriceLoader>
+            <p>Loading prices...</p>
+        </div>
+    }
+
+    @if (this.CalculateProfit
+         && this.IsSelected
+         && this.Results?.Count > 0)
+    {
+        <h2 class="my-5 text-center">Calculate Profit</h2>
+
+        <table class="table table-bordered table-striped table-hover table-image">
+            <thead>
+                <tr>
+                    <th colspan="2">Product</th>
+                    <th scope="col">Output</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="50px">
+                        <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}")" alt=@this.Blueprint.Product.Name style="max-width: 50px" />
+                    </td>
+                    <td>@this.Blueprint.Product.Name</td>
+                    <td>@this.Blueprint.ProductionCount</td>
+                    <td>
+                        @if (this.PriceSelector is PriceSelector.UserProvided)
+                        {
+                            <div class="d-flex" style="align-items: baseline;">
+                                <InputNumberInRange TParameter="decimal"
+                                                    Min="0"
+                                                    Max="4_000_000_000"
+                                                    Step="0.01M"
+                                                    Default="(decimal) DefaultValue"
+                                                    Resource=@nameof(this.ProductValue).SplitWords()
+                                                    OnChange="this.ProductValueOnChangeHandler">
+                                </InputNumberInRange>
+
+                                <button class="btn btn-secondary" style="margin-left: 1.5rem;">Submit</button>
+                            </div>
+                        }
+                        else
+                        {
+                            @this.ProductValue.ToString("N2")
+                        }
+
+                    </td>
+                    <td>@((this.ProductValue * this.Blueprint.ProductionCount).ToString("N2"))</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-5">
+            <h3>Profit: @this.CalculateCurrentProfit().ToString("N2")</h3>
+            <ProgressBar Progress=@this.ReturnOnInvestment></ProgressBar>
+        </div>
+    }
+
+    <h2 class="mt-5 text-center">Calculate Options</h2>
+
+    <div class="row">
+        <div class="col-lg-4 text-center mb-5">
+            <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
+        </div>
+
+        <div class="col-md-6 col-lg-4 offset-1 d-flex flex-column justify-content-center flex-grow-0">
+            <RadioButton TParameter="bool" Label="Include Blueprint Price" Parameter="true" OnClick="this.BlueprintToggleHandler"></RadioButton>
+            <RadioButton TParameter="bool" Label="Calculate Profit" Parameter="true" OnClick="this.CalculateProfitToggleHandler"></RadioButton>
+            <div class="my-3"></div>
+            <InputNumberInRange TParameter="double" Min="0" Max="150" Step="0.1" Default="DefaultValue" Resource=@nameof(this.ResourceEfficiency).SplitWords() OnChange="this.ResourceEfficiencyOnChangeHandler"></InputNumberInRange>
+            <InputNumberInRange TParameter="double" Min="0" Max="150" Step="0.1" Default="DefaultValue" Resource="@nameof(this.TimeEfficiency).SplitWords()" OnChange="this.TimeEfficiencyOnChangeHandler"></InputNumberInRange>
+        </div>
+    </div>
+
+    @if (this.PriceSelector is PriceSelector.UserProvided)
+    {
+        var resources = this.Blueprint.Resources.ToList();
+
+        if (this.IncludeBlueprintPrice)
+        {
+            resources.Add(new GetBlueprintModelResources()
+            {
+                ResourceName = this.Blueprint.Name,
+                ResourceId = this.Blueprint.BlueprintItemId,
+                Quantity = 1,
+            });
+        }
+
+        <InputBlueprintPrices ResourcePrices="@this.UserPrices" OnChange="this.UserPriceChangeHandler"></InputBlueprintPrices>
+    }
+}
+else
+{
+    <Loader></Loader>
+}
+
+@code {
+    private const double DefaultValue = 100;
+
+    [Parameter]
+    public string BlueprintId { get; set; }
+
+    private Dictionary<string, decimal> UserPrices { get; set; }
+
+    private List<ItemExpense> Results { get; set; }
+
+    private GetBlueprintModel Blueprint { get; set; }
+
+    private decimal ProductValue { get; set; } = -1;
+
+    private bool IsSelected { get; set; }
+
+    private PriceSelector PriceSelector { get; set; }
+
+    private bool IncludeBlueprintPrice { get; set; }
+
+    private bool CalculateProfit { get; set; }
+
+    private double ResourceEfficiency { get; set; } = DefaultValue;
+
+    public double TimeEfficiency { get; set; } = DefaultValue;
+
+    public int ReturnOnInvestment { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        this.Blueprint = await this.eveApiService.Blueprints.GetBlueprintAsync(this.BlueprintId);
+
+        this.UserPrices = this.Blueprint.Resources.ToDictionary(r => r.ResourceName, r => 0M);
+    }
+
+    private async Task OnPriceSelectorChangeHandler(PriceSelector selector)
+    {
+        this.PriceSelector = selector;
+        this.IsSelected = true;
+
+        if (selector is not PriceSelector.UserProvided)
+        {
+            await this.RefreshCalculation();
+        }
+    }
+
+    private string ManufacturingTime()
+    {
+        var effectiveSeconds = this.Blueprint.ProductionTime * (this.TimeEfficiency / 100D);
+
+        var timespan = TimeSpan.FromSeconds(effectiveSeconds);
+
+        return $"{Math.Floor(timespan.TotalHours)}:{timespan.Minutes}:{timespan.Seconds}";
+    }
+
+    private async Task BlueprintToggleHandler()
+    {
+        this.IncludeBlueprintPrice = !this.IncludeBlueprintPrice;
+
+        if (this.IncludeBlueprintPrice)
+        {
+            if (!this.UserPrices.ContainsKey(this.Blueprint.Name))
+            {
+                this.UserPrices.Add(this.Blueprint.Name, 0M);
+            }
+        }
+        else
+        {
+            if (this.UserPrices.ContainsKey(this.Blueprint.Name))
+            {
+                this.UserPrices.Remove(this.Blueprint.Name);
+            }
+        }
+
+        await this.RefreshCalculation();
+        this.StateHasChanged();
+    }
+
+    private async Task CalculateProfitToggleHandler()
+    {
+        this.CalculateProfit = !this.CalculateProfit;
+
+        await this.CalculateCurrentProductPrice();
+    }
+
+    private async Task ProductValueOnChangeHandler(decimal value)
+    {
+        this.ProductValue = value;
+
+        await this.RefreshCalculation();
+    }
+
+    private async Task ResourceEfficiencyOnChangeHandler(double value)
+    {
+        this.ResourceEfficiency = value;
+
+        await this.RefreshCalculation();
+    }
+
+    private async Task TimeEfficiencyOnChangeHandler(double value)
+    {
+        this.TimeEfficiency = value;
+
+        await this.RefreshCalculation();
+    }
+
+    private async Task RefreshCalculation()
+    {
+        this.Results = null;
+        this.ProductValue = 0;
+
+        if (this.IsSelected)
+        {
+            if (this.PriceSelector is PriceSelector.UserProvided)
+            {
+                this.CalculateExpenses();
+            }
+            else
+            {
+                await this.GetPrices(this.PriceSelector);
+            }
+
+            await this.CalculateCurrentProductPrice();
+        }
+    }
+
+    private async Task UserPriceChangeHandler(bool isChanged)
+    {
+        if (!isChanged)
+        {
+            return;
+        }
+
+        await this.RefreshCalculation();
+
+        this.StateHasChanged();
+    }
+
+    private void CalculateExpenses()
+    {
+        this.Results = new List<ItemExpense>();
+
+        foreach (var (name, price) in this.UserPrices)
+        {
+            var currentItem = new ItemExpense()
+            {
+                Name = name,
+                Price = price,
+            };
+
+            if (name.Equals(this.Blueprint.Name))
+            {
+                currentItem.Id = this.Blueprint.BlueprintItemId;
+                currentItem.Quantity = 1;
+            }
+            else
+            {
+                currentItem.Id = this.Blueprint.Resources
+                    .First(r => r.ResourceName.Equals(name))
+                    .ResourceId;
+
+                currentItem.Quantity = this.Blueprint.Resources
+                    .First(r => r.ResourceName.Equals(name))
+                    .Quantity * (this.ResourceEfficiency / 100);
+            }
+
+            currentItem.Total = (decimal)currentItem.Quantity * currentItem.Price;
+
+            this.Results.Add(currentItem);
+        }
+
+        this.Results.Add(new ItemExpense()
+        {
+            Name = PresentationConstants.BlueprintCalculationTotal,
+            Total = this.Results.Sum(i => i.Total)
+        });
+    }
+
+    private async Task GetPrices(PriceSelector selector)
+    {
+        await Task.Delay(2000);
+
+        var resources = this.Blueprint.Resources.ToList();
+        var ids = resources.Select(r => r.ResourceId).ToList();
+
+        var model = new GetItemsPricesInputModel()
+        {
+            PriceSelector = selector.ToString(),
+            ItemIds = ids,
+        };
+
+        if (this.IncludeBlueprintPrice)
+        {
+            ids.Add(this.Blueprint.BlueprintItemId);
+        }
+
+        var prices = (await this.eveApiService.Items.GetItemsPrices(model)).Prices.ToList();
+
+        this.Results = new List<ItemExpense>();
+
+        foreach (var item in prices)
+        {
+            var currentResource = resources.FirstOrDefault(r => r.ResourceId.Equals(item.Id));
+
+            if (currentResource is null)
+            {
+                var currentBlueprint = new ItemExpense()
+                {
+                    Id = item.Id,
+                    Name = this.Blueprint.Name,
+                    Price = item.Price,
+                    Quantity = 1,
+                    Total = item.Price
+                };
+
+                this.Results.Add(currentBlueprint);
+                continue;
+            }
+
+            var currentResult = new ItemExpense()
+            {
+                Id = item.Id,
+                Name = currentResource.ResourceName,
+                Price = item.Price,
+                Quantity = currentResource.Quantity * (this.ResourceEfficiency / 100),
+            };
+
+            currentResult.Total = currentResult.Price * (decimal)currentResult.Quantity;
+
+            this.Results.Add(currentResult);
+        }
+
+        this.Results.Add(new ItemExpense()
+        {
+            Name = PresentationConstants.BlueprintCalculationTotal,
+            Total = this.Results.Sum(i => i.Total)
+        });
+
+        this.StateHasChanged();
+    }
+
+    private async Task CalculateCurrentProductPrice()
+    {
+        if (!this.CalculateProfit)
+        {
+            return;
+        }
+
+        var model = new GetItemInputModel()
+        {
+            PriceSelector = this.PriceSelector.ToString(),
+        };
+
+        var productPrice = this.PriceSelector == PriceSelector.UserProvided
+            ? this.ProductValue
+            : (await this.eveApiService.Items.GetItemPrice(model, this.Blueprint.Product.Id)).Price;
+
+        this.ProductValue = productPrice;
+    }
+
+    private decimal CalculateCurrentProfit()
+    {
+        var revenue = this.ProductValue * this.Blueprint.ProductionCount;
+        var expenses = this.Results
+            ?.FirstOrDefault(r => r.Name.Equals(PresentationConstants.BlueprintCalculationTotal))
+            ?.Total ?? 0M;
+
+        var profit = revenue - expenses;
+
+        if (expenses is 0)
+        {
+            return profit;
+        }
+
+        this.ReturnOnInvestment = (int)Math.Floor(((profit / expenses) * 100));
+
+        return profit;
+    }
+
+    private class ItemExpense
+    {
+        public long Id { get; set; }
+
+        public string Name { get; set; }
+
+        public double Quantity { get; set; }
+
+        public decimal Price { get; set; }
+
+        public decimal Total { get; set; }
+    }
+}

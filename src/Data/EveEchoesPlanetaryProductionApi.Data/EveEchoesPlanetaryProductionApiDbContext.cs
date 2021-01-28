@@ -37,6 +37,12 @@
 
         public DbSet<TargetSystem> TargetSystems { get; set; }
 
+        public DbSet<ItemType> ItemTypes { get; set; }
+
+        public DbSet<Blueprint> Blueprints { get; set; }
+
+        public DbSet<BlueprintResource> BlueprintsResources { get; set; }
+
         /// <summary>
         /// Used when identity column value is specified explicitly when inserting new item in table.
         /// </summary>

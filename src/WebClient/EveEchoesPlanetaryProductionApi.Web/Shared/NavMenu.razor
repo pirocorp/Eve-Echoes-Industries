@@ -12,12 +12,6 @@
 
     <div class="@(this.NavMenuCssClass) navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <NavLink Match="NavLinkMatch.All" ActiveClass="active" href="/">
-                    <span class="nav-link">Home</span>
-                </NavLink>
-            </li>
-
             <li class="nav-item dropdown">
                 <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/navigation" @onclick:preventDefault>
                     <span class="nav-link dropdown-toggle"
@@ -80,13 +74,19 @@
                     <a class="dropdown-item" href="/systems">System Details</a>
                     <a class="dropdown-item" href="/systems/constellation">Best in constellation</a>
                     <a class="dropdown-item" href="/systems/region">Best in Region</a>
-                    <a class="dropdown-item" href="/systems/range ">Best in Range</a>
+                    <a class="dropdown-item" href="/systems/range">Best in Range</a>
                 </div>
             </li>
 
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.Prefix" ActiveClass="active" href="/blueprints">
+                    <span class="nav-link">Blueprints</span>
+                </NavLink>
+            </li>
+
             @*<li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>*@
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>*@
         </ul>
         
         <div class="form-inline my-2 my-lg-0">
