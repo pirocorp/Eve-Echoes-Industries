@@ -9,10 +9,10 @@ Whats new in version 0.7:
 
 [![Build Status](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_apis/build/status/pirocorp.Eve-Echoes-Planetary-Production-API?branchName=main)](https://dev.azure.com/zdravkovBG/Eve%20Echoes%20Industries/_build/latest?definitionId=4&branchName=main)
 
-Whats new in version 0.6:
-- Best system in range bug fix. When you click on the row with the system subtable wont open.
-- Navigation bugs (a lot of them) fix. 
-- Improved loading times
+What's new in version 0.6:
+- In module best system in a range bug fix. When you click on the row with the system sub-table won't open.
+- Navigation bugs fix. 
+- Loading times are improved.
 - Add loading animations in pagination.
 
 This projects aims to help players in Eve Echoes with industries in the game.
@@ -35,7 +35,7 @@ Currently supported features
   - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on the number of colonies and given prices. Shows which resource from which planet in the solar system to produce. To get the estimated value.
   - [Best System in Region](https://www.echoesindustries.com/systems/region) Calculates system with most valuable resources based on the number of colonies and given prices. Shows which resource from which planet in the solar system to produce. To get the estimated value.
   - [Best System in Range](https://www.echoesindustries.com/systems/range) Calculates system with most valuable resources based on the number of colonies, given prices, and given range (jumps). Shows which resource from which planet in the solar system to produce. To get the estimated value.
-  - [Blueprints](https://www.echoesindustries.com/blueprints) Get blueprint information and calculate expenses for production.
+- [Blueprints](https://www.echoesindustries.com/blueprints) Get blueprint information and calculate expenses for production.
 - [Search](https://www.echoesindustries.com/) Search for a given system. When the solar system is selected, it became your location.
 
 ## Demo
