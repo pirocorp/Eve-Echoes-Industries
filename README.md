@@ -25,17 +25,18 @@ Currently supported features
   - [Exploring Cconstellations](https://www.echoesindustries.com/navigation/constellations).
   - [Exploring Systems](https://www.echoesindustries.com/navigation/systems).
 - Resources
-  - [Current Prices](https://www.echoesindustries.com/resources/details) Planetary produced resources prices and when is the last time they were updated.
-  - [Best Resources In System](https://www.echoesindustries.com/resources/system) Returns best resources in current system based on given price.
-  - [Best Resources In Constellation](https://www.echoesindustries.com/resources/constellation) Returns best resources in current constellation based on given price.
-  - [Best Resources In Region](https://www.echoesindustries.com/resources/region) Returns best resources in current region based on given price.
-  - [Best Resources In Range](https://www.echoesindustries.com/resources/range) Returns best resources in range of given number of jumps and given price.
+  - [Current Prices](https://www.echoesindustries.com/resources/details) List of all planetary produced resource and their prices and when is the last time they were updated.
+  - [Best Resources In System](https://www.echoesindustries.com/resources/system) Get the best resources in the current system based on the given price.
+  - [Best Resources In Constellation](https://www.echoesindustries.com/resources/constellation) Get the best resources in the current constellation based on the given price.
+  - [Best Resources In Region](https://www.echoesindustries.com/resources/region) Get the best resources in the current region based on the given price.
+  - [Best Resources In Range](https://www.echoesindustries.com/resources/range) Returns best resources in a range of given number of jumps and given price.
 - Systems
-  - [System Details](https://www.echoesindustries.com/systems) Returns all resources produced in given system and their output and price. Can be sorted by price and output.
-  - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on number of colonies and given prices. Can show which resource from which planet to produce in each colony.
-  - [Best System in Region](https://www.echoesindustries.com/systems/region) Calculates system with most valuable resources based on number of colonies and given prices. Can show which resource from which planet in the system to produce in each colony to get calculated value.
-  - [Best System in Range](https://www.echoesindustries.com/systems/range) Calculates system with most valuable resources based on number of colonies, given prices and given range (jumps). Can show which resource from which planet in the system to produce in each colony to get calculated value.
-- [Search](https://www.echoesindustries.com/) Search for given system. When system is selected it became your location.
+  - [System Details](https://www.echoesindustries.com/systems) Get all resources and their output and price produced in a given system. Sorts by price and resource output.
+  - [Best System In Constellation](https://www.echoesindustries.com/systems/constellation) Calculates system with most valuable resource based on the number of colonies and given prices. Shows which resource from which planet in the solar system to produce. To get the estimated value.
+  - [Best System in Region](https://www.echoesindustries.com/systems/region) Calculates system with most valuable resources based on the number of colonies and given prices. Shows which resource from which planet in the solar system to produce. To get the estimated value.
+  - [Best System in Range](https://www.echoesindustries.com/systems/range) Calculates system with most valuable resources based on the number of colonies, given prices, and given range (jumps). Shows which resource from which planet in the solar system to produce. To get the estimated value.
+  - [Blueprints](https://www.echoesindustries.com/blueprints) Get blueprint information and calculate expenses for production.
+- [Search](https://www.echoesindustries.com/) Search for a given system. When the solar system is selected, it became your location.
 
 ## Demo
 ![Demo](Demo.gif)
