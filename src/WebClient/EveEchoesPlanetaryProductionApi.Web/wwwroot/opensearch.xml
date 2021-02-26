@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Eve Echoes Industries</ShortName>
+  <Description>Eve Echoes Industries's Solar System Search</Description>
+  <Url type="text/html" method="GET" template="https://echoesindustries.com/search/{searchTerms}"/>
+  <Image width="16" height="16">https://echoesindustries.com/favicon-16x16.png</Image>
+  <InputEncoding>UTF-8</InputEncoding>
+  <SearchForm>https://echoesindustries.com</SearchForm>
+</OpenSearchDescription>

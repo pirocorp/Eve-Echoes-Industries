@@ -1,0 +1,100 @@
+﻿@page "/resources/range/"
+@page "/resources/range/{SolarSystemId:long}"
+@using EveEchoesPlanetaryProductionApi.Api.Models.SolarSystems.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits BestBase<BestResourceServiceModel>
+
+@inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
+@inject IAppDataService appDataService;
+
+<h2>Best Planetary Resources In Range Of System: @this.SystemDetails?.Name</h2>
+@if (this.Range > 0)
+{
+    <h3 class="card-title">Range: @this.Range</h3>
+}
+
+<div class="row">
+    <div class="col-md-5 offset-md-1">
+        <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
+    </div>
+    <div class="col-md-5 align-self-center">
+        <SelectComponent Label="Range" Start="GlobalConstants.MinRange" Range="GlobalConstants.MaxRange" OnChange="this.OnRangeChangeHandler"></SelectComponent>
+    </div>
+</div>
+
+@if (this.PriceSelector is PriceSelector.UserProvided)
+{
+    <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
+}
+
+@if (this.BestItems is not null)
+{
+    <h2 class="card-title my-4">Best Resources In Range</h2>
+    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="systems"></ListingTableComponent>
+
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    if (this.ShowLoader)
+    {
+        <Loader></Loader>
+    }
+}
+
+@code {
+    [Parameter]
+    public long SolarSystemId { get; set; }
+
+    private SolarSystemSimpleDetailsModel SystemDetails { get; set; }
+
+    private int Range { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.SolarSystemId = this.SolarSystemId == 0 ? this.appDataService.Location?.SystemId ?? 0 : this.SolarSystemId;
+
+        if (this.SolarSystemId <= 0)
+        {
+            this.navigationManager.NavigateTo("/");
+            return;
+        }
+
+        this.MiningPlanets = 1;
+        this.navigationManager.NavigateTo($"/resources/range");
+
+        this.SystemDetails = await this.eveApiService.Systems.GetSolarSystemSimpleDetails(this.SolarSystemId);
+    }
+
+    protected override async Task LoadData()
+    {
+        await this.ClearPage();
+
+        this.CreateInputModelFromUserInput();
+
+        var model = await this.eveApiService.PlanetaryResources.GetBestResourcesInRange(this.Range, this.SolarSystemId, this.UserInput);
+
+        this.BestItems = model?.Resources;
+        var count = model?.Count;
+
+        this.TotalPages = (int)Math.Ceiling(count ?? 0 / (double)GlobalConstants.Ui.BestResourcesPageSize);
+
+        this.StateHasChanged();
+    }
+
+    private async Task OnRangeChangeHandler(int range)
+    {
+        this.Range = range;
+        this.PageNumber = 1;
+
+        await this.ValidateUserInput();
+    }
+}

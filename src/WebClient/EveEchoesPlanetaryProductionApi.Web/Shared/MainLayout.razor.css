@@ -1,0 +1,11 @@
+﻿.index {
+    background-color: #EEEEEE;
+}
+
+#header {
+    background: url("/resources/imgs/baner.jpg") center center / cover no-repeat;
+}
+
+.display-3 {
+    text-shadow: 1px 1px #FFFFFF;
+}

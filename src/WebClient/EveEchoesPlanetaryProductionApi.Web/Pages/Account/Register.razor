@@ -1,0 +1,71 @@
+﻿@page "/account/register"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Auth
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAccountService AccountService
+@inject IAlertService AlertService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <h4 class="card-header">Register</h4>
+    <div class="card-body">
+        <EditForm Model="@(this.model)" OnValidSubmit="this.OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="this.model.Username" class="form-control" />
+                <ValidationMessage For="@(() => this.model.Username)" />
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <InputText @bind-Value="this.model.Email" type="email" class="form-control" />
+                <ValidationMessage For="@(() => this.model.Email)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="this.model.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => this.model.Password)" />
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <InputText @bind-Value="this.model.ConfirmPassword" type="password" class="form-control" />
+                <ValidationMessage For="@(() => this.model.ConfirmPassword)" />
+            </div>
+            <button disabled="@(this.loading)" class="btn btn-primary">
+                @if (this.loading)
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Register
+            </button>
+            <NavLink href="account/login" class="btn btn-link">Login</NavLink>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private readonly UserRegisterInputModel model = new UserRegisterInputModel();
+    private bool loading;
+
+    private async void OnValidSubmit()
+    {
+        // reset alerts on submit
+        this.AlertService.Clear();
+
+        this.loading = true;
+
+        try
+        {
+            await this.AccountService.Register(this.model);
+            this.AlertService.Success("Registration successful", keepAfterRouteChange: true);
+            this.NavigationManager.NavigateTo("account/login");
+        }
+        catch (Exception ex)
+        {
+            this.AlertService.Error(ex.Message);
+            this.loading = false;
+            this.StateHasChanged();
+        }
+    }
+}

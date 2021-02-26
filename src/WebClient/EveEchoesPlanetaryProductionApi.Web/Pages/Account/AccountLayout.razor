@@ -1,0 +1,22 @@
+﻿@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits LayoutComponentBase
+
+@layout MainLayout
+@inject IAppDataService AppDataService
+@inject NavigationManager NavigationManager
+
+<div class="col-md-6 offset-md-3 mt-5">
+    @(this.Body)
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // redirect to home if already logged in
+        if (this.AppDataService.User != null)
+        {
+            this.NavigationManager.NavigateTo("/");
+        }
+    }
+}

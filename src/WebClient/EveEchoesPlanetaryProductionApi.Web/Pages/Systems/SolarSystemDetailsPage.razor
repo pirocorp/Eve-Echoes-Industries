@@ -1,0 +1,56 @@
+﻿@page "/systems"
+@page "/systems/{SolarSystemId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAppDataService AppDataService;
+@inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
+
+@if (this.SolarSystem is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <SolarSystemDetails SolarSystem="this.SolarSystem"></SolarSystemDetails>
+}
+
+@code {
+    [Parameter]
+    public long SolarSystemId { get; set; }
+
+    private SolarSystemServiceModel SolarSystem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (this.SolarSystemId <= 0)
+        {
+            if (this.AppDataService.Location is not null)
+            {
+                this.SolarSystem = this.AppDataService.CurrentSolarSystem 
+                    ?? await this.eveApiService.Systems.GetAsync(this.AppDataService.Location.SystemId);
+
+                this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
+            }
+            else
+            {
+                this.SolarSystem = this.AppDataService.CurrentSolarSystem ?? await this.eveApiService.Systems.GetRandomAsync();
+                this.AppDataService.CurrentSolarSystem ??= this.SolarSystem;
+
+                this.AppDataService.Location = await this.eveApiService.Locations.GetLocationAsync(this.SolarSystem.Id);
+            }
+        }
+        else
+        {
+            this.SolarSystem = await this.eveApiService.Systems.GetAsync(this.SolarSystemId);
+            this.AppDataService.CurrentSolarSystem = this.SolarSystem;
+
+            this.AppDataService.Location = await this.eveApiService.Locations.GetLocationAsync(this.SolarSystemId);
+        }
+
+        this.navigationManager.NavigateTo($"/systems");
+        await base.OnInitializedAsync();
+    }
+}

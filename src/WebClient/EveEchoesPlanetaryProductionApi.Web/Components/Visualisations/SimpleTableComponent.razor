@@ -1,0 +1,50 @@
+﻿@using System.Reflection
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        @foreach (var propertyName in this.DataProperties)
+        {
+            <th>@propertyName</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var element in this.Data)
+    {
+        <tr>
+            @foreach (var propertyName in this.DataProperties)
+            {
+                <td>@GetPropertyValue(element, propertyName)</td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<object> Data { get; set; }
+
+    private IList<string> DataProperties { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var element = this.Data?.FirstOrDefault();
+
+        if (element is null)
+        {
+            this.DataProperties = new List<string>();
+            return;
+        }
+
+        this.DataProperties = element.GetType()
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Select(p => p.Name)
+            .ToList();
+
+        await Task.CompletedTask;
+    }
+
+    private static string GetPropertyValue(object element, string columnName)
+        => element.GetType().GetProperty(columnName)?.GetValue(element, null)?.ToString();
+}

@@ -1,0 +1,85 @@
+﻿@page "/resources/constellation/"
+@page "/resources/constellation/{ConstellationId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetSimpleDetails
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits BestBase<BestResourceServiceModel>
+
+@inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
+@inject IAppDataService appDataService;
+
+<h3 class="card-title">Constellation: @this.ConstellationDetails?.Name</h3>
+<h4 class="card-title">Region: @this.ConstellationDetails?.RegionName</h4>
+
+<div class="row">
+    <div class="col-md-5 offset-md-1">
+        <PriceSelectorComponent OnChange="this.OnPriceSelectorChangeHandler"></PriceSelectorComponent>
+    </div>
+</div>
+
+@if (this.PriceSelector is PriceSelector.UserProvided)
+{
+    <InputPrices OnChange="this.OnInputPriceChangeHandler"></InputPrices>
+}
+
+@if (this.BestItems is not null)
+{
+    <h2 class="card-title my-4">Best Resources In Constellation</h2>
+    <ListingTableComponent Data="this.BestItems.Select(x => new {Name = x.System, Id = x.SystemId, x.Planet, x.Item, x.Output, x.Price, Value = x.ResourceValue})" Location="systems"></ListingTableComponent>
+
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    if (this.ShowLoader)
+    {
+        <Loader></Loader>
+    }
+}
+
+@code {
+    [Parameter]
+    public long ConstellationId { get; set; }
+
+    private ConstellationSimpleDetailsModel ConstellationDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ConstellationId = this.ConstellationId == 0 ? this.appDataService.Location?.ConstellationId ?? 0 : this.ConstellationId;
+
+        if (this.ConstellationId <= 0)
+        {
+            this.navigationManager.NavigateTo("/");
+            return;
+        }
+
+        this.MiningPlanets = 1;
+        this.navigationManager.NavigateTo($"/resources/constellation");
+
+        this.ConstellationDetails = await this.eveApiService.Constellations.GetSimpleDetailsAsync(this.ConstellationId);
+    }
+
+    protected override async Task LoadData()
+    {
+        await this.ClearPage();
+
+        this.CreateInputModelFromUserInput();
+
+        var model = (await this.eveApiService.PlanetaryResources.GetBestResourcesInConstellation(this.ConstellationId, this.UserInput));
+
+        this.BestItems = model.Resources;
+        var count = model.Count;
+
+        this.TotalPages = (int)Math.Ceiling(count / (double)GlobalConstants.Ui.BestResourcesPageSize);
+
+        this.StateHasChanged();
+    }
+}

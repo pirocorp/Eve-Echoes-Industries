@@ -1,0 +1,48 @@
+﻿@using System.Globalization
+@typeparam TParameter
+
+<div class="form-group">
+    <label for="@(this.Resource)">@(this.Resource)</label>
+    <input class="form-field"
+           type="number"
+           min="@this.Min"
+           max="@this.Max"
+           step="@this.Step"
+           name="@(this.Resource)"
+           id="@this.Resource"
+           placeholder="@this.Resource"
+           value="@this.Default"
+           @onchange="@((e) => this.ChangeResourceValue((string)e.Value))">
+</div>
+
+@code {
+    [Parameter]
+    public string Resource { get; set; }
+
+    [Parameter]
+    public TParameter Min { get; set; }
+
+    [Parameter]
+    public TParameter Max { get; set; }
+
+    [Parameter]
+    public TParameter Step { get; set; }
+
+    [Parameter]
+    public TParameter Default { get; set; }
+
+    [Parameter]
+    public EventCallback<TParameter> OnChange { get; set; }
+
+    private void ChangeResourceValue(string value)
+    {
+        var result = (TParameter) Convert.ChangeType(value, typeof(TParameter), CultureInfo.InvariantCulture);
+
+        if (result is null)
+        {
+            return;
+        }
+        
+        this.OnChange.InvokeAsync(result);
+    }
+}

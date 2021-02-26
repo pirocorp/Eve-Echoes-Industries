@@ -1,0 +1,94 @@
+﻿@page "/"
+@page "/index.html"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Locations
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
+@inject IJSRuntime JS;
+
+<div class="@this.MobileLayoutSwitch()">
+    <section class="row">
+
+        <EveInfo RegionsCount="this.regionsCount" ConstellationsCount="this.constellationsCount" SolarSystemCount="this.solarSystemCount"></EveInfo>
+
+        @if (this.location is null)
+        {
+            <Loader></Loader>
+        }
+        else
+        {
+            <div class="w-100 my-4">
+                <SystemCardComponent>
+                    <h3 class="card-title">System: @this.location.System</h3>
+                    <h4 class="card-text">Constellation: @this.location.Constellation</h4>
+                    <h5 class="card-text">Region: @this.location.Region</h5>
+                </SystemCardComponent>
+            </div>
+            <div class="w-100 my-4">
+                <ResourceCardComponent>
+                    <p>In eve echoes universe there are @(this.planetaryResourcesCount) planetary produced resources.</p>
+                </ResourceCardComponent>
+            </div>
+        }
+    </section>
+</div>
+
+@code
+{
+    private int regionsCount;
+    private int constellationsCount;
+    private int solarSystemCount;
+    private int planetaryResourcesCount;
+    private bool isMobileDevice;
+
+    private LocationModel location;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (this.appDataService.RegionsCount is null
+            || this.appDataService.ConstellationsCount is null
+            || this.appDataService.SolarSystemCount is null)
+        {
+            var regionsCountTask = this.eveApiService.Regions.GetCountAsync();
+            var constellationsCountTasks = this.eveApiService.Constellations.GetCountAsync();
+            var solarSystemsCountTask = this.eveApiService.Systems.GetCountAsync();
+            var planetaryResourcesCountTask = this.eveApiService.PlanetaryResources.GetPlanetaryResourcesCount();
+
+            // Parallel API calls, but chrome is stupid -> Chrome will only let a single request exist for the same URL at a time
+            await Task.WhenAll(regionsCountTask, constellationsCountTasks, solarSystemsCountTask, planetaryResourcesCountTask);
+
+            this.regionsCount = await regionsCountTask;
+            this.constellationsCount = await constellationsCountTasks;
+            this.solarSystemCount = await solarSystemsCountTask;
+            this.planetaryResourcesCount = await planetaryResourcesCountTask;
+
+            this.appDataService.RegionsCount = this.regionsCount;
+            this.appDataService.ConstellationsCount = this.constellationsCount;
+            this.appDataService.SolarSystemCount = this.solarSystemCount;
+            this.appDataService.PlanetaryResourcesCount = this.planetaryResourcesCount;
+        }
+        else
+        {
+            this.regionsCount = this.appDataService.RegionsCount.Value;
+            this.constellationsCount = this.appDataService.ConstellationsCount.Value;
+            this.solarSystemCount = this.appDataService.SolarSystemCount.Value;
+            this.planetaryResourcesCount = this.appDataService.PlanetaryResourcesCount.Value;
+        }
+
+        if (this.appDataService.Location is null)
+        {
+            this.location = await this.eveApiService.Locations.GetRandomAsync();
+            this.appDataService.Location = this.location;
+        }
+        else
+        {
+            this.location = this.appDataService.Location;
+        }
+
+        this.isMobileDevice = await this.JS.InvokeAsync<bool>("isMobileDevice");
+    }
+
+    private string MobileLayoutSwitch() => this.isMobileDevice ? string.Empty : "container";
+}

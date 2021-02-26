@@ -1,0 +1,124 @@
+﻿@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Web.Common
+
+@implements IDisposable
+
+@inject IAlertService AlertService
+@inject NavigationManager NavigationManager
+
+@foreach (var alert in this.alerts)
+{
+    <div class="@CssClass(alert)">
+        <a class="close" @onclick="@(() => this.RemoveAlert(alert))">&times;</a>
+        <span>@alert.Message</span>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "default-alert";
+
+    [Parameter]
+    public bool Fade { get; set; } = true;
+
+    private readonly List<AlertModel> alerts = new List<AlertModel>();
+
+    public void Dispose()
+    {
+        // unsubscribe from alerts and location change events
+        this.AlertService.OnAlert -= this.OnAlert;
+        this.NavigationManager.LocationChanged -= this.OnLocationChange;
+    }
+
+    protected override void OnInitialized()
+    {
+        // subscribe to new alerts and location change events
+        this.AlertService.OnAlert += this.OnAlert;
+        this.NavigationManager.LocationChanged += this.OnLocationChange;
+    }
+
+    private static string CssClass(AlertModel alert)
+    {
+        if (alert == null) return null;
+
+        var classes = new List<string> { "alert", "alert-dismissible", "mt-4", "container" };
+
+        var alertTypeClass = new Dictionary<AlertType, string>
+        {
+            [AlertType.Success] = "alert-success",
+            [AlertType.Error] = "alert-danger",
+            [AlertType.Info] = "alert-info",
+            [AlertType.Warning] = "alert-warning"
+        };
+
+        classes.Add(alertTypeClass[alert.Type]);
+
+        if (alert.Fade)
+        {
+            classes.Add("fade");
+        }
+
+        return string.Join(' ', classes);
+    }
+
+    private async void OnAlert(AlertModel alert)
+    {
+        // ignore alerts sent to other alert components
+        if (alert.Id != this.Id)
+            return;
+
+        // clear alerts when an empty alert is received
+        if (alert.Message == null)
+        {
+            // remove alerts without the 'KeepAfterRouteChange' flag set to true
+            this.alerts.RemoveAll(x => !x.KeepAfterRouteChange);
+
+            // set the 'KeepAfterRouteChange' flag to false for the
+            // remaining alerts so they are removed on the next clear
+            this.alerts.ForEach(x => x.KeepAfterRouteChange = false);
+        }
+        else
+        {
+            // add alert to array
+            this.alerts.Add(alert);
+            this.StateHasChanged();
+
+            // auto close alert if required
+            if (alert.AutoClose)
+            {
+                await Task.Delay(3000);
+                this.RemoveAlert(alert);
+            }
+        }
+
+        this.StateHasChanged();
+    }
+
+    private void OnLocationChange(object sender, LocationChangedEventArgs e)
+    {
+        this.AlertService.Clear(this.Id);
+    }
+
+    private async void RemoveAlert(AlertModel alert)
+    {
+        // check if already removed to prevent error on auto close
+        if (!this.alerts.Contains(alert)) return;
+
+        if (this.Fade)
+        {
+            // fade out alert
+            alert.Fade = true;
+
+            // remove alert after faded out
+            await Task.Delay(250);
+            this.alerts.Remove(alert);
+        }
+        else
+        {
+            // remove alert
+            this.alerts.Remove(alert);
+        }
+
+        this.StateHasChanged();
+    }
+}

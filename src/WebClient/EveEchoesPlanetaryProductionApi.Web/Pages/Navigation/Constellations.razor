@@ -1,0 +1,58 @@
+﻿@page "/navigation/constellations"
+@page "/navigation/constellations/page/{PageNumber:int}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetConstellations
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
+
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
+@inject NavigationManager navigation
+
+@if (this.AllConstellations is not null)
+{
+    <ListingTableComponent Data="(this.AllConstellations)" Location=@("navigation/constellations")></ListingTableComponent>
+
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
+
+
+@code {
+    private IEnumerable<ConstellationListingModel> AllConstellations { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.NavigationManager = this.navigation;
+        this.Location = "navigation/constellations/page";
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        await this.ClearPage();
+
+        this.AllConstellations = await this.eveApiService.Constellations.GetPageAsync(this.PageNumber);
+
+        var totalConstellations = this.appDataService.ConstellationsCount ?? await this.eveApiService.Constellations.GetCountAsync();
+        this.appDataService.ConstellationsCount ??= totalConstellations;
+
+        this.TotalPages = (int)Math.Ceiling(totalConstellations / (double)GlobalConstants.Ui.ConstellationsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.AllConstellations = null;
+
+        await Task.Delay(1);
+    }
+}

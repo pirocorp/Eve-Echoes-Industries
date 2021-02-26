@@ -1,0 +1,83 @@
+﻿@using System.Reflection
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">@this.Location.Capitalize()</th>
+            @foreach (var propertyName in this.DataProperties)
+            {
+                if (propertyName.Contains("Id")
+                    || propertyName.Equals("Name"))
+                {
+                    continue;
+                }
+
+                <th class="text-left">@propertyName</th>
+            }
+        </tr>
+    </thead>
+    <tbody class="table-hover">
+    @foreach (var element in this.Data)
+    {
+        <tr>
+            <td class="text-left">
+                <a href=@($"/{this.Location}/{this.GetPropertyValue(element, "Id")}")>@this.GetPropertyValue(element, "Name")</a>
+            </td>
+            @foreach (var propertyName in this.DataProperties)
+            {
+                if (propertyName.Contains("Id") 
+                    || propertyName.Equals("Name"))
+                {
+                    continue;
+                }
+
+                if (this.DataProperties.Contains($"{propertyName}Id"))
+                {
+                    <td class="text-left">
+                        <a href=@($"/{propertyName.ToLower()}/{this.GetPropertyValue(element, this.DataProperties.FirstOrDefault(p => p.Equals($"{propertyName}Id")))}")>
+                            @this.GetPropertyValue(element, propertyName)
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td class="text-left">@this.GetPropertyValue(element, propertyName)</td>
+                }
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<object> Data { get; set; }
+
+    [Parameter]
+    public string Location { get; set; }
+
+    private IList<string> DataProperties { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var element = this.Data?.FirstOrDefault();
+
+        if (element is null)
+        {
+            this.DataProperties = new List<string>();
+
+            return;
+        }
+
+        this.DataProperties = element.GetType()
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Select(p => p.Name)
+            .ToList();
+
+        await Task.CompletedTask;
+    }
+
+    private string GetPropertyValue(object element, string columnName) 
+        => element.GetType().GetProperty(columnName)?.GetValue(element, null)?.ToString();
+}

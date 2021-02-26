@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+@layout MainLayout
+
+@inject IJSRuntime JS;
+
+<div class="@this.MobileLayoutSwitch()">
+    <div class="row">
+        <SystemCardComponent>
+            @(this.Body)
+        </SystemCardComponent>
+    </div>
+</div>
+
+@code{
+    private bool isMobileDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.isMobileDevice = await this.JS.InvokeAsync<bool>("isMobileDevice");
+    }
+
+    private string MobileLayoutSwitch() => this.isMobileDevice ? string.Empty : "container";
+}

@@ -1,0 +1,57 @@
+﻿@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+
+<div class="radios">
+    <fieldset>
+        <legend>Price selector</legend>
+        <div class="radiobtn">
+            <input type="radio" id="Buy"
+                   name="drone" value="Buy"
+                   @onchange="this.RadioSelection" />
+            <label for="Buy">Buy</label>
+        </div>
+
+        <div class="radiobtn">
+            <input type="radio" id="Sell"
+                   name="drone" value="Sell"
+                   @onchange="this.RadioSelection" />
+            <label for="Sell">Sell</label>
+        </div>
+
+        <div class="radiobtn">
+            <input type="radio" id="HighestBuy"
+                   name="drone" value="HighestBuy"
+                   @onchange="this.RadioSelection" />
+            <label for="HighestBuy">Highest Buy</label>
+        </div>
+
+        <div class="radiobtn">
+            <input type="radio" id="LowestSell"
+                   name="drone" value="LowestSell"
+                   @onchange="this.RadioSelection" />
+            <label for="LowestSell">Lowest Sell</label>
+        </div>
+
+        <div class="radiobtn">
+            <input type="radio" id="UserProvided"
+                   name="drone" value="UserProvided"
+                   @onchange="this.RadioSelection" />
+            <label for="UserProvided">User Provided</label>
+        </div>
+    </fieldset>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<PriceSelector> OnChange { get; set; }
+
+    private async void RadioSelection(ChangeEventArgs args)
+    {
+        var success = Enum.TryParse<PriceSelector>(args.Value?.ToString(), out var priceSelector);
+
+        if (success)
+        {
+            await this.OnChange.InvokeAsync(priceSelector);
+        }
+    }
+}

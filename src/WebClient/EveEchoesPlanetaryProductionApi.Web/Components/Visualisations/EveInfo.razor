@@ -1,0 +1,63 @@
+﻿<section id="gallery" class="mt-4 mx-auto">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/regions-min.webp" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Regions</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.RegionsCount regions.
+                        </p>
+                        <a href="/navigation/regions" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/constellations-min.webp" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Constellations</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.ConstellationsCount constellations.
+                        </p>
+                        <a href="/navigation/constellations" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="/resources/imgs/solarSystem-min.webp" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Solar Systems</h5>
+                        <p class="card-text">
+                            In eve echoes universe there are @this.SolarSystemCount solar systems.
+                        </p>
+                        <a href="/navigation/systems" class="btn btn-outline-success btn-sm">
+                            <i class="fab fa-wpexplorer"></i>
+                            Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+
+    [Parameter]
+    public int RegionsCount { get; set; }
+
+    [Parameter]
+    public int ConstellationsCount { get; set; }
+
+    [Parameter]
+    public int SolarSystemCount { get; set; }
+}

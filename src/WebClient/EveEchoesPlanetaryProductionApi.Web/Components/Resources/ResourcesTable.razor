@@ -1,0 +1,124 @@
+﻿@using EveEchoesPlanetaryProductionApi.Web.Common
+@using EveEchoesPlanetaryProductionApi.Common.Extensions
+@using EveEchoesPlanetaryProductionApi.Api.Models.PlanetaryResources.GetResources
+
+<table class="table table-striped table-bordered table-res">
+    <thead>
+        <tr>
+            <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(PlanetaryResource.Name)))">
+                <span>Resource</span>
+                <span class="sort-th"><i class=@this.SetSortIcon(nameof(PlanetaryResource.Name))></i></span>
+            </th>
+            <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(PlanetaryResource.Price.Buy)))">
+                <span>Buy</span>
+                <span class="sort-th"><i class=@this.SetSortIcon(nameof(PlanetaryResource.Price.Buy))></i></span>
+            </th>
+            <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(PlanetaryResource.Price.Sell)))">
+                <span>Sell</span>
+                <span class="sort-th"><i class=@this.SetSortIcon(nameof(PlanetaryResource.Price.Sell))></i></span>
+            </th>
+            <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(PlanetaryResource.Price.HighestBuy)))">
+                <span>Highest Buy</span>
+                <span class="sort-th"><i class=@this.SetSortIcon(nameof(PlanetaryResource.Price.HighestBuy))></i></span>
+            </th>
+            <th class="text-nowrap sort" @onclick="@(() => this.SortTable(nameof(PlanetaryResource.Price.LowestSell)))">
+                <span>Lowest Sell</span>
+                <span class="sort-th"><i class=@this.SetSortIcon(nameof(PlanetaryResource.Price.LowestSell))></i></span>
+            </th>
+            <th>
+                Latest Price Update
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var currentResource in this.Resources)
+        {
+            <tr>
+                <td>
+                    <div class="img_wrap">
+                        <img src="@($"resources/planetaryResources/eve-echoes-{currentResource.Name.RemoveSpaces()}.jpg")"
+                             alt="@currentResource.Name"
+                             onerror="this.src = 'resources/planetaryResources/eve-echoes-none.jpg'" />
+                        <p class="img_description">@currentResource.Name</p>
+                    </div>
+                </td>
+                <td>@(currentResource.Price.Buy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                <td>@(currentResource.Price.Sell.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                <td>@(currentResource.Price.HighestBuy.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                <td>@(currentResource.Price.LowestSell.ToString(PresentationConstants.PriceFormat) + PresentationConstants.IskSymbol)</td>
+                <td>@currentResource.Price.Time.ToLocalTime()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter]
+    public IEnumerable<PlanetaryResource> Resources { get; set; }
+
+    private bool isSortedAscending;
+
+    private string activeSortColumn;
+
+    private void SortResourcesAscending(string columnName, IEnumerable<PlanetaryResource> resources)
+    {
+        this.Resources = resources
+            .OrderBy(x =>
+                x.GetType().GetProperty(columnName)?.GetValue(x, null)
+                ?? x.Price.GetType().GetProperty(columnName)?.GetValue(x.Price, null))
+            .ToList();
+    }
+
+    private void SortResourcesDescending(string columnName, IEnumerable<PlanetaryResource> resources)
+    {
+        this.Resources = resources
+            .OrderByDescending(x =>
+                x.GetType().GetProperty(columnName)?.GetValue(x, null)
+                ?? x.Price.GetType().GetProperty(columnName)?.GetValue(x.Price, null))
+            .ToList();
+    }
+
+    private void SortTable(string columnName)
+    {
+        if (columnName != this.activeSortColumn)
+        {
+            this.SortResourcesAscending(columnName, this.Resources);
+
+            this.isSortedAscending = true;
+            this.activeSortColumn = columnName;
+        }
+        else
+        {
+            if (this.isSortedAscending)
+            {
+                this.SortResourcesDescending(columnName, this.Resources);
+            }
+            else
+            {
+                this.SortResourcesAscending(columnName, this.Resources);
+            }
+
+            this.isSortedAscending = !this.isSortedAscending;
+        }
+
+        this.StateHasChanged();
+    }
+
+    private string SetSortIcon(string columnName)
+    {
+        if (this.activeSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+
+        if (this.isSortedAscending)
+        {
+            return "fas fa-sort-up";
+        }
+        else
+        {
+            return "fas fa-sort-down";
+        }
+    }
+}

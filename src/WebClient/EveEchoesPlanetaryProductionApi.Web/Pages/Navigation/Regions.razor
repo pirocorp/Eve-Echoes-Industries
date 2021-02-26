@@ -1,0 +1,57 @@
+﻿@page "/navigation/regions"
+@page "/navigation/regions/page/{PageNumber:int}"
+
+@using EveEchoesPlanetaryProductionApi.Api.Models.Regions.GetRegions
+@using EveEchoesPlanetaryProductionApi.Common
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inherits PaginationBase
+
+@inject IEveApiService eveApiService
+@inject IAppDataService appDataService
+@inject NavigationManager navigation
+
+@if (this.AllRegions is not null)
+{
+    <ListingTableComponent Data="(this.AllRegions)" Location="@("navigation/regions")"></ListingTableComponent>
+
+    <Paginator Page="@(this.PageNumber)"
+               TotalPages="@this.TotalPages"
+               Radius="3"
+               SelectedPage="this.ChangePage" />
+}
+else
+{
+    <Loader></Loader>
+}
+
+@code {
+    private IEnumerable<RegionListingModel> AllRegions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.NavigationManager = this.navigation;
+        this.Location = "navigation/regions/page";
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task LoadData()
+    {
+        await this.ClearPage();
+
+        this.AllRegions = await this.eveApiService.Regions.GetPageAsync(this.PageNumber);
+
+        var totalRegions = this.appDataService.RegionsCount ?? await this.eveApiService.Regions.GetCountAsync();
+        this.appDataService.RegionsCount ??= totalRegions;
+
+        this.TotalPages = (int)Math.Ceiling(totalRegions / (double)GlobalConstants.Ui.RegionsPageSize);
+    }
+
+    private async Task ClearPage()
+    {
+        this.AllRegions = null;
+
+        await Task.Delay(1);
+    }
+}

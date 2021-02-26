@@ -1,0 +1,32 @@
+﻿<div class="modal fade show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+     role="dialog" style="display: block;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@this.Title</h5>
+                <button type="button" class="close" aria-label="Close" @onclick="this.CloseModal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @this.Content
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Content { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ModalIsClosed { get; set; }
+
+    private async void CloseModal()
+    {
+        await this.ModalIsClosed.InvokeAsync(true);
+    }
+}

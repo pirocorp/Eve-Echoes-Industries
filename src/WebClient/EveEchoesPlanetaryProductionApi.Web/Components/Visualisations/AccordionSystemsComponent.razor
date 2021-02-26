@@ -1,0 +1,36 @@
+﻿@using EveEchoesPlanetaryProductionApi.Api.Models.BestSystemModel
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>System</th>
+        <th>Planets</th>
+        <th>Estimated Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var system in this.Systems)
+    {
+        <tr class="accordion">
+            <td class="text-center">
+                <a href="/systems/@system.Id">@system.Name</a>
+            </td>
+            <td class="text-center">
+                @system.Planets
+            </td>
+            <td class="text-center">
+                @system.EstimatedValue
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td colspan="3">
+                <SimpleTableComponent Data="(system.Resources)"></SimpleTableComponent>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public IEnumerable<BestSystemModel> Systems { get; set; }
+}

@@ -1,0 +1,15 @@
+﻿.svg-container {
+    margin: auto;
+}
+
+svg {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    fill: #343A40;
+    display: block;
+}
+
+.loading {
+    margin: 0 auto;
+}

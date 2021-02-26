@@ -1,0 +1,44 @@
+﻿@page "/resources/system"
+@page "/resources/system/{SolarSystemId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAppDataService AppDataService;
+@inject IEveApiService eveApiService;
+@inject NavigationManager navigationManager;
+
+@if (this.SolarSystem is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <BestResourcesInSystemComponent SolarSystem="this.SolarSystem"></BestResourcesInSystemComponent>
+}
+
+@code {
+    [Parameter]
+    public long SolarSystemId { get; set; }
+
+    private SolarSystemServiceModel SolarSystem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.SolarSystemId = this.SolarSystemId == 0 ? this.AppDataService.Location?.SystemId ?? 0 : this.SolarSystemId;
+
+        if (this.SolarSystemId <= 0)
+        {
+            this.navigationManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            this.SolarSystem = await this.eveApiService.Systems.GetAsync(this.SolarSystemId);
+            this.AppDataService.CurrentSolarSystem = this.SolarSystem;
+        }
+
+        this.navigationManager.NavigateTo($"/resources/system");
+        await base.OnInitializedAsync();
+    }
+}

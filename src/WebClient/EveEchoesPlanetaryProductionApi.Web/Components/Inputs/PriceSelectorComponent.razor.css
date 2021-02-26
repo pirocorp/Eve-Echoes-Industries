@@ -1,0 +1,107 @@
+﻿.radios {
+    max-width: 250px;
+    position: relative;
+    margin-top: 50px;
+    margin-left: 20px;
+    font-size: 15px;
+}
+
+.radiobtn {
+    position: relative;
+    display: block;
+}
+
+.radiobtn label {
+    display: block;
+    background: #7a8793;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: 2px solid #626d78;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.radiobtn label:after, .radiobtn label:before {
+    content: "";
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background: #56606a;
+}
+
+.radiobtn label:before {
+    background: transparent;
+    transition: 0.1s width cubic-bezier(0.075, 0.82, 0.165, 1) 0, 0.3s, height cubic-bezier(0.075, 0.82, 0.165, 2) 0.1s;
+    z-index: 2;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: 13px;
+    background-position: center;
+    width: 0;
+    height: 0;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+);
+}
+
+.radiobtn input[type="radio"] {
+    display: none;
+    position: absolute;
+    width: 100%;
+}
+
+.radiobtn input[type="radio"]:checked + label {
+    background: #56606a;
+    animation-name: blink;
+    animation-duration: 1s;
+    border-color: #343a40;
+}
+
+.radiobtn input[type="radio"]:checked + label:after {
+    background: #343a40;
+}
+
+.radiobtn input[type="radio"]:checked + label:before {
+    width: 20px;
+    height: 20px;
+}
+
+@keyframes blink {
+    0% {
+        background-color: #56606a;
+    }
+
+    10% {
+        background-color: #56606a;
+    }
+
+    11% {
+        background-color: #626d78;
+    }
+
+    29% {
+        background-color: #626d78;
+    }
+
+    30% {
+        background-color: #56606a;
+    }
+
+    50% {
+        background-color: #626d78;
+    }
+
+    45% {
+        background-color: #56606a;
+    }
+
+    50% {
+        background-color: #626d78;
+    }
+
+    100% {
+        background-color: #56606a;
+    }
+}

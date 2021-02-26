@@ -1,0 +1,69 @@
+﻿@page "/account/login"
+
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Web.Helpers
+@using EveEchoesPlanetaryProductionApi.Api.Models.Auth
+
+@inject IAccountService AccountService
+@inject IAlertService AlertService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+        <EditForm Model="@(this.model)" OnValidSubmit="this.OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Username</label>
+                <InputText @bind-Value="this.model.Username" class="form-control" />
+                <ValidationMessage For="@(() => this.model.Username)" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <InputText @bind-Value="this.model.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => this.model.Password)" />
+            </div>
+            <button disabled="@(this.loading)" class="btn btn-primary">
+                @if (this.loading) 
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Login
+            </button>
+            <NavLink href="account/register" class="btn btn-link">Register</NavLink>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private readonly UserLoginInputModel model = new UserLoginInputModel();
+    private bool loading;
+
+    private async void OnValidSubmit()
+    {
+        // reset alerts on submit
+        this.AlertService.Clear();
+
+        this.loading = true;
+        try
+        {
+            var success = await this.AccountService.Login(this.model);
+
+            if (!success)
+            {
+                this.AlertService.Error("Invalid credentials.");
+                return;
+            }
+
+            var returnUrl = this.NavigationManager.QueryString("returnUrl") ?? string.Empty;
+            this.NavigationManager.NavigateTo(returnUrl);
+            this.StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            this.AlertService.Error(ex.Message);
+            this.loading = false;
+            this.StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,97 @@
+﻿.form-field {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    color: #99a3ba;
+    border: 1px solid #626D78;
+    background: #fff;
+    transition: border 0.3s ease;
+}
+
+.form-field:focus {
+    outline: none;
+    border-color: #343A40;
+}
+
+.form-field::placeholder {
+    color: #CBD1DC;
+}
+
+.form-group {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.form-group > label, .form-group .form-field {
+    white-space: nowrap;
+    display: block;
+}
+
+.form-group > label:not(:first-child):not(:last-child), .form-group .form-field:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+
+.form-group > label:first-child, .form-group .form-field:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.form-group > label:last-child, .form-group .form-field:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+.form-group > label:not(:first-child), .form-group .form-field:not(:first-child) {
+    margin-left: -1px;
+}
+
+.form-group .form-field {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.form-group > label {
+    text-align: center;
+    padding: 8px 12px;
+    margin-bottom: 0;
+    width: 150px;
+    font-size: 14px;
+    line-height: 25px;
+    color: #FFFFFF;
+    background: #7A8793;
+    border: 1px solid #626D78;
+    transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+}
+
+.form-group:focus-within > label {
+    color: #fff;
+    background: #56606A;
+    border-color: #343A40;
+}
+
+.btn-form {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.btn-form-submit {
+    color: #fff;
+    background: #7A8793;
+    border-color: #626D78;
+}
+
+.btn-form-submit:hover {
+    color: #fff;
+    background: #56606A;
+    border-color: #343A40;
+}

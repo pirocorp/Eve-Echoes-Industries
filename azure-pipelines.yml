@@ -1,0 +1,51 @@
+trigger:
+- main
+- release
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+  demands:  
+  - msbuild
+  - visualstudio
+  - vstest
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet 5.8.0'
+    inputs:
+      versionSpec: 5.8.0
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '**/Eve Echoes Planetary Production API.sln'
+
+  - task: VSBuild@1
+    displayName: 'Build solution'
+    inputs:
+      solution: '**/Eve Echoes Planetary Production API.sln'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=WebDeploy /p:PackageAsSingleFile=false /p:SkipInvalidConfigurations=true /p:Configuration=Release /p:Platform="Any CPU"'
+      clean: true
+      msbuildArchitecture: x64
+
+#  - task: DotNetCoreCLI@2
+#    displayName: Test
+#    inputs:
+#      command: 'test'
+#      projects: '**/*[Tt]ests/*.csproj'
+#      arguments: '--configuration $(BuildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
+      arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+      
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()

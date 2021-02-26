@@ -1,0 +1,107 @@
+﻿@using EveEchoesPlanetaryProductionApi.Services.Data.Models.SolarSystemServiceModel
+@using EveEchoesPlanetaryProductionApi.Services.Models.EveEchoesMarket
+@using EveEchoesPlanetaryProductionApi.Web.Services
+
+@inject IAppDataService AppDataService;
+
+<h3 class="card-title">System: @this.SolarSystem.Name</h3>
+<h4 class="card-title">Constellation: @this.SolarSystem.ConstellationName</h4>
+<h5 class="card-title">Region: @this.SolarSystem.RegionName</h5>
+
+<div class="row">
+    <div class="col-md-5 offset-md-1">
+        <PriceSelectorComponent OnChange="this.PriceSelectorChangeHandler"></PriceSelectorComponent>
+    </div>
+    @if (this.PriceUpdateDate != default)
+    {
+        <p class="col-md-5 align-self-center">Latest price update: @this.PriceUpdateDate.ToString("dd MMMM yyyy")</p>
+    }
+</div>
+
+@if (this.PriceSelector is PriceSelector.UserProvided)
+{
+    <InputPrices SolarSystem="this.SolarSystem" OnChange="this.OnResourceValuesChange"></InputPrices>
+}
+
+@if (this.BestPlanets is not null)
+{
+    <BestPlanetaryResourcesTable BestPlanets="this.BestPlanets"></BestPlanetaryResourcesTable>
+}
+
+
+@code {
+    [Parameter]
+    public SolarSystemServiceModel SolarSystem { get; set; }
+
+    private IEnumerable<PlanetValue> BestPlanets { get; set; }
+
+    private PriceSelector PriceSelector { get; set; }
+
+    private DateTime PriceUpdateDate => this.SolarSystem.Planets
+        .SelectMany(p => p.PlanetResources)
+        .Select(pr => pr.Price)
+        .Select(p => p.Time)
+        .OrderByDescending(p => p.Date)
+        .FirstOrDefault();
+
+    private Func<SolarSystemServicePlanetPlanetResourceModel, decimal> GetPriceSelector(PriceSelector priceSelector)
+        => priceSelector switch
+        {
+            PriceSelector.Sell => p => p.Price.Sell,
+            PriceSelector.Buy => p => p.Price.Buy,
+            PriceSelector.LowestSell => p => p.Price.LowestSell,
+            PriceSelector.HighestBuy => p => p.Price.HighestBuy,
+            PriceSelector.UserProvided => p => this.AppDataService.PlanetaryResourcesPrices.TryGetValue(p.ItemName, out var value) ? value : 0,
+            _ => p => 0
+        };
+
+    private void CalculateBestPlanets()
+    {
+        var func = this.GetPriceSelector(this.PriceSelector);
+
+        this.BestPlanets = this.SolarSystem.Planets
+            .Select(p =>
+            {
+                var bestPlanetResource = p
+                    .PlanetResources
+                    .OrderByDescending(x => func(x) * (decimal)x.Output)
+                    .First();
+
+                return new PlanetValue()
+                {
+                    Name = p.Name,
+                    Resource = bestPlanetResource.ItemName,
+                    Output = bestPlanetResource.Output,
+                    Price = func(bestPlanetResource)
+                };
+            })
+            .OrderByDescending(p => p.Price * (decimal)p.Output)
+            .ToList();
+    }
+
+    private void PriceSelectorChangeHandler(PriceSelector priceSelector)
+    {
+        this.PriceSelector = priceSelector;
+
+        this.CalculateBestPlanets();
+    }
+
+    private void OnResourceValuesChange(bool change)
+    {
+        if (change)
+        {
+            this.CalculateBestPlanets();
+        }
+    }
+
+    public class PlanetValue
+    {
+        public string Name { get; set; }
+
+        public string Resource { get; set; }
+
+        public double Output { get; set; }
+
+        public decimal Price { get; set; }
+    }
+}

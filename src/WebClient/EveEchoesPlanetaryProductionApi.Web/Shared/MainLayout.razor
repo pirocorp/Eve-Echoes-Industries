@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+    
+    <section id="header" class="jumbotron text-center py-5">
+        <h1 class="display-3"><b>Eve Echoes</b></h1>
+        <p class="lead text-light">Welcome to the New Eden</p>
+    </section>
+
+    <div class="main">
+        <div class="content px-4">
+            <Alert />
+            @(this.Body)
+        </div>
+    </div>
+    
+    <Footer></Footer>
+</div>

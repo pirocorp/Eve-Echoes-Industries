@@ -1,0 +1,31 @@
+﻿@page "/navigation/constellations/{ConstellationId:long}"
+
+@using EveEchoesPlanetaryProductionApi.Web.Services
+@using EveEchoesPlanetaryProductionApi.Api.Models.Constellations.GetDetails
+
+@inject IEveApiService eveApiService
+
+@if (this.ConstellationDetails is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <section class="container mb-5">
+        <ListingTableComponent Data="@(this.ConstellationDetails.SolarSystems)" Location="@location"></ListingTableComponent>
+    </section>
+}
+
+@code {
+    private const string location = "systems";
+
+    [Parameter]
+    public long ConstellationId { get; set; }
+
+    private ConstellationDetails ConstellationDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ConstellationDetails = await this.eveApiService.Constellations.GetDetailsAsync(this.ConstellationId);
+    }
+}

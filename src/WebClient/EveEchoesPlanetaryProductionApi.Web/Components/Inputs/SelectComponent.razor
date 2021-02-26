@@ -1,0 +1,35 @@
+﻿<div class="form-group">
+    <label for="mining-planets">@this.Label</label>
+    <select class="form-field" id="mining-planets" @onchange="this.OnValueChangeHandler">
+        <option disabled selected>@this.Label</option>
+        @for (var i = this.Start; i <= this.Range; i++)
+        {
+            <option value=@i>@i</option>
+        }
+    </select>
+</div>
+
+@code {
+
+    [Parameter] 
+    public EventCallback<int> OnChange { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public int Range { get; set; }
+
+    [Parameter]
+    public int Start { get; set; } = 1;
+
+    private void OnValueChangeHandler(ChangeEventArgs e)
+    {
+        var valueParseSuccess = int.TryParse(e.Value?.ToString(), out var value);
+
+        if (valueParseSuccess && value <= this.Range && value > 0)
+        {
+            this.OnChange.InvokeAsync(value);
+        }
+    }
+}
