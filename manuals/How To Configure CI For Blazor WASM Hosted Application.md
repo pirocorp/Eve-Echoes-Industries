@@ -167,10 +167,16 @@ projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
 ```
 
 
-Build.ArtifactStagingDirectory is predefined variables. These variables are automatically set by the system and read-only. The local path on the agent where any artifacts are copied to before being pushed to their destination. For example: c:\agent_work\1\a
+**Build.ArtifactStagingDirectory is predefined variables. These variables are automatically set by the system and read-only. The local path on the agent where any artifacts are copied to before being pushed to their destination. For example: c:\agent_work\1\a**
 
 ```yml
 arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+```
+
+**By default after publish application will be deployed and run from zip file.**
+
+```yml
+zipAfterPublish: false
 ```
 
 ### Step 7: [Publish Build Artifacts](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/publish-build-artifacts?view=azure-devops)
