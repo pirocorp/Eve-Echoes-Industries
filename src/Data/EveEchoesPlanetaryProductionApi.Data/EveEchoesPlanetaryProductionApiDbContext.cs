@@ -43,6 +43,8 @@
 
         public DbSet<BlueprintResource> BlueprintsResources { get; set; }
 
+        public DbSet<Challenge> Challenges { get; set; }
+
         /// <summary>
         /// Used when identity column value is specified explicitly when inserting new item in table.
         /// </summary>

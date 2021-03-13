@@ -19,7 +19,7 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h4 class="card-title">
-                        @this.Blueprint.Name&nbsp;<img width="30" src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.BlueprintItemId}")" alt="blueprint logo" />
+                        @this.Blueprint.Name&nbsp;<img width="30" src="@($"{PresentationConstants.IconsApiEndpoint}/{PresentationConstants.DefaultBluePrint}.png")" alt="blueprint logo" />
                     </h4>
                     <h6 class="card-title">
                         @this.Blueprint.ProductType
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}")" alt=@this.Blueprint.Product.Name class="card-img" style="max-width: 280px" />
+                <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}.png")" alt=@this.Blueprint.Product.Name class="card-img" style="max-width: 280px" />
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
                 {
                     <tr>
                         <td width="50px">
-                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.ResourceId}")" alt=@resource.ResourceName style="max-width: 50px" />
+                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.ResourceId}.png")" alt=@resource.ResourceName style="max-width: 50px" />
                         </td>
                         <td>@resource.ResourceName</td>
                         <td>@resource.Quantity.ToString("N0", CultureInfo.InvariantCulture)</td>
@@ -87,7 +87,7 @@
 
                     <tr>
                         <td width="50px">
-                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.Id}")" alt=@resource.Name style="max-width: 50px" />
+                            <img src="@($"{PresentationConstants.IconsApiEndpoint}/{resource.Id}.png")" alt=@resource.Name style="max-width: 50px" />
                         </td>
                         <td>@resource.Name</td>
                         <td>@resource.Quantity.ToString("N0", CultureInfo.InvariantCulture)</td>
@@ -127,7 +127,7 @@
             <tbody>
                 <tr>
                     <td width="50px">
-                        <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}")" alt=@this.Blueprint.Product.Name style="max-width: 50px" />
+                        <img src="@($"{PresentationConstants.IconsApiEndpoint}/{this.Blueprint.Product.Id}.png")" alt=@this.Blueprint.Product.Name style="max-width: 50px" />
                     </td>
                     <td>@this.Blueprint.Product.Name</td>
                     <td>@this.Blueprint.ProductionCount</td>
@@ -189,7 +189,7 @@
             resources.Add(new GetBlueprintModelResources()
             {
                 ResourceName = this.Blueprint.Name,
-                ResourceId = this.Blueprint.BlueprintItemId,
+                ResourceId = PresentationConstants.DefaultBluePrint,
                 Quantity = 1,
             });
         }
@@ -256,7 +256,7 @@ else
 
         var timespan = TimeSpan.FromSeconds(effectiveSeconds);
 
-        return $"{Math.Floor(timespan.TotalHours)}:{timespan.Minutes}:{timespan.Seconds}";
+        return $"{Math.Floor(timespan.TotalHours)}:{timespan.Minutes:D2}:{timespan.Seconds:D2}";
     }
 
     private async Task BlueprintToggleHandler()
