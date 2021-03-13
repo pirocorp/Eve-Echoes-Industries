@@ -243,7 +243,8 @@ steps:
       command: 'publish'
       publishWebProjects: false
       projects: '**/EveEchoesPlanetaryProductionApi.Api.csproj'
-      arguments: '--configuration Release --output $(build.artifactstagingdirectory)'      
+      arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+      zipAfterPublish: false
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact'
