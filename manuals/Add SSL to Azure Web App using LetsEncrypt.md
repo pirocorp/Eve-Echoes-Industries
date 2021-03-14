@@ -106,8 +106,12 @@ IMPORTANT NOTES:
 
 When you’ve done this you can convert the certificates using the following command.
 
-```
+```bash
 sudo openssl pkcs12 -export -out /etc/letsencrypt/live/www.example.com/www.example.com.pfx -inkey /et c/letsencrypt/live/www.example.com/privkey.pem -in /etc/letsencrypt/live/www.example.com/cert.pem
+```
+
+```bash
+openssl pkcs12 -export -out exhoesindustries.com.pfx -inkey privkey.pem -in cert.pem -certfile chain.pem
 ```
 
 It will ask you for a password (remember this) and will generate a .pfx file you can upload into the Azure portal.

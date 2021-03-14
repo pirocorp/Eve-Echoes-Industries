@@ -1,4 +1,3 @@
-
 ## How Configure CD To Deploy Blazor WASM Hosted Application
 
 ### Step 1: Create New Release Pipeline
