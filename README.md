@@ -1,5 +1,7 @@
 # Eve Echoes Industries 0.7-alpha
 
+Application is transfered to https://eveechoesindustiresapp.azurewebsites.net/ to free Azure tier until new suitable home is located
+
 Whats new in version 0.7:
 - Blueprints 
 - Search for Blueprints
